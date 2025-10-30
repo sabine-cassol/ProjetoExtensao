@@ -48,12 +48,12 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 | Frontend  | Backend |
 | -------|------|
-| 1      | 1    |
+| 1      | 1 Ramon Albini|
 | 2      | 2    |
 | 3      | 3    |
 
 | Banco de dados  | Documentação |
 | -------|------|
-| 1      | 1    |
+| 1  Ramon Albini| 1    |
 | 2      | 2    |
 | 3      | 3    |
