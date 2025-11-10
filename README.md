@@ -41,14 +41,14 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 | Analista de Requisitos  | UI/UX |
 | -------|------|
-| 1      | 1    |
+| 1      | 1 Eduardo H.   |
 | 2      | 2    |
 | 3      | 3    |
 
 
 | Frontend  | Backend |
 | -------|------|
-| 1      | 1 Ramon Albini|
+| 1 Eduardo H.     | 1 Ramon Albini|
 | 2      | 2    |
 | 3      | 3    |
 
