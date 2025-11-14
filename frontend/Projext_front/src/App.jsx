@@ -1,16 +1,10 @@
 
 import './App.css'
 
-function Header() {
+function HeaderComponent() {
   return(
-    <div>
-      <a href="">Início</a>
-      <a href=""> Notícias </a>
-      <a href=""> Projetos</a>
-      <a href="">Contato</a>
-      <a href="">Inscrever-se</a>
-    </div>
+    <div>hello world</div>
   )
 }
 
-export default Header
+export default HeaderComponent
