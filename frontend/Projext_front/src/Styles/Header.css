@@ -29,8 +29,8 @@
     align-items: center;
     font-weight:600;
     font-size: clamp(10px,20px,20px);
-    margin-left: -15%;
-    gap: 25%;
+    margin-left: -15px;
+    gap: clamp(10px,25px,40px);
 }
 
 
@@ -170,6 +170,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .optionItem p{
@@ -183,6 +184,9 @@
     height: 130px;
     background-color: var(--lightcyan);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon2{
@@ -190,6 +194,9 @@
     height: 130px;
     background-color: var(--darkRed);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon3{
@@ -197,6 +204,9 @@
     height: 130px;
     background-color: var(--neutralYellow);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon4{
@@ -204,7 +214,25 @@
     height: 130px;
     background-color: var(--darkBlue);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+@media (max-width: 768px) {
+    /* Mudar para 2 colunas para telas de tablet */
+    .optionsContainer {
+        grid-template-columns: repeat(2, 1fr);
+        /* Aumentar o gap para separar melhor os itens */
+        gap: 30px; 
+    }
+    
+    /* Garantir que a altura se ajuste com o novo layout */
+    .options {
+        height: auto; 
+    }
+}
+
 
 .footer{
     width: 100vw;
