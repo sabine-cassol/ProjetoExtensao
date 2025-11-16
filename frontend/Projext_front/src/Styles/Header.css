@@ -9,6 +9,10 @@
     font-size: 16px;
 }
 
+a{
+    text-decoration: none;
+}
+
 .Header{
     position: fixed;
     background-color: white;
@@ -53,7 +57,7 @@
     font-weight:500;
     padding: 20px;
     cursor: pointer;
-    transition: color ease 5s;
+    transition: color ease 0.5s;
 }
 
 .Header .btn:hover{
@@ -61,9 +65,10 @@
 }
 
 .Header .btn a{
+    text-decoration: none !important;
     color: white;
-    text-decoration: none;
     font-family: 'Roboto',Arial,sans-serif;
+    border: none;
 }
 
 .LogoContainer{
