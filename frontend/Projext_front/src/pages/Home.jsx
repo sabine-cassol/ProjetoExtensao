@@ -1,4 +1,20 @@
 import Header from '../components/Header.jsx'
+import NewsSlider from '../components/NewsSlider'
+import { register } from 'swiper/element/bundle'
+
+register();
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
+import { useState, useEffect } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import news1 from '../assets/3d-world-news-background-loop-free-video.jpg'
+import news2 from '../assets/depositphotos_56880225-stock-photo-words-news.jpg'
+import news3 from '../assets/images.jpeg'
+
 
 
 
@@ -11,9 +27,9 @@ function Home() {
     <Header />
 
     <main className="principal">
-      <section className='noticias'>
-        <h2>Noticias</h2>
-      </section>
+  
+
+    <NewsSlider/> 
 
       <section className='info'>
         <h1 className='infoTitulo'>

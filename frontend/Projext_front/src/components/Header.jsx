@@ -44,9 +44,9 @@ function Header() {
         <Link to="">Contato </Link>
       </nav>
       <Link to="Login" className='btn'>
-        <a>
+        <p>
         Inscrever-se
-        </a>
+        </p>
       </Link>
     </header>
     )
