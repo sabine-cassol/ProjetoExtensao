@@ -1,7 +1,6 @@
-import '../Styles/Header.css'
 
 function Options(){
-  <>
+  return (
     <section className='options'>
         <div className='optionsContainer'>
           <div className='optionItem'>
@@ -31,7 +30,8 @@ function Options(){
           </div>
         </div>
       </section>
-  </>
+
+  )
 }
 
 export default Options;

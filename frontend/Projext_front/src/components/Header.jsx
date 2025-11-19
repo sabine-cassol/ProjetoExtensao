@@ -1,11 +1,11 @@
-import '../Styles/Header.css'
 import logo from '../assets/1763073341698.png';
 import logo1 from '../assets/IMG_20251114_003344.png';
 import { Link } from "react-router-dom";
 import { useEffect , useState } from 'react';
+import { Menu, Search } from 'lucide-react'
 
 
-function Header() {
+function Header({isLogged = true, aoClick}) {
     //responsividade da logo
         const [logoSrc, setLogoSrc] = useState(logo);
     
@@ -30,10 +30,22 @@ function Header() {
         }, []);
     
         //fim do codigo da responsividade da logo
+
     return (
     <header className="Header">
-        
       <div className='LogoContainer'> 
+        
+        {isLogged ? (
+        <span onClick={()=>{
+            
+        }}>
+            <Menu onClick={aoClick} />    
+        </span>
+        ) : (
+        <span>
+            <Search />    
+        </span>
+        )}
          <img src={logoSrc} alt="" /> 
          <div></div> 
       </div>

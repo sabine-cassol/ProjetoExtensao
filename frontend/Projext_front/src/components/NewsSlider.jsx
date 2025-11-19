@@ -1,5 +1,5 @@
 import { register } from 'swiper/element/bundle'
-import '../Styles/Header.css'
+import '../Styles/Home.css'
 
 register();
 import 'swiper/css';
@@ -42,6 +42,7 @@ function NewsSlider() {
 
   return(
         <section className='noticias'>
+        <h2>Notícias</h2>
         <Swiper
         slidesPerView={slidePerView}
         pagination={{clickable: true}}

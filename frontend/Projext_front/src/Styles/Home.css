@@ -76,11 +76,12 @@ a{
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    margin-right: 20px
+    margin-right: 20px;
+    margin-left: -20px;
 }
 
 .LogoContainer img{
-    width: 180px
+    width: 160px
 }
 
 .LogoContainer div{
@@ -88,6 +89,10 @@ a{
     height: 50px;
     background-color: gray;
     margin-left: 15px;
+}
+
+.LogoContainer span{
+    margin-right: 16px;
 }
 
 @media screen and (max-width:850px){
@@ -133,12 +138,63 @@ a{
     border: 1px solid #dddddd;
 }
 
+.noticias h2{
+    position: absolute;
+    z-index: 2;
+    color: white;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 30px;
+}
+
 .slide-item{
     width: 100%;
     max-height: 320px;
     height: 320px;
     max-width: 1440px;
     object-fit: cover;
+}
+
+.sidebar{
+    padding-top:calc(80px + 20px);
+    height: 100vh;
+    background-color: #161618;
+    width: 230px;
+    color: white;
+    line-height: 40px;
+    position: absolute ;
+    transition: transform 0.3s ease;
+}
+
+.sidebar:hover{
+    background-color: red;
+}
+
+.open{
+    transform: translateX(0);
+}
+
+.closed{
+    transform: translate(-100%)
+}
+
+
+.sidebar .items{
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+.sidebar .items:hover{
+    background-color: red;
+    transition: all 1s ease;
+}
+
+.items p{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    font-size: 15px;
+    cursor: pointer;
 }
 
 .info{

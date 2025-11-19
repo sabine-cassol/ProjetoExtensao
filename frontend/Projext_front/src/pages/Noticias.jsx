@@ -1,7 +1,18 @@
 import Header from  '../components/Header'
+import SideBar1 from '../components/SideBar1'
 
-export default function Login(){
+
+import { useState } from "react"
+
+export default function Noticias(){
+
+    const [showSideBar, setShowSideBar] = useState(true);
     return (
-        <Header/>
+        <>
+        <Header aoClick={()=>{
+            setShowSideBar(!showSideBar)
+        }} />
+        <SideBar1 visivel={showSideBar}/>
+        </>
     )
 }

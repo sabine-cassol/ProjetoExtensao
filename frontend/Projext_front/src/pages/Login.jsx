@@ -1,5 +1,6 @@
 import '../Styles/Login.css'
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react"
 
 export default function Login(){
     return (
@@ -15,7 +16,7 @@ export default function Login(){
                 <input type="password" placeholder="senha" required/>
                 <button className='inputButton'> Entrar </button>
             </section>
-            <Link className='backButton' to="/">Voltar</Link> 
+            <Link className='backButton' to="/"> <ArrowLeft />Voltar</Link> 
         </section>
     </section>
     )
