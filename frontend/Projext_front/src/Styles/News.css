@@ -1,0 +1,48 @@
+.newsGridContainer{
+   padding-top: 120px;
+   padding-left: 20px;
+}
+
+.news{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 20px; 
+}
+.main-content {
+    padding-right : 20px;
+    margin-left: 0; 
+}
+.newsShifted{
+    margin-left: 230px; 
+}
+
+.news > div {
+    width: 250px;
+    height: 280px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.new{
+    max-width: 330px;
+    cursor: pointer;
+    text-overflow: ellipsis;
+}
+
+.new .newTitle{
+    font-size:1rem;
+    margin-top: 40px;
+}
+
+
+.new .newImage{
+    width: 150px;
+    height: 150px;
+    margin: auto ;
+    background-color: red;
+    margin-bottom: 25px;
+}

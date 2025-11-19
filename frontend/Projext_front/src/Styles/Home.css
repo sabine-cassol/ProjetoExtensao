@@ -93,6 +93,7 @@ a{
 
 .LogoContainer span{
     margin-right: 16px;
+    cursor:pointer;
 }
 
 @media screen and (max-width:850px){
@@ -162,12 +163,7 @@ a{
     width: 230px;
     color: white;
     line-height: 40px;
-    position: absolute ;
-    transition: transform 0.3s ease;
-}
-
-.sidebar:hover{
-    background-color: red;
+    position: fixed;
 }
 
 .open{
@@ -184,10 +180,7 @@ a{
     margin-left: 10px;
 }
 
-.sidebar .items:hover{
-    background-color: red;
-    transition: all 1s ease;
-}
+
 
 .items p{
     display: flex;
