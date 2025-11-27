@@ -54,6 +54,6 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 | Banco de dados  | Documentação |
 | -------|------|
-| 1  Ramon Albini| 1    |
+| 1  Ramon Albini| 1 Lucas Wessendorf de Araujo |
 | 2      | 2    |
 | 3      | 3    |
