@@ -1,11 +1,11 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
-import ProjetosGrid from '../components/Projetos.jsx'
-import '../Styles/News.css'
+import Contato1 from '../components/Contatos.jsx'
+import '../Styles/Contatos.css'
 
 import { useState } from "react"
 
-export default function Login(){
+export default function Contato(){
     const [showSideBar, setShowSideBar] = useState(true);
     const mainContentClass = showSideBar ? 'newsShifted' : 'main-content';
     return (
@@ -16,7 +16,7 @@ export default function Login(){
 
         <SideBar1 visivel={showSideBar}/>
         <main className={mainContentClass}> 
-                <ProjetosGrid />
+            <Contato1 />
         </main>
         </>
     )

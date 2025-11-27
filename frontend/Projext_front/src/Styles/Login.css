@@ -64,8 +64,13 @@
 
 .login .backButton{
     position: absolute;
+    display: flex;
+    gap:5px;
+    align-items: center;
+    justify-content: center;
     right: 30px;
     top: 30px;
+    font-size: 13px;
     padding: 10px;
     background-color: #dddddd;
     color: black;
