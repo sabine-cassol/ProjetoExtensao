@@ -190,6 +190,16 @@ a{
     cursor: pointer;
 }
 
+.items a{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
 .info{
     display: flex;
     justify-content: center;

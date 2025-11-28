@@ -7,7 +7,7 @@ import { useState } from "react"
 
 export default function Contato(){
     const [showSideBar, setShowSideBar] = useState(true);
-    const mainContentClass = showSideBar ? 'newsShifted' : 'main-content';
+    const mainContentClass = showSideBar ? 'Shifted' : 'main-content';
     return (
         <>
         <Header aoClick={()=>{

@@ -1,0 +1,44 @@
+.atividadesContainer{
+    padding-top: 100px;
+    padding-left: 25px;
+    padding-right: 25px; 
+
+    width: 100%; 
+    max-width: 1500px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-content{
+    padding-right: 0;
+}
+
+.atividades h2{
+    margin-bottom: 40px;
+}
+
+
+table {
+    border-collapse: collapse; 
+    border: 1px solid rgba(185, 185, 185, .7);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.atividades thead {
+    border-bottom: 1px solid rgba(185, 185, 185, .7); 
+    color:rgba(44, 44, 44,.50);
+}
+
+.atividades th, .atividades td {
+    padding: 15px; 
+    border-bottom: 1px solid rgba(185, 185, 185, .7);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif'
+}
+
+.atividades tbody tr:hover{
+    background-color: rgb(218,239,253);
+    cursor: pointer;
+}

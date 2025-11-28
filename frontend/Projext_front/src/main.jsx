@@ -10,6 +10,8 @@ import Home from './pages/Home.jsx'
 import Projetos from './pages/Projetos.jsx'
 import Error from './pages/Error.jsx'
 import Contato from './pages/Contatos.jsx'
+import Atividades from './pages/Atividades.jsx'
+import Relatorios from './pages/Relatorios.jsx'
 
 const router = createBrowserRouter([
     {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
     {
       path:"/Contato",
       element:<Contato/>
+    },
+    {
+      path:"/Atividades",
+      element: <Atividades/>
+    },
+    {
+      path:"/Relatorios",
+      element: <Relatorios/>
     }
 
 ])

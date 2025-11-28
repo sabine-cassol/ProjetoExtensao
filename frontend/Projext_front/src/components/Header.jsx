@@ -51,11 +51,11 @@ function Header({isLogged = true, aoClick}) {
       </div>
       <nav className='middleContent'>
         <Link to="/">Início </Link>
-        <Link to="Noticias"> Notícias </Link>
-        <Link to="Projetos"> Projetos </Link>
-        <Link to="Contato">Contato </Link>
+        <Link to="/Noticias"> Notícias </Link>
+        <Link to="/Projetos"> Projetos </Link>
+        <Link to="/Contato">Contato </Link>
       </nav>
-      <Link to="Login" className='btn'>
+      <Link to="/Login" className='btn'>
         <p>
         Inscrever-se
         </p>

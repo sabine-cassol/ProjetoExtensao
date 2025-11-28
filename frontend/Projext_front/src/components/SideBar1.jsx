@@ -1,13 +1,14 @@
 import { Book, Check, Copy } from 'lucide-react'
+import { Link } from "react-router-dom";
 
 function SideBar1({visivel}){
     return (
         <>
         <aside className={`sidebar ${visivel ? "open" : "closed"}`}>
             <nav className="items">
-                <p> <Book size={20} /> Atividades extensionistas</p>
+                <Link to="/Atividades"> <Book size={20} /> Atividades extensionistas</Link>
                 <p> <Check size={20} /> Minhas atividades</p>
-                <p> <Copy size={20} />  Relatórios</p>
+                <Link to="/Relatorios"> <Copy size={20} />  Relatórios</Link>
             </nav>
         </aside>
         </>
