@@ -8,6 +8,8 @@ import Login from "./pages/Login.jsx"
 import Noticias from "./pages/Noticias.jsx"
 import Home from './pages/Home.jsx'
 import Projetos from './pages/Projetos.jsx'
+import ProjetoDetalhe from './pages/ProjetoDetalhe.jsx'
+import NoticiaDetalhe from './pages/NoticiaDetalhe.jsx'
 import Error from './pages/Error.jsx'
 import Contato from './pages/Contatos.jsx'
 import Atividades from './pages/Atividades.jsx'
@@ -28,9 +30,18 @@ const router = createBrowserRouter([
       element: <Projetos/>
     },
     {
+      path: "/Projetos/:projetoId",
+      element: <ProjetoDetalhe/> 
+    },
+    {
       path:"/Noticias",
       element: <Noticias/>
     },
+    {
+      path: "/Noticias/:noticiaId",
+      element: <NoticiaDetalhe/> 
+    },
+  
     {
       path:"/Contato",
       element:<Contato/>

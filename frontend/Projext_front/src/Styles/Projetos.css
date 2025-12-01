@@ -37,6 +37,12 @@
     text-align: center;
 }
 
+.projetosGridContainer .projetos a{
+    text-decoration: none;
+    color: var(--lightcyan);
+    padding-top: 50px;
+}
+
 .projeto{
     max-width: 330px;
     cursor: pointer;
@@ -46,6 +52,7 @@
 .projeto .projetoTitle{
     font-size:1rem;
     margin-top: 40px;
+    margin-bottom: 12px;
 }
 
 
