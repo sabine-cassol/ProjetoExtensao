@@ -9,6 +9,10 @@
     font-size: 16px;
 }
 
+a{
+    text-decoration: none;
+}
+
 .Header{
     position: fixed;
     background-color: white;
@@ -29,8 +33,8 @@
     align-items: center;
     font-weight:600;
     font-size: clamp(10px,20px,20px);
-    margin-left: -15%;
-    gap: 25%;
+    margin-left: -15px;
+    gap: clamp(10px,25px,40px);
 }
 
 
@@ -53,17 +57,18 @@
     font-weight:500;
     padding: 20px;
     cursor: pointer;
-    transition: color ease 5s;
+    transition: color ease 0.5s;
 }
 
 .Header .btn:hover{
     background-color: hsl(186, 100%, 65%);
 }
 
-.Header .btn a{
+.Header .btn p{
+    text-decoration: none !important;
     color: white;
-    text-decoration: none;
     font-family: 'Roboto',Arial,sans-serif;
+    border: none;
 }
 
 .LogoContainer{
@@ -71,11 +76,12 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    margin-right: 20px
+    margin-right: 20px;
+    margin-left: -20px;
 }
 
 .LogoContainer img{
-    width: 180px
+    width: 160px
 }
 
 .LogoContainer div{
@@ -83,6 +89,11 @@
     height: 50px;
     background-color: gray;
     margin-left: 15px;
+}
+
+.LogoContainer span{
+    margin-right: 16px;
+    cursor:pointer;
 }
 
 @media screen and (max-width:850px){
@@ -125,8 +136,68 @@
     width: 100%;
     height: 60%;
     background-color: white;
-    padding-left: 20px;
     border: 1px solid #dddddd;
+}
+
+.noticias h2{
+    position: absolute;
+    z-index: 2;
+    color: white;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 30px;
+}
+
+.slide-item{
+    width: 100%;
+    max-height: 320px;
+    height: 320px;
+    max-width: 1440px;
+    object-fit: cover;
+}
+
+.sidebar{
+    padding-top:calc(80px + 20px);
+    height: 100vh;
+    background-color: #161618;
+    width: 230px;
+    color: white;
+    line-height: 40px;
+    position: fixed;
+}
+
+.open{
+    transform: translateX(0);
+}
+
+.closed{
+    transform: translate(-100%)
+}
+
+
+.sidebar .items{
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+
+
+.items p{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.items a{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
 }
 
 .info{
@@ -170,6 +241,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .optionItem p{
@@ -183,6 +255,9 @@
     height: 130px;
     background-color: var(--lightcyan);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon2{
@@ -190,6 +265,9 @@
     height: 130px;
     background-color: var(--darkRed);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon3{
@@ -197,6 +275,9 @@
     height: 130px;
     background-color: var(--neutralYellow);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon4{
@@ -204,7 +285,25 @@
     height: 130px;
     background-color: var(--darkBlue);
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+@media (max-width: 768px) {
+    /* Mudar para 2 colunas para telas de tablet */
+    .optionsContainer {
+        grid-template-columns: repeat(2, 1fr);
+        /* Aumentar o gap para separar melhor os itens */
+        gap: 30px; 
+    }
+    
+    /* Garantir que a altura se ajuste com o novo layout */
+    .options {
+        height: auto; 
+    }
+}
+
 
 .footer{
     width: 100vw;

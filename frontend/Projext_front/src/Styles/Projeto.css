@@ -1,0 +1,40 @@
+.projetoContainer{
+    padding-top: 100px;
+    cursor: default;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.projetoContainer > div{
+    background-color: white;
+    padding: 20px;
+    border: 1px solid rgba(185, 185, 185, .7);
+}
+
+.projetoHead div{
+    background-color: hsl(0, 0%, 75%);
+    width: 130px;
+    height: 2px;
+    border: 2px;
+    margin-top: 8px;
+}
+
+.projetoInfo{
+    margin-top: 20px;
+    line-height: 1.5rem;
+    text-indent: 2rem;
+}
+
+.projetoContainer .projetoBtn{
+    margin-top: 20px;
+    display: flex;
+    justify-self: center;
+    background-color: var(--darkBlue);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 0.5rem;
+    text-decoration: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
