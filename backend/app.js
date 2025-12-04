@@ -8,15 +8,14 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve HTML file on GET request
-app.get('/', (req, res) => {
-  // __dirname is the current directory of this script
-  res.sendFile(path.join(__dirname, 'index.html'), (err) => {
-    if (err) {
-      console.error('Error sending file:', err);
-      res.status(500).send('Server Error');
-    }
-  });
+// Servir os arquivos estáticos do React (dist)
+app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));
+
+// Qualquer rota não reconhecida pelo backend cai no React
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/Projext_front/index.html"));
 });
+
+
 
 export default app;
