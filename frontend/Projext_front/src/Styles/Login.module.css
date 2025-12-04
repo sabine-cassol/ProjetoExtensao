@@ -1,0 +1,167 @@
+.loginContainer{
+    padding:25px
+}
+.login{
+    display: flex;
+    position: relative;
+    height: 90vh;
+    flex-direction: row;
+    align-items: center;
+    border: 2px solid hsl(0, 0%, 80%);
+    border-radius: 15px;
+    padding: 30px;
+    background-color: white;
+    justify-content: space-around;
+    overflow: hidden;
+}
+
+.login img{
+    opacity:0.2;
+    position: absolute;
+    filter: drop-shadow(0px 0px 2px);
+    width: 400px;
+    height: 400px;
+    transform: rotate(250deg);
+    right: 80%;
+    top:55%;
+}
+
+.loginTextInfo{
+    max-width: 500px;
+}
+
+.loginTextInfo h2{
+    color: var(--darkBlue);
+    font-size: 3.6vw;
+}
+
+.loginTextInfo p{
+    margin-top: 15px;
+}
+
+.loginInputContainer{
+    border-radius: 15px;
+    padding: 50px 30px;
+    width: 29%;
+}
+
+.loginInputContainer form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%; 
+}
+
+.loginInputContainer h2{
+    color:#005387cc;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.loginInputContainer input{
+    border: 3px solid var(--lightcyan);
+    padding: 12px;
+    padding-top: 35px;
+    border-radius: 20px;
+    width: 100%;
+    font-size: 14px;
+    color: rgb(86, 86, 86);
+    box-sizing: border-box;
+}
+
+.loginInputContainer input:focus{
+    border: 2px solid rgb(224,224,224);
+    outline: none;
+    background-color: rgb(243, 243, 243);
+}
+
+.loginInputContainer input:focus ~ p{
+    color: hsl(207, 20%, 70%);
+}
+
+.loginInputContainer input::placeholder{
+    color: hsla(0, 0%, 52%,80%)
+}
+
+.loginInputContainer .inputButton{
+    width: 100%;
+    font-weight: 600;
+    color: white;
+    background-color: var(--lightcyan);
+    border:none;
+    height: 40px;
+    font-size: 18px;
+    border-radius:13px;
+    cursor: pointer;
+}
+
+.inputWrapper{
+    display: block;
+    position: relative;
+    width: 100%;
+}
+.inputWrapper p{
+    position: absolute;
+    width: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    left: 12px;
+    top:13px;
+    color: #005387cc;
+}
+
+
+.valid , .invalid{
+    position: absolute;
+    margin-left: 88%;
+    margin-top: 22px;
+}
+
+.login .backButton{
+    position: absolute;
+    display: flex;
+    gap:5px;
+    align-items: center;
+    justify-content: center;
+    right: 30px;
+    top: 30px;
+    font-size: 13px;
+    padding: 10px;
+    background-color: #dddddd;
+    color: black;
+    border-radius: 8px;
+}
+
+@media screen and (max-width:1000px){
+    .loginTextInfo{
+        display: none;
+    }
+
+    .loginInputContainer{
+        min-width: 350px;
+        width:50%;
+        padding:0
+    }
+}
+
+@media screen and (max-width: 550px) {
+    
+
+    .loginInputContainer {
+        min-width: 100%;
+        width: 90%; 
+        margin: 0 auto; 
+        padding: 20px; 
+    }
+
+    .inputWrapper {
+        width: 100%;
+    }
+    
+    .inputWrapper input {
+        width: 100%;
+        box-sizing: border-box; 
+    }
+}
+

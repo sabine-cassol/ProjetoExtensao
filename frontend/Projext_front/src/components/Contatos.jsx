@@ -1,9 +1,10 @@
+import styles from '../Styles/Contatos.module.css'
 function Contato1(){
     return (
     
-        <section className="contato">
-            <section className="contatoContainer">
-                <div className="telefones">
+        <section className={styles.contato}>
+            <section className={styles.contatoContainer}>
+                <div className={styles.telefones}>
                     <h2>Telefones</h2>
                     <p>adsdasdmoim - 123321</p>
                     <p>amkasmkmaskdm - 123</p>

@@ -3,6 +3,7 @@ import logo1 from '../assets/IMG_20251114_003344.png';
 import { Link } from "react-router-dom";
 import { useEffect , useState } from 'react';
 import { Menu, Search } from 'lucide-react'
+import styles from '../Styles/Home.module.css';
 
 
 function Header({isLogged = true, aoClick}) {
@@ -14,7 +15,6 @@ function Header({isLogged = true, aoClick}) {
                 if (window.innerWidth < 850) {
                     setLogoSrc(logo1);
                 } else {
-    
                     setLogoSrc(logo);
                 }
             }
@@ -32,8 +32,8 @@ function Header({isLogged = true, aoClick}) {
         //fim do codigo da responsividade da logo
 
     return (
-    <header className="Header">
-      <div className='LogoContainer'> 
+    <header className={styles.Header}>
+      <div className={styles.LogoContainer}> 
         
         {isLogged ? (
         <span onClick={()=>{
@@ -49,13 +49,13 @@ function Header({isLogged = true, aoClick}) {
          <img src={logoSrc} alt="" /> 
          <div></div> 
       </div>
-      <nav className='middleContent'>
-        <Link to="/">Início </Link>
-        <Link to="/Noticias"> Notícias </Link>
-        <Link to="/Projetos"> Projetos </Link>
-        <Link to="/Contato">Contato </Link>
+      <nav className={styles.middleContent}>
+        <Link className={styles.middleElement} to="/">Início </Link>
+        <Link className={styles.middleElement} to="/Noticias"> Notícias </Link>
+        <Link className={styles.middleElement} to="/Projetos"> Projetos </Link>
+        <Link className={styles.middleElement} to="/Contato">Contato </Link>
       </nav>
-      <Link to="/Login" className='btn'>
+      <Link to="/Login" className={styles.btn}>
         <p>
         Inscrever-se
         </p>

@@ -1,13 +1,13 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
 import ProjetosGrid from '../components/Projetos.jsx'
-import '../Styles/Projetos.css'
+import styles from '../Styles/Projetos.module.css'
 
 import { useState } from "react"
 
 export default function Login(){
     const [showSideBar, setShowSideBar] = useState(true);
-    const mainContentClass = showSideBar ? 'shifted' : 'main-content';
+    const mainContentClass = showSideBar ? styles.Shifted : styles.mainContent;
     return (
         <>
         <Header aoClick={()=>{

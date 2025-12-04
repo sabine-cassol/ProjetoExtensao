@@ -24,3 +24,18 @@
 .contatoContainer div p{
     font-size: 18px;
 }
+
+.mainContent {
+    padding-right : 20px;
+    margin-left: 0; 
+}
+.Shifted{
+    margin-left: 230px; 
+}
+
+@media screen and (max-width: 600px) {
+    .Shifted {
+        margin-left: 0; 
+        z-index: 999999999;
+    }
+}

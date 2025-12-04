@@ -1,7 +1,7 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
 import NewsGrid from '../components/NewsGrid'
-import '../Styles/News.css'
+import styles from '../Styles/News.module.css'
 
 
 import { useState } from "react"
@@ -9,7 +9,7 @@ import { useState } from "react"
 export default function Noticias(){
 
     const [showSideBar, setShowSideBar] = useState(true);
-    const mainContentClass = showSideBar ? 'Shifted' : 'main-content';
+    const mainContentClass = showSideBar ? styles.Shifted : styles.mainContent;
     return (
         <>
         <Header aoClick={()=>{

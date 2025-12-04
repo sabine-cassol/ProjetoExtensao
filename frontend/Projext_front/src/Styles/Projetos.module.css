@@ -1,0 +1,120 @@
+.projetosGridContainer{
+   padding-top: 120px;
+   padding-left: 20px;
+}
+
+.projetosGridContainer h2{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 30px;
+    color:var(--darkBlue);
+    text-transform: uppercase;
+}
+
+.projetos{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,250px);
+    justify-content: center;
+    gap: 20px; 
+}
+
+.mainContent {
+    padding-right : 20px;
+    margin-left: 0; 
+}
+.Shifted{
+    margin-left: 230px; 
+}
+
+.projetos > div {
+    height: 280px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+
+
+.projetosGridContainer .projetos a{
+    text-decoration: none;
+    color: var(--lightcyan);
+    padding-top: 50px;
+}
+
+.projeto{
+    max-width: 330px;
+    cursor: pointer;
+    text-overflow: ellipsis;
+}
+
+.projeto .projetoTitle{
+    font-size:1rem;
+    margin-top: 40px;
+    margin-bottom: 12px;
+}
+
+
+.projeto .projetoImage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    justify-self: center;
+    filter: drop-shadow(0px 0px 1px);
+    border-radius: 50%;
+    margin-bottom: 25px;
+    background-color: rgb(1,38,106);
+}
+
+.projetoImage img{
+    aspect-ratio: 1/1;
+    width: 130px;
+}
+
+@media screen and (max-width: 600px) {
+    .projetos{
+        grid-template-columns: repeat(auto-fit,150px)
+    }
+    .projetos > div{
+        width: 150px;
+        height: 180px;
+        font-size: 12px;
+    }
+    .projeto .projetoImage{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 0;
+    }
+    .projeto .projetoTitle{
+        font-size:11px;
+        margin-bottom: 6px;
+        margin-top: 14px;
+    }
+    .projetoImage{
+        object-fit: cover;
+    }
+    .projetoImage img{
+        width: 70%;
+
+    }
+
+    .Shifted {
+        margin-left: 0; 
+        z-index: 999999999;
+    }
+}
+
+.anchorProject{
+    color: var(--darkBlue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+}

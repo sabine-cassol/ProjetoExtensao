@@ -1,13 +1,13 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
-import '../Styles/Atividades.css'
+import styles from '../Styles/Atividades.module.css'
 
 
 import { useState } from "react"
 
 export default function Atividades(){
     const [showSideBar, setShowSideBar] = useState(true);
-    const mainContentClass = showSideBar ? 'Shifted' : 'main-content';
+    const mainContentClass = showSideBar ? styles.Shifted : styles.mainContent;
     return (
         <>
         <Header aoClick={()=>{
@@ -16,8 +16,8 @@ export default function Atividades(){
 
         <SideBar1 visivel={showSideBar}/>
         <main className={mainContentClass}>
-            <section className="atividadesContainer">
-                <section className="atividades">
+            <section className={styles.atividadesContainer}>
+                <section className={styles.atividades}>
                     <div>
                         <h2>Atividades extensionistas </h2>
                     </div>

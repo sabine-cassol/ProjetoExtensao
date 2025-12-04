@@ -1,5 +1,5 @@
 import { register } from 'swiper/element/bundle'
-import '../Styles/Home.css'
+import styles from '../Styles/Home.module.css'
 
 register();
 import 'swiper/css';
@@ -41,7 +41,7 @@ function NewsSlider() {
   }, []);
 
   return(
-        <section className='noticias'>
+        <section className={styles.noticias}>
         <h2>Notícias</h2>
         <Swiper
         slidesPerView={slidePerView}
@@ -50,7 +50,7 @@ function NewsSlider() {
         >
           {data.map((item)=>(
             <SwiperSlide key={item.id}>
-              <img src={item.image} alt="slider" className='slide-item' />
+              <img src={item.image} alt="slider" className={styles.slideItem} />
             </SwiperSlide>
           ))}
         </Swiper>

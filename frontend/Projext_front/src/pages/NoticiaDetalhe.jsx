@@ -9,7 +9,7 @@ import { Info } from 'lucide-react';
 
 const listaNoticias = [{id:1, title:"pg", slug:"pg"},
     {id:2,title:"rs", slug:"rs"},
-    {id:3,title:"sc", slug:"sc"}]
+    {id:3,title:"sc", slug:"sc"},]
 
 function NoticiaDetalhe() {
    

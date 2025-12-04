@@ -10,12 +10,26 @@
     margin-right: auto;
 }
 
-.main-content{
-    padding-right: 0;
+
+.mainContent {
+    padding-right : 0;
+    margin-left: 0; 
+}
+.Shifted{
+    margin-left: 230px; 
 }
 
 .atividades h2{
     margin-bottom: 40px;
+}
+
+@media screen and (max-width:600px){
+    .Shifted {
+        margin-left: 0; 
+    }
+    .atividades{
+        font-size:13px
+    }
 }
 
 
@@ -35,7 +49,7 @@ table {
 .atividades th, .atividades td {
     padding: 15px; 
     border-bottom: 1px solid rgba(185, 185, 185, .7);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif'
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .atividades tbody tr:hover{

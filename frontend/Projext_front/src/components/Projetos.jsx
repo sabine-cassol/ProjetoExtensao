@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import Default from '../assets/IMG_20251202_183447.png';
+import { ChevronRight } from 'lucide-react';
+import styles from '../Styles/Projetos.module.css'
 
 const listaProjetos = [{id:1, title:"InovaEdu", slug:"InovaEdu"},
     {id:2,title:"Computação para a vida", slug:"ComputaçãoParaaVida"},
@@ -10,24 +13,24 @@ export default function ProjetosGrid(){
     return (
         
 
-        <section className="projetosGridContainer">
+        <section className={styles.projetosGridContainer}>
             
                     <h2>
                         Projetos ativos
                     </h2>
 
-                <section className="projetos">
+                <section className={styles.projetos}>
                 {listaProjetos.map(projeto =>(
-                    <div key={projeto.id} className='projeto'>
-                        <div className="projetoImage"> 
-
+                    <div key={projeto.id} className={styles.projeto}>
+                        <div className={styles.projetoImage}> 
+                            <img src={Default} alt="" />
                         </div>
-                            <h3 className="projetoTitle">
+                            <h3 className={styles.projetoTitle}>
                                 {projeto.title}
                             </h3>
 
-                            <Link to={`/Projetos/${projeto.slug}`}>
-                                Ver Detalhes do Projeto
+                            <Link to={`/Projetos/${projeto.slug}`} className={styles.anchorProject}>
+                                Ver Detalhes do Projeto <ChevronRight />
                             </Link>
                     
                     </div>

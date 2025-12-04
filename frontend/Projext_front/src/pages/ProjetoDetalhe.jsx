@@ -15,7 +15,7 @@ const listaProjetos = [{id:1, title:"InovaEdu", slug:"InovaEdu",info:"O avanço 
 function ProjetoDetalhe() {
    
     const [showSideBar, setShowSideBar] = useState(true);
-    const mainContentClass = showSideBar ? 'Shifted' : 'main-content';
+    const mainContentClass = showSideBar ? 'Shifted' : 'mainContent';
     const { projetoId } = useParams();
 
    
