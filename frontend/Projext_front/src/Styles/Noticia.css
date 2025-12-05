@@ -1,0 +1,96 @@
+.noticiaContainer{
+    padding-top: 100px;
+    cursor: default;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.noticiaContainer > div{
+    background-color: white;
+    padding: 20px;
+    border: 1px solid rgba(185, 185, 185, .7);
+    margin: 0 auto; 
+    
+    /* Define o limite de largura para o container principal da notícia */
+    max-width: 900px; /* Largura externa do artigo */
+}
+
+.noticiaParagrafo{
+    max-width: 750px; 
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    color: black;
+    font-size: 1rem;
+}
+
+.noticiaHead div{
+    background-color: hsl(0, 0%, 75%);
+    width: 130px;
+    height: 2px;
+    border: 2px;
+    margin-top: 8px;
+}
+
+.noticiaHead h1{
+    text-align: center;
+}
+
+.noticiaImage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+.noticiaImage img{
+    /* Faz a imagem ocupar 100% da largura do seu container pai (os 750px) */
+     width: 100%; 
+    /* Garante que ela não ultrapasse o limite de largura do seu bloco de conteúdo */
+    max-width: 750px; 
+    height: auto;
+    object-fit: cover;
+}
+
+
+.noticiaParagrafo span, .noticiaParagrafo p{
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+.noticiaParagrafo span{
+    font-weight: 700;
+}
+.noticiaParagrafo p{
+    line-height: 1.25rem;
+    text-indent: 2rem;
+    text-align: justify;
+}
+
+
+@media screen and (max-width:500px){
+    .noticiaParagrafo p{
+        font-size:12px
+    }
+}
+
+
+
+.mainContent {
+    padding-right : 20px;
+    margin-left: 0; 
+}
+.Shifted{
+    margin-left: 230px; 
+}
+
+@media screen and (max-width: 600px) {
+
+
+    .Shifted {
+        margin-left: 0; 
+        z-index: 999999999;
+    }
+    .noticiaContainer{
+        padding-left: 15px;
+        padding-right: 0;
+    }
+}

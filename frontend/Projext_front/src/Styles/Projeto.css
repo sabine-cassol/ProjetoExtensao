@@ -19,10 +19,35 @@
     margin-top: 8px;
 }
 
-.projetoInfo{
-    margin-top: 20px;
-    line-height: 1.5rem;
+.projetoHead h1{
+    display: flex;
+    align-items: center;
+}
+.projetoParagrafo{
+    margin-top: 30px;
+}
+
+.projetoParagrafo span, .projetoParagrafo p{
+    font-size:13px;
+    font-family:'Segoe UI', Arial, sans-serif;
+    color:#626262;
+}
+
+.projetoParagrafo span{
+    font-weight: 700;
+}
+.projetoParagrafo p{
+    line-height: 1.25rem;
     text-indent: 2rem;
+    text-align: justify;
+}
+
+
+@media screen and (max-width:500px){
+
+    .projetoInfo p{
+        font-size:12px
+    }
 }
 
 .projetoContainer .projetoBtn{
@@ -53,5 +78,9 @@
     .Shifted {
         margin-left: 0; 
         z-index: 999999999;
+    }
+    .projetoContainer{
+        padding-left: 15px;
+        padding-right: 0;
     }
 }

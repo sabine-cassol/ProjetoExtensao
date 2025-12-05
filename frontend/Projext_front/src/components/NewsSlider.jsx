@@ -13,14 +13,22 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import news1 from '../assets/3d-world-news-background-loop-free-video.jpg'
 import news2 from '../assets/depositphotos_56880225-stock-photo-words-news.jpg'
 import news3 from '../assets/images.jpeg'
+import { Link } from 'react-router-dom'
 
 function NewsSlider() {
 
 
-  const data = [{id:'1',image:news1},
-                {id:'2',image:news2},
-                {id:'3',image:news3},
-              ]
+const listaNoticias = [{id:1, title:"pg", slug:"pg",
+    body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+    image:news1 },
+    {id:2,title:"rs", slug:"rs",
+        body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+        image:news2
+    },
+    {id:3,title:"sc", slug:"sc",
+        body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+        image:news3
+    },]
               
   const [slidePerView, setSlidePerView] = useState(2);
   useEffect(() => {
@@ -48,9 +56,12 @@ function NewsSlider() {
         pagination={{clickable: true}}
         navigation
         >
-          {data.map((item)=>(
+          {listaNoticias.map((item)=>(
             <SwiperSlide key={item.id}>
-              <img src={item.image} alt="slider" className={styles.slideItem} />
+
+              <Link to={`/Noticias/${item.slug}`}>
+                <img src={item.image} alt="slider" className={styles.slideItem} />
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

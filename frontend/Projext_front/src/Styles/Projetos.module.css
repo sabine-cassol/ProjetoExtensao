@@ -29,7 +29,7 @@
 }
 
 .projetos > div {
-    height: 280px;
+    height: 320px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px;
@@ -40,7 +40,7 @@
 
 .projetosGridContainer .projetos a{
     text-decoration: none;
-    color: var(--lightcyan);
+    color: #2d64fd;
     padding-top: 50px;
 }
 
@@ -48,9 +48,19 @@
     max-width: 330px;
     cursor: pointer;
     text-overflow: ellipsis;
+    height: 2000px;
+    overflow: hidden;
 }
 
-.projeto .projetoTitle{
+.projeto:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.projeto .projetoContent{
+    margin-top: 40px;
+}
+
+.projeto .projetoContent .projetoTitle{
     font-size:1rem;
     margin-top: 40px;
     margin-bottom: 12px;
@@ -78,6 +88,17 @@
     width: 130px;
 }
 
+.projeto .projetoContent p{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: center;
+    font-size: 13px;
+}
+
 @media screen and (max-width: 600px) {
     .projetos{
         grid-template-columns: repeat(auto-fit,150px)
@@ -92,10 +113,16 @@
     height: 100px;
     margin-bottom: 0;
     }
-    .projeto .projetoTitle{
+    .projeto .projetoContent{
+        margin-top: 12px;
+    }
+    .projeto .projetoContent p{
+        display: none;
+    }
+    .projeto .projetoContent .projetoTitle{
         font-size:11px;
         margin-bottom: 6px;
-        margin-top: 14px;
+        margin-top: 12px;
     }
     .projetoImage{
         object-fit: cover;
@@ -112,9 +139,13 @@
 }
 
 .anchorProject{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--darkBlue);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -50px;
+    margin-top: -42px;
 }
+

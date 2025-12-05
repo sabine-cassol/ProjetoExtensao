@@ -12,10 +12,16 @@ function Header({isLogged = true, aoClick}) {
     
         useEffect(() => {
             function handleResize() {
-                if (window.innerWidth < 850) {
-                    setLogoSrc(logo1);
-                } else {
-                    setLogoSrc(logo);
+                if (window.innerWidth < 550) {
+                    setLogoSrc(logo); // <-- Define logo padrão/normal para mobile
+                } 
+        // 2. Condição INTERMEDIÁRIA: Tablet/Small Desktop (entre 550px e 850px)
+                else if (window.innerWidth < 850) {
+                    setLogoSrc(logo1); // <-- Define logo1 (logo menor/diferente)
+                } 
+        // 3. Condição PADRÃO: Desktop (> 850px)
+                else if (window.innerHeight> 850){
+                    setLogoSrc(logo); // <-- Define logo padrão/normal para desktop
                 }
             }
     

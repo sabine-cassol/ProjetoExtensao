@@ -183,8 +183,14 @@ a{
     cursor: pointer;
     font-size: 10px;
     transition: color ease 5s;
+    }
 }
 
+@media screen and (max-width:550px){
+
+    .LogoContainer img{
+        width: 160px;
+    }
 
 }
 .principal{
@@ -252,9 +258,7 @@ a{
     z-index: 1 !important;
 }
 :global(.swiper) {
-    /* Mude para a cor que você deseja */
-    --swiper-navigation-color: white; /* Exemplo: Usando seu --darkRed */
-    
+    --swiper-navigation-color: white; 
 }
 
 :global(.swiper-button-next),

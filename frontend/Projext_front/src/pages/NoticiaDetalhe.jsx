@@ -3,13 +3,24 @@ import SideBar1 from '../components/SideBar1'
 import { useParams } from 'react-router-dom';
 import { useState } from "react"
 import '../Styles/Noticia.css'
-import { Info } from 'lucide-react';
+import news1 from '../assets/3d-world-news-background-loop-free-video.jpg'
+import news2 from '../assets/depositphotos_56880225-stock-photo-words-news.jpg'
+import news3 from '../assets/images.jpeg'
 
 
 
-const listaNoticias = [{id:1, title:"pg", slug:"pg"},
-    {id:2,title:"rs", slug:"rs"},
-    {id:3,title:"sc", slug:"sc"},]
+
+const listaNoticias = [{id:1, title:"pg", slug:"pg",
+    body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+    image:news1 },
+    {id:2,title:"rs", slug:"rs",
+        body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+        image:news2
+    },
+    {id:3,title:"sc", slug:"sc",
+        body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
+        image:news3
+    },]
 
 function NoticiaDetalhe() {
    
@@ -32,22 +43,21 @@ function NoticiaDetalhe() {
         
                 <SideBar1 visivel={showSideBar}/>
                 <main className={mainContentClass}>
-                                       <section className="projetoContainer">
+                    <section className="noticiaContainer">
                         <div>
 
-                        <section className='projetoHead'>
+                        <section className='noticiaHead'>
                             <h1>{noticia.title}</h1>
-                            <div className='hr'></div>
                         </section>
 
-                        <section className="projetoInfo">
-                            <p>{noticia.info}</p>
+                        <section className="noticiaImage">
+                            <img src={noticia.image} alt="" />
                         </section>
 
-                        <section className='btn'>
-                        
-                        <button className='projetoBtn'>Inscrever-se</button>
+                        <section className="noticiaParagrafo">
+                            <p>{noticia.body}</p>
                         </section>
+
                         </div>
                     </section>
                 </main>
