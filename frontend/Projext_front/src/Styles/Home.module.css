@@ -99,7 +99,6 @@ a{
 .Header .btn:hover{
     background-color: hsl(186, 100%, 65%);
 }
-
 .Header .btn p{
     text-decoration: none !important;
     color: white;
@@ -107,6 +106,69 @@ a{
     border: none;
 }
 
+.Header .conta{
+    position: relative;
+}
+.Header .conta .contaDisplay{
+    background-color: #005387;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    line-height:20px;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 37px;
+    color: #fff;
+    font-weight:300;
+    font-family:'Segoe UI',Arial, sans-serif;
+    cursor: pointer;
+    
+}
+
+.Header .conta .infoConta{
+    position: absolute;
+    background-color: #fff;
+    padding: 25px 30px;
+    min-width: 250px;
+    height: fit-content;
+    transform: translateX(-75%);
+    box-shadow: 0px 0px 10px rgba(98, 98, 98, 0.2);
+    border-radius: 2px;
+}
+
+.infoConta .nomeConta{
+    font-size: 19px;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 12px;
+}
+
+.infoConta span{
+    font-family: 'Segoe UI', Arial,sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.infoConta p{
+    color:#2c2c2c;
+    font-family:'Segoe UI', Arial , sans-serif;
+    font-weight: 300;
+}
+
+.Header .conta .logout button{
+    outline: none;
+    background-color: none;
+    background-color: #DC3545;
+    width: 100%;
+    border: none;
+    color: white;
+    padding: 5px 2px;
+    font-weight: 600;
+    margin-top: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
 .LogoContainer{
     display: flex;
     align-items: center;
@@ -267,7 +329,6 @@ a{
     width: 50%;
     padding: 5px;
     border-radius: 2px;
-    color: #f71e1e;
 }
 
 

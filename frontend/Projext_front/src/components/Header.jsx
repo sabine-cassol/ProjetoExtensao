@@ -1,14 +1,49 @@
 import logo from '../assets/1763073341698.png';
 import logo1 from '../assets/IMG_20251114_003344.png';
-import { Link } from "react-router-dom";
-import { useEffect , useState } from 'react';
-import { Menu, Search } from 'lucide-react'
+import { Link,useNavigate } from "react-router-dom";
+import { useEffect,useRef,useState } from 'react';
+import { Menu, Search } from 'lucide-react';
+import { useUser } from "../context/UserContext.jsx"
 import styles from '../Styles/Home.module.css';
 
 
 function Header({isLogged = true, aoClick}) {
     //responsividade da logo
         const [logoSrc, setLogoSrc] = useState(logo);
+        const { user, role, logout } = useUser();
+
+        const [isInfoVisible, setIsInfoVisible] = useState(false);
+        const contaRef = useRef(null);
+        const navigate = useNavigate();
+
+        const handleLogout = () => {
+        logout(); 
+        navigate('/'); 
+        };
+
+
+        useEffect(() => {
+        // Função que verifica se o clique foi fora do nosso elemento
+        function handleClickOutside(event) {
+            // Se o elemento existe E o clique NÃO ESTÁ dentro do elemento referenciado
+            if (contaRef.current && !contaRef.current.contains(event.target)) {
+                setIsInfoVisible(false); // Fecha o menu
+            }
+        }
+        
+        // Adiciona o listener de evento ao documento (corpo da página)
+        document.addEventListener("mousedown", handleClickOutside);
+        
+        // Função de limpeza (cleanup)
+        // Isso remove o listener quando o componente é desmontado ou o efeito é reexecutado
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [contaRef]);
+
+        const toggleInfo = () => {
+            setIsInfoVisible(!isInfoVisible);
+        };
     
         useEffect(() => {
             function handleResize() {
@@ -61,11 +96,38 @@ function Header({isLogged = true, aoClick}) {
         <Link className={styles.middleElement} to="/Projetos"> Projetos </Link>
         <Link className={styles.middleElement} to="/Contato">Contato </Link>
       </nav>
-      <Link to="/Login" className={styles.btn}>
-        <p>
-        Inscrever-se
-        </p>
-      </Link>
+
+      {role === 'guest' && (
+          <Link to="/Login" className={styles.btn}>
+                <p>
+                Inscrever-se
+                </p>
+          </Link>
+      )}
+
+        {role === 'aluno' || role === 'professor' ? (
+            <>
+                <div className={styles.conta} ref={contaRef}>
+                    <div className={styles.contaDisplay} onClick={toggleInfo}>
+                        <p>{user.name.charAt(0).toUpperCase()}</p>
+                    </div>
+                    {isInfoVisible && (
+                    <div className={styles.infoConta}>
+                        <h5 className={styles.nomeConta}>{user.name}</h5>
+                        <span>RA</span>
+                        <p className={styles.userConta}>{user.user}</p>
+                        <div className={styles.logout}>
+                            <button onClick={handleLogout}>LogOut</button>
+                        </div>
+                    </div>
+
+                    )}
+                </div>
+                
+            </>
+        ) : null}
+
+      
     </header>
     )
 }

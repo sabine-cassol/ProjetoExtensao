@@ -5,9 +5,11 @@ import Options from '../components/Options.jsx'
 import styles from '../Styles/Home.module.css';
 
 import { useState } from "react";
-
+import { useUser } from "../context/UserContext.jsx"
 
 function Home() {
+
+  const { user, role, logout } = useUser();
 
   const [showSideBar, setShowSideBar] = useState(true);
   const mainContentClass = showSideBar ? styles.empurrado : styles.principal;
@@ -35,6 +37,16 @@ function Home() {
   
       </section>
 
+       {role === 'professor' && (
+                        <p style={{color: 'blue'}}>👨‍🏫 Você tem permissões de Professor. Acesse a gestão de notas e turmas.</p>
+                    )}
+       {role === 'aluno' && (
+                        <p style={{color: 'green'}}>📚 Você tem permissões de Aluno. Consulte seus materiais e desempenho.</p>
+                    )}
+       {role === 'guest' && (
+          <p style={{color: 'black'}}>📚 Você tem permissões de visitatne. Consulte seus materiais e desempenho.</p>
+        )}      
+        
 
       <Options />
 

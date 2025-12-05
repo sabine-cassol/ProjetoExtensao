@@ -65,4 +65,4 @@ function NoticiaDetalhe() {
     );
 }
 
-export default NoticiaDetalhe;
+export default NoticiaDetalhe
