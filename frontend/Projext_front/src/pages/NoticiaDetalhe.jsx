@@ -1,8 +1,9 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
 import { useParams } from 'react-router-dom';
-import { useState } from "react"
-import '../Styles/Noticia.css'
+import { useState,useEffect } from "react";
+import { useUser } from '../context/UserContext';
+import '../Styles/Noticia.css';
 import news1 from '../assets/3d-world-news-background-loop-free-video.jpg'
 import news2 from '../assets/depositphotos_56880225-stock-photo-words-news.jpg'
 import news3 from '../assets/images.jpeg'
@@ -26,8 +27,14 @@ function NoticiaDetalhe() {
    
     const [showSideBar, setShowSideBar] = useState(true);
     const mainContentClass = showSideBar ? 'Shifted' : 'main-content';
-    const { noticiaId } = useParams();
+    const { role } = useUser(); 
 
+    useEffect(() => {
+        if (role === 'guest' && showSideBar) {
+            setShowSideBar(false);
+        }
+    }, [role]);
+    const { noticiaId } = useParams();
    
     const noticia = listaNoticias.find(p => p.slug === noticiaId); 
 
@@ -38,8 +45,8 @@ function NoticiaDetalhe() {
     return (
         <>
                 <Header aoClick={()=>{
-                    setShowSideBar(!showSideBar)
-                }} />
+                    setShowSideBar(!showSideBar)}}
+                />
         
                 <SideBar1 visivel={showSideBar}/>
                 <main className={mainContentClass}>

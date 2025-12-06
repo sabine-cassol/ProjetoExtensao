@@ -15,6 +15,7 @@ import Error from './pages/Error.jsx'
 import Contato from './pages/Contatos.jsx'
 import Atividades from './pages/Atividades.jsx'
 import Relatorios from './pages/Relatorios.jsx'
+import Presenca from './pages/RegistrarPresenca.jsx'
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
     {
       path: "/Projetos/:projetoId",
       element: <ProjetoDetalhe/> 
+    },
+    {
+      path: "Projetos/:projetoId/presenca", 
+      element: <Presenca />
     },
     {
       path:"/Noticias",

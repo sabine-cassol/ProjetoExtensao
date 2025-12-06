@@ -6,12 +6,14 @@ import { Menu, Search } from 'lucide-react';
 import { useUser } from "../context/UserContext.jsx"
 import styles from '../Styles/Home.module.css';
 
+const tamanhoPequeno = 550;
 
-function Header({isLogged = true, aoClick}) {
-    //responsividade da logo
+function Header({ aoClick }) {
+   
         const [logoSrc, setLogoSrc] = useState(logo);
         const { user, role, logout } = useUser();
 
+        const [isMobile, setIsMobile] = useState(window.innerWidth < tamanhoPequeno);
         const [isInfoVisible, setIsInfoVisible] = useState(false);
         const contaRef = useRef(null);
         const navigate = useNavigate();
@@ -23,19 +25,14 @@ function Header({isLogged = true, aoClick}) {
 
 
         useEffect(() => {
-        // Função que verifica se o clique foi fora do nosso elemento
+
         function handleClickOutside(event) {
-            // Se o elemento existe E o clique NÃO ESTÁ dentro do elemento referenciado
+ 
             if (contaRef.current && !contaRef.current.contains(event.target)) {
-                setIsInfoVisible(false); // Fecha o menu
+                setIsInfoVisible(false); 
             }
         }
-        
-        // Adiciona o listener de evento ao documento (corpo da página)
         document.addEventListener("mousedown", handleClickOutside);
-        
-        // Função de limpeza (cleanup)
-        // Isso remove o listener quando o componente é desmontado ou o efeito é reexecutado
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -48,15 +45,15 @@ function Header({isLogged = true, aoClick}) {
         useEffect(() => {
             function handleResize() {
                 if (window.innerWidth < 550) {
-                    setLogoSrc(logo); // <-- Define logo padrão/normal para mobile
+                    setLogoSrc(logo);
                 } 
-        // 2. Condição INTERMEDIÁRIA: Tablet/Small Desktop (entre 550px e 850px)
+
                 else if (window.innerWidth < 850) {
-                    setLogoSrc(logo1); // <-- Define logo1 (logo menor/diferente)
+                    setLogoSrc(logo1); 
                 } 
-        // 3. Condição PADRÃO: Desktop (> 850px)
+
                 else if (window.innerHeight> 850){
-                    setLogoSrc(logo); // <-- Define logo padrão/normal para desktop
+                    setLogoSrc(logo);
                 }
             }
     
@@ -69,24 +66,30 @@ function Header({isLogged = true, aoClick}) {
             };
             
         }, []);
+
+        useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < tamanhoPequeno);
+        };
+
+        window.addEventListener('resize', handleResize);
+        
+        return () => window.removeEventListener('resize', handleResize);
+    }, [role]);
+
+    const showMenuIcon = ['aluno', 'professor'].includes(role) || (role === 'guest' && isMobile);
+        
     
-        //fim do codigo da responsividade da logo
+    
 
     return (
     <header className={styles.Header}>
-      <div className={styles.LogoContainer}> 
-        
-        {isLogged ? (
-        <span onClick={()=>{
-            
-        }}>
-            <Menu onClick={aoClick} />    
-        </span>
-        ) : (
-        <span>
-            <Search />    
-        </span>
-        )}
+      <div className={styles.LogoContainer}>
+        {showMenuIcon ? (
+            <span onClick={aoClick}> 
+                <Menu />
+            </span>
+        ) : ( null )}
          <img src={logoSrc} alt="" /> 
          <div></div> 
       </div>
@@ -117,7 +120,7 @@ function Header({isLogged = true, aoClick}) {
                         <span>RA</span>
                         <p className={styles.userConta}>{user.user}</p>
                         <div className={styles.logout}>
-                            <button onClick={handleLogout}>LogOut</button>
+                            <button onClick={handleLogout}>Sair</button>
                         </div>
                     </div>
 

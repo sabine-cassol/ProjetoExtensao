@@ -1,13 +1,9 @@
 import Header from  '../components/Header'
 import SideBar1 from '../components/SideBar1'
-import { Link,useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import { useState,useEffect } from "react";
 import { useUser } from '../context/UserContext';
 import '../Styles/Projeto.css'
-import { Info } from 'lucide-react';
-
-
-
 
 const listaProjetos = [{id:1, title:"InovaEdu", slug:"InovaEdu",
     justificativa:"O avanço da Inteligência Artificial e da tecnologia na educação apresenta oportunidades significativas para melhorar o aprendizado, mas muitos estudantes ainda não sabem como utilizar essas ferramentas de forma eficiente e segura. Além disso, a falta de conhecimento sobre segurança da informação expõe jovens a riscos online, como golpes e vazamento de dados. Este projeto busca preencher essa lacuna, promovendo a inclusão digital e capacitando os alunos para utilizar a tecnologia de maneira responsável e estratégica em seus estudos. Ao realizar palestras presenciais e compartilhar conteúdos educativos online, amplia-se o impacto da iniciativa, permitindo que um número maior de estudantes tenha acesso a informações essenciais para seu desenvolvimento acadêmico e digital. Para os acadêmicos que participam do projeto, a experiência contribui para sua formação profissional e social, desenvolvendo competências em docência, comunicação e uso de tecnologia educacional. Este projeto está alinhado com os Objetivos de Desenvolvimento Sustentável (ODS), especialmente com: ODS 4 – Educação de Qualidade: ao proporcionar acesso ao conhecimento sobre IA e tecnologia para estudantes. ODS 9 – Indústria, Inovação e Infraestrutura: ao incentivar o uso de tecnologia e inovação no aprendizado. ODS 10 – Redução das Desigualdades: ao promover inclusão digital para estudantes de diferentes contextos sociais. Dessa forma, o InovaEdu se torna um meio de democratização do acesso à tecnologia educacional e segurança digital, preparando os alunos para os desafios do mundo conectado. O projeto \"InovaEdu: Potencializando Estudos com IA e Tecnologia\" busca capacitar estudantes do Ensino Fundamental II e Ensino Médio no uso de ferramentas de Inteligência Artificial para melhorar seu desempenho acadêmico, além de fornecer orientações sobre segurança da informação e informática básica. A iniciativa também envolve a produção de conteúdos educativos para redes sociais, como Instagram e YouTube, promovendo a inclusão digital e o uso consciente da tecnologia. Acadêmicos dos cursos de Engenharia de Software e Análise e Desenvolvimento de Sistemas serão os responsáveis por ministrar palestras, desenvolver materiais didáticos e criar conteúdos multimídia. O projeto utilizará a infraestrutura da universidade, incluindo estúdios de gravação, laboratórios de informática e auditórios, garantindo uma experiência prática e enriquecedora para os participantes.",
@@ -24,7 +20,7 @@ const listaProjetos = [{id:1, title:"InovaEdu", slug:"InovaEdu",
     {id:3,title:"Projeto", slug:"projeto",info:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis perspiciatis quo sed omnis"}
 ]
 
-function ProjetoDetalhe() {
+function Presenca() {
    
     const [showSideBar, setShowSideBar] = useState(true);
     const mainContentClass = showSideBar ? 'Shifted' : 'mainContent';
@@ -35,8 +31,8 @@ function ProjetoDetalhe() {
             if (role === 'guest' && showSideBar) {
                 setShowSideBar(false);
             }
-        }, [role]);    
-
+        }, [role]);  
+        
     const projeto = listaProjetos.find(p => p.slug === projetoId); 
 
     if (!projeto) {
@@ -51,65 +47,32 @@ function ProjetoDetalhe() {
         
                 <SideBar1 visivel={showSideBar}/>
                 <main className={mainContentClass}>
+ 
                     <section className="projetoContainer">
                         <div>
-
                         <section className='projetoHead'>
                             <h1> {projeto.title}</h1>
                             <div className='hr'></div>
                         </section>
 
-                        {role === 'aluno'? (
+                        
                             <section className="projetoParagrafo">
                                 <span>Status</span>
                                 <p>Inscrito/Não inscrito</p>
                             </section>
-                        ) : null}
 
-                        {projeto.pretensao && projeto.pretensao.length > 0 ? (
-                        <section className="projetoInfo projetoParagrafo">
-                            <span>Pretensão da atividade</span>
-                            <p>{projeto.pretensao}</p>
-                        </section>) : null}
-
-                        {projeto.requisitos && projeto.requisitos.length > 0 ? (
-                        <section className="projetoRequisitos projetoParagrafo">
-                            <span>Requisitios Técnicos</span>
-                            <p>{projeto.requisitos}</p>
-                        </section>):null}
-
-                        {projeto.justificativa && projeto.justificativa.length > 0 ? (
-                        <section className="projetoJustificativa projetoParagrafo">
-                            <span>Justificativa de Relevância</span>
-                            <p>{projeto.justificativa}</p>
-                        </section>): null}
-
-                        {projeto.detalhes && projeto.detalhes.length > 0 ? (
-                        <section className="projetoDetalhe projetoParagrafo">
-                            <span>Detalhes da Atividade</span>
-                            <p>{projeto.detalhes}</p>
-                        </section>
-                        ) : null }
-
-                        {role === 'guest' ? (
-                            <section className='btn'>
-                                <button className='projetoBtn'> Quero participar </button>
+                            <section className="projetoParagrafo">
+                                <span>
+                                    Registrar presença
+                                </span>
+                                <p>para registrar sua presença no projeto voce deve Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta mollitia culpa quam modi quia, atque sint nostrum! Provident ad neque delectus, eveniet dolore sit quasi, aliquid impedit itaque sapiente consectetur.</p>
                             </section>
-                        ) : null}
 
-                        {role === 'aluno' ? (
-                            <section className='btn'>
-                                <Link to={'Presenca'}>
-                                    <button className='projetoBtn'> Registrar presença </button>
-                                </Link>
-                            </section>
-                        ): null}
                         </div>
                     </section>
-
                 </main>
         </>
     );
 }
 
-export default ProjetoDetalhe;
+export default Presenca;
