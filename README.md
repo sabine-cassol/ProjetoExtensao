@@ -40,6 +40,7 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 ## Requisitos
 
 | ID |	Requisito |	Tipo | Prioridade | Usuário |
+| --|----------|-----|-----------|--------| 
 | RF01 | Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno |
 | RF02 | CRUD de atividades de extensão |	Funcional	| Alta | Professor |
 | RF03 | Visualização e inscrição em projetos |	Funcional |	Alta | Visitante, Aluno |
