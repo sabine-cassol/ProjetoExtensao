@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sequelize } from "./models/index.js";
 
 const app = express();
 const PORT = 3306;
@@ -15,9 +16,6 @@ app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/Projext_front/index.html"));
 });
-
-
-import { sequelize } from "./models/index.js";
 
 sequelize.sync()
   .then(() => {

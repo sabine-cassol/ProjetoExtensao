@@ -2,6 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/dataBase.js";
 
 
+
 export default (sequelize) => {
     class Presenca extends Model { }
 
@@ -24,7 +25,7 @@ export default (sequelize) => {
         }
     }, {
         sequelize,
-        modelName: "Presenca"
+        modelName: "Presencas"
     });
 
     return Presenca;

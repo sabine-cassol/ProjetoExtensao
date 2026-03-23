@@ -1,12 +1,12 @@
 import { sequelize } from "../config/dataBase.js";
-
+import bcrypt from "bcrypt";
 import { Model, DataTypes } from "sequelize";
 
 
 
 export default (sequelize) => {
 
-    class Aluno extends Model { }
+    class Aluno extends Model { };
     
     Aluno.init({
         nome: {
@@ -42,7 +42,12 @@ export default (sequelize) => {
         }
     }, {
         sequelize,
-        modelName: "Aluno"
+        modelName: "Alunos",
+        hooks: {
+            beforeCreate: async (Aluno)  => {
+                Aluno.senha = await bcrypt.hash(Aluno.senha, 10);
+            }
+        }
     });
     
     return Aluno;
