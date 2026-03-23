@@ -54,6 +54,85 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 | RNF02 |	Senhas armazenadas com hash bcrypt	| Não funcional |	Alta | Sistema |
 | RNF03 |	API REST com Node.js e banco de dados MySQL	| Não funcional |	Alta | Sistema |
 
+---
+
+## Roadmap de desenvolvimento
+
+### Fundação
+
+- [x] Model — Aluno
+- [x] Model — Professor
+- [ ] Model — Atividade
+- [ ] Model — Presença
+- [ ] Model — Projeto
+
+### Autenticação
+
+- [ ] Repository, Service e Controller de Professor
+- [ ] Repository, Service e Controller de Aluno
+- [ ] Rota de cadastro e login (Professor e Aluno)
+- [ ] Middleware JWT para proteger rotas
+- [ ] Middleware de autorização por tipo de usuário (professor vs aluno)
+
+### Projetos
+
+- [ ] Repository, Service e Controller de Projeto
+- [ ] Rota pública para visitantes visualizarem projetos
+- [ ] Rota protegida para professor criar, editar e deletar projetos
+
+### Atividades
+
+- [ ] Repository, Service e Controller de Atividade
+- [ ] Atividade sempre vinculada a um `projetoId`
+- [ ] Listagem de atividades por projeto
+
+### Inscrições
+
+- [ ] Rota para aluno se inscrever em um projeto
+- [ ] Rota para professor visualizar alunos inscritos
+- [ ] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
+
+### Presença
+
+- [ ] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
+- [ ] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
+- [ ] Validação: não permitir check-in duplo na mesma atividade
+- [ ] Validação: não permitir check-out sem check-in aberto
+
+### Controle de horas
+
+- [ ] Calcular horas ao fazer check-out
+- [ ] Atualizar `horasExtensao` no model Aluno
+- [ ] Rota para aluno consultar histórico de horas por projeto
+
+### Notícias
+
+- [ ] Repository, Service e Controller de Notícia
+- [ ] Rota pública para leitura
+- [ ] Rota protegida para professor criar e editar notícias
+
+### Relatórios
+
+- [ ] Relatório de presenças por atividade
+- [ ] Ficha de frequência por aluno com total de horas
+- [ ] Exportação em PDF
+
+### Upload de fotos
+
+- [ ] Integração com serviço externo (S3 ou Cloudinary)
+- [ ] Rota de upload vinculada a um projeto ou atividade
+
+---
+
+## Tipos de usuários
+
+| Tipo | Permissões |
+|---|---|
+| Visitante | Visualizar projetos e atividades |
+| Aluno | Inscrição em projetos, check-in/check-out, histórico de horas |
+| Professor | CRUD de projetos e atividades, relatórios, notícias |
+
+
 
 ## Integrantes
 
