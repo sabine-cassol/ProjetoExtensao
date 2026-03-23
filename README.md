@@ -39,19 +39,19 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 ## Requisitos
 
-|ID |	Requisito |	Tipo | Prioridade | Usuário |
-|RF01| Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno|
-|RF02|CRUD de atividades de extensão|	Funcional	|Alta	|Professor|
-|RF03|Visualização e inscrição em projetos |	Funcional|	Alta| Visitante, Aluno |
-|RF04|Sistema de presença via check-in/check-out|	Funcional |	Alta| Aluno|
-|RF05|Controle e acompanhamento de horas por atividade|	Funcional|	Alta| Aluno, Professor|
-|RF06|	CRUD de notícias	|Funcional|	Média	|Professor|
-|RF07|	Geração de relatórios e ficha de frequência|	Funcional|	Média	|Professor|
-|RF08|	Assinatura online de ficha de frequência	|Funcional	|Média	|Professor|
-|RF09|	Upload de fotos das atividades	|Funcional	|Baixa	|Professor, Aluno|
-|RNF01|	Autenticação via JWT com proteção de rotas|	Não funcional|	Alta | Sistema
-|RNF02|	Senhas armazenadas com hash bcrypt	|Não funcional|	Alta|Sistema|
-|RNF03|	API REST com Node.js e banco de dados MySQL	|Não funcional|	Alta |Sistema
+| ID |	Requisito |	Tipo | Prioridade | Usuário |
+| RF01| Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno|
+| RF02|CRUD de atividades de extensão|	Funcional	|Alta	|Professor|
+| RF03|Visualização e inscrição em projetos |	Funcional|	Alta| Visitante, Aluno |
+| RF04|Sistema de presença via check-in/check-out|	Funcional |	Alta| Aluno|
+| RF05|Controle e acompanhamento de horas por atividade|	Funcional|	Alta| Aluno, Professor|
+| RF06|	CRUD de notícias	|Funcional|	Média	|Professor|
+| RF07|	Geração de relatórios e ficha de frequência|	Funcional|	Média	|Professor|
+| RF08|	Assinatura online de ficha de frequência	|Funcional	|Média	|Professor|
+| RF09|	Upload de fotos das atividades	|Funcional	|Baixa	|Professor, Aluno|
+| RNF01|	Autenticação via JWT com proteção de rotas|	Não funcional|	Alta | Sistema
+| RNF02|	Senhas armazenadas com hash bcrypt	|Não funcional|	Alta|Sistema|
+| RNF03|	API REST com Node.js e banco de dados MySQL	|Não funcional|	Alta |Sistema
 
 
 ## Integrantes
