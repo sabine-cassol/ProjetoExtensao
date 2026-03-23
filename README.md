@@ -1,4 +1,4 @@
-# Descrição Resumida do Sistema
+<img width="1440" height="1134" alt="image" src="https://github.com/user-attachments/assets/3f6dad07-7e63-4bb8-8eb4-302f3465438e" /># Descrição Resumida do Sistema
 O Sistema tem como objetivo facilitar o gerenciamento e a divulgação das atividades de extensão universitárias e suas dependências como controle de horas.  
 A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, alunos registrem presença e acompanhem suas horas, e professores administrem atividades, gerem relatórios e façam o upload de fotos dos eventos e de notícias.
 
@@ -36,6 +36,13 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 * FrontEnd -> React.js
 * BackEnd -> Node.js
 * Banco de dados -> MySQL
+
+## Requisitos
+
+<img width="1440" height="1134" alt="image" src="https://github.com/user-attachments/assets/03312880-f9de-4a11-93ca-75c57150348d" />
+
+
+
 
 ## Integrantes
 
