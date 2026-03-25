@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config(); 
 
+
 const sequelize =  new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -19,4 +20,4 @@ sequelize.authenticate().then((function() {
     console.log("Banco de dados não conectado =>" + erro);
 }); 
 
-export { Sequelize, sequelize };
+export { sequelize };
