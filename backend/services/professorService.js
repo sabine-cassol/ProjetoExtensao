@@ -1,11 +1,10 @@
-import { Professor } from "../models/index.js";
-import professor from "../models/professor.js";
-import professorRepository from "../repositories/professorRepository.js";
+
+import jwt from "jsonwebtoken";
 
 /**
  * onde fica a lógica de négocio do professor, tirando a responsabilidade do controller
  */
-export default (Professor) => {
+export default (professorRepository) => {
     return {
         /**
          * Cadastro de professor. CREATE - rota POST
@@ -16,18 +15,18 @@ export default (Professor) => {
          * @param {*} dados da req HTTP.
          * @returns Professor com os dados persistidos no banco.
          */
-        async cadastrar(dados) {
+        async cadastrarProfessor(dados) {
             const emailJaExiste = await professorRepository.buscarPorEmail(dados.email);
 
             if (emailJaExiste) {
                 throw new Error("Email já cadastrado!");
             }
 
-            return professorRepository.criar(dados);
+            return professorRepository.criarProfessor(dados);
         },
 
 
-        async VerificarLogin(email, senha) {
+        async verificarLogin(email, senha) {
             const professor = await professorRepository.buscarPorEmail(email);
             if (!professor) {
                 throw new Error("Credenciais inválidas");
@@ -38,7 +37,13 @@ export default (Professor) => {
                 throw new Error("Credenciais inválidas");
             }
 
-            return professor;
+            const token = jwt.sign(
+                {id: professor.id, tipo: "professor"},
+                process.env.JWT_SECRET,
+                {expiresIn: "8h"}
+            );
+
+            return { professor, token };
 
         },
 

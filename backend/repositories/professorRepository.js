@@ -1,4 +1,4 @@
-import professor from "../models/professor";
+import professor from "../models/professor.js";
 
 export default (Professor) => {
     return {
