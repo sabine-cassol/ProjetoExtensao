@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Default from '../assets/IMG_20251202_183447.png';
+import Default from '../assets/Extension.svg';
 import { ChevronRight } from 'lucide-react';
 import styles from '../Styles/Projetos.module.css'
 

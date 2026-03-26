@@ -57,12 +57,12 @@ function NoticiaDetalhe() {
                             <h1>{noticia.title}</h1>
                         </section>
 
-                        <section className="noticiaImage">
-                            <img src={noticia.image} alt="" />
-                        </section>
 
                         <section className="noticiaParagrafo">
                             <p>{noticia.body}</p>
+                        </section>
+                        <section className="noticiaImage">
+                            <img src={noticia.image} alt="" />
                         </section>
 
                         </div>

@@ -1,6 +1,6 @@
 import styles from '../Styles/Login.module.css';
 import { useUser } from "../context/UserContext.jsx"
-import Img from '../assets/IMG_20251202_183447.png';
+import Img from '../assets/Extension.svg';
 import { useState } from 'react';
 import { Link,useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
