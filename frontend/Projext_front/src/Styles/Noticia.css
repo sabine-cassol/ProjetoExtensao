@@ -7,21 +7,17 @@
 
 .noticiaContainer > div{
     background-color: white;
-    padding: 20px;
+    padding: 20px 40px 20px 40px;
     border: 1px solid rgba(185, 185, 185, .7);
-    margin: 0 auto; 
-    
-    /* Define o limite de largura para o container principal da notícia */
-    max-width: 900px; /* Largura externa do artigo */
+    margin: 0 auto;   
 }
 
 .noticiaParagrafo{
-    max-width: 750px; 
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px;
+    max-width: auto; 
+    margin-top: 2rem;
     color: black;
     font-size: 1rem;
+    background-color: white;
 }
 
 .noticiaHead div{
@@ -32,21 +28,21 @@
     margin-top: 8px;
 }
 
-.noticiaHead h1{
-    text-align: center;
+.noticiaHead{
+    color:#20659f;
+    font-size: 1.7rem;
 }
 
 .noticiaImage{
+    margin-top: 30px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 30px;
 }
 .noticiaImage img{
     /* Faz a imagem ocupar 100% da largura do seu container pai (os 750px) */
      width: 100%; 
     /* Garante que ela não ultrapasse o limite de largura do seu bloco de conteúdo */
-    max-width: 750px; 
+    max-width: 550px; 
     height: auto;
     object-fit: cover;
 }
