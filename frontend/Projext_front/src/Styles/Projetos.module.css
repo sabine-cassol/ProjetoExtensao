@@ -1,23 +1,25 @@
 .projetosGridContainer{
    padding-top: 120px;
    padding-left: 20px;
+   max-width: 1200px;
+   margin: 0 auto;
 }
 
 .projetosGridContainer h2{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    font-size: 30px;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2rem;
     color:var(--darkBlue);
     text-transform: uppercase;
+    
+    position: relative;
 }
 
 .projetos{
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit,250px);
-    justify-content: center;
-    gap: 20px; 
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 30px; 
+    width: 100%;
 }
 
 .mainContent {
@@ -28,13 +30,7 @@
     margin-left: 230px; 
 }
 
-.projetos > div {
-    height: 320px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-}
+
 
 
 
@@ -45,11 +41,28 @@
 }
 
 .projeto{
-    max-width: 330px;
-    cursor: pointer;
-    text-overflow: ellipsis;
-    height: 2000px;
-    overflow: hidden;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: auto;
+    text-align: center;
+    text-decoration: none; 
+    color: inherit;
+}
+
+.projetoTitle, 
+.projeto p {
+    color: black; 
+    text-decoration: none;
+}
+
+.projeto:hover .projetoTitle {
+    color: black; 
 }
 
 .projeto:hover{
@@ -57,87 +70,62 @@
 }
 
 .projeto .projetoContent{
-    margin-top: 40px;
+    flex-grow: 1;
+    margin-bottom:20px;
 }
 
 .projeto .projetoContent .projetoTitle{
-    font-size:1rem;
-    margin-top: 40px;
+    font-size:1.25rem;
+    font-weight: 700;
     margin-bottom: 12px;
 }
 
 
 .projeto .projetoImage{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(1,38,106);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 150px;
-    height: 150px;
-    margin: auto;
-    justify-self: center;
+    margin-bottom: 20px;
     filter: drop-shadow(0px 0px 1px);
-    border-radius: 50%;
-    margin-bottom: 25px;
-    background-color: rgb(1,38,106);
 }
 
 .projetoImage img{
-    aspect-ratio: 1/1;
-    width: 130px;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 .projeto .projetoContent p{
+    font-size: 0.95rem;
     display: -webkit-box;
+    line-height: 1.6;
     -webkit-line-clamp: 3;
     line-clamp: 3;
-
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-align: center;
-    font-size: 13px;
 }
 
-@media screen and (max-width: 600px) {
-    .projetos{
-        grid-template-columns: repeat(auto-fit,150px)
-    }
-    .projetos > div{
-        width: 150px;
-        height: 180px;
-        font-size: 12px;
-    }
-    .projeto .projetoImage{
-    width: 100px;
-    height: 100px;
-    margin-bottom: 0;
-    }
-    .projeto .projetoContent{
-        margin-top: 12px;
-    }
-    .projeto .projetoContent p{
-        display: none;
-    }
-    .projeto .projetoContent .projetoTitle{
-        font-size:11px;
-        margin-bottom: 6px;
-        margin-top: 12px;
-    }
-    .projetoImage{
-        object-fit: cover;
-    }
-    .projetoImage img{
-        width: 70%;
-
+@media screen and (max-width: 768px) {
+    .Shifted { margin-left: 0; }
+    
+    .projetos {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
     }
 
-    .Shifted {
-        margin-left: 0; 
-        z-index: 999999999;
-    }
+    .projetoTitle { font-size: 1.1rem; }
 }
 
+@media screen and (max-width: 480px) {
+    .projetos {
+        grid-template-columns: 1fr; /* Um card por linha no celular */
+    }
+}
 .anchorProject{
     display: flex;
     align-items: center;

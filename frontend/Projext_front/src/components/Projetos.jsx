@@ -30,7 +30,7 @@ export default function ProjetosGrid(){
 
                 <section className={styles.projetos}>
                 {listaProjetos.map(projeto =>(
-                    <div key={projeto.id} className={styles.projeto}>
+                    <Link to={`/Projetos/${projeto.slug}`}  key={projeto.id} className={styles.projeto}>
                         <div className={styles.projetoImage}> 
                             <img src={Default} alt="" />
                         </div>
@@ -43,12 +43,8 @@ export default function ProjetosGrid(){
 
                                 <p>{projeto.pretensao}</p>
                             </div>
-
-                            <Link to={`/Projetos/${projeto.slug}`} className={styles.anchorProject}>
-                                Acessar  <ChevronRight size={20} />
-                            </Link>
                     
-                    </div>
+                    </Link>
                     ))}
 
                     {/* <div className="projeto">

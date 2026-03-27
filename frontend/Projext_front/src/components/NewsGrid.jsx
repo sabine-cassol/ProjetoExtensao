@@ -13,6 +13,7 @@ const listaNoticias = [{id:1, title:"pg", slug:"pg",
         body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
         image:news2
     },
+    
     {id:3,title:"sc", slug:"sc",
         body:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga ex eveniet cumque sed quaerat. Nam est maxime repellendus alias harum, perferendis ipsum dolor quo delectus nobis similique corrupti, quia sunt!',
         image:news3
@@ -26,20 +27,20 @@ function NewsGrid(){
                 <section className={styles.news}>
 
                 {listaNoticias.map(noticia =>(
-                    <div key={noticia.id} className={styles.new}>
+                    <Link to={`/Noticias/${noticia.slug}`}  key={noticia.id} className={styles.new}>
                         <div className={styles.newImage}> 
                             <img src={noticia.image} alt="" />
                         </div>
+                        <div className={styles.newContent}>
+
                             <h3 className={styles.newTitle}>
                                 {noticia.title}
                             </h3>
-
-
-                            <Link to={`/Noticias/${noticia.slug}`} className={styles.anchorNew}>
-                                Ver Detalhes da noticia <ChevronRight />
-                            </Link>
+                            <p className={styles.newDate}> 24 de março </p>
+                        </div>
+             
                     
-                    </div>
+                    </Link>
                     ))}
 
                     {/* <div className="new">
