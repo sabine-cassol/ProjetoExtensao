@@ -68,7 +68,7 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 ### Autenticação
 
-- [ ] Repository, Service e Controller de Professor
+- [X] Repository, Service e Controller de Professor
 - [ ] Repository, Service e Controller de Aluno
 - [ ] Rota de cadastro e login (Professor e Aluno)
 - [ ] Middleware JWT para proteger rotas
