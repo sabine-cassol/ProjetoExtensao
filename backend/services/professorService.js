@@ -60,7 +60,7 @@ export default (professorRepository) => {
         },
 
         async atualizar(id, dados) {
-            const professor = await professorRepository.atualizar(id, dados);
+            const professor = await professorRepository.atualizarProfessor(id, dados);
             if (!professor) {
                 throw new Error("Professor não encontrado");
             }
