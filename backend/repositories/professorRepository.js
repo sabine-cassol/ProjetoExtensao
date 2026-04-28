@@ -23,6 +23,7 @@ export default (Professor) => {
             const professor = await Professor.findByPk(id);
             if (!professor) return null;
             await professor.update(novoProfessor);
+            return professor;
         },
 
         async deletar(id) {

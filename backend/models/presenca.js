@@ -20,7 +20,7 @@ export default (sequelize) => {
             allowNull: false 
         },
         localizacaoCheckOut: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false
         }
     }, {

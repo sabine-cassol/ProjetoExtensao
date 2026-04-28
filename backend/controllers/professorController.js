@@ -15,7 +15,7 @@ export default (professorService) => {
             try {
                 const { email, senha } = req.body;
                 const { professor, token } = await professorService.verificarLogin(email, senha);
-                const { senha: _, dados } = professor.toJSON();
+                const { senha: _, ...dados } = professor.toJSON();
 
                 res.cookie("token", token, {
                     httpOnly: true,
