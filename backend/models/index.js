@@ -3,12 +3,14 @@ import AlunoModel from "./aluno.js";
 import AtividadeModel from "./atividade.js";
 import PresencaModel from "./presenca.js";
 import ProfessoreModel from "./professor.js";
+import ProjetoExtensaoModel from "./projeto_extensao.js";
 
 
 const Aluno = AlunoModel(sequelize);
 const Presenca = PresencaModel(sequelize);
 const Professor = ProfessoreModel(sequelize);
 const Atividade = AtividadeModel(sequelize);
+const Projeto_extensao = ProjetoExtensaoModel(sequelize);
 
 
 //relacionamento 1 para muitos de aluno e presença
@@ -20,6 +22,15 @@ Presenca.belongsTo(Aluno, {
     foreignKey: "alunoId",
     as: "aluno"
 });
+
+Professor.hasMany(Projeto_extensao, {
+    foreignKey: "professorId",
+    as: "projetos"
+})
+Projeto_extensao.belongsTo(Professor, {
+    foreignKey: "professorId", 
+    as: "professor"
+})
 
 //relacionamento muitos para muitos de alunos e atividades
 Aluno.belongsToMany(Atividade, {
@@ -38,4 +49,4 @@ Atividade.belongsToMany(Aluno, {
 
 
 
-export {sequelize, Aluno, Presenca, Professor, Atividade}
+export {sequelize, Aluno, Presenca, Professor, Atividade, Projeto_extensao}
