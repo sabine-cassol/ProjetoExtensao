@@ -17,6 +17,10 @@ export default (sequelize) => {
         },
         dataHoraFim: {
             type: DataTypes.DATE
+        },
+        projetoId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         sequelize,
