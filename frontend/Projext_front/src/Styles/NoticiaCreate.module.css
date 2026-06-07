@@ -1,0 +1,153 @@
+
+.create {
+    padding: 60px 30px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createContainer {
+    width: 100%;
+    max-width: 800px; 
+}
+
+.createWrapper {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%; 
+    text-align: left; 
+}
+
+.createHead {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 16px;
+    align-self: flex-start; 
+    width: 100%;
+}
+
+.createTitle {
+    font-size: 1.75rem;
+    color: #111827;
+    font-weight: 700;
+}
+
+.createDesc {
+    color: #6b7280;
+    font-size: 0.95rem;
+    padding-top: 6px;
+}
+
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%; 
+}
+
+.label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+}
+
+.inputField, .textareaField {
+    width: 100%; 
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1f2937;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    box-sizing: border-box; 
+}
+
+.inputField:focus, .textareaField:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.textareaField {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.fileUploadWrapper {
+    width: 100%;
+}
+
+.fileInput {
+    display: none;
+}
+
+.fileLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-weight: 500;
+    color: #4b5563;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fileLabel:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.submitBtn {
+    background-color: #2563eb;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 8px;
+    width: 100%; 
+}
+
+.submitBtn:hover {
+    background-color: #1d4ed8;
+}
+
+.submitBtn:active {
+    transform: scale(0.99);
+}
+
+.mainContent {
+    padding-right: 20px;
+    margin-left: 0; 
+}
+
+.Shifted {
+    margin-left: 230px; 
+}
+
+@media screen and (max-width: 600px) {
+    .Shifted {
+        margin-left: 0; 
+        z-index: 999999999;
+    }
+    
+    .createWrapper {
+        padding: 24px;
+    }
+}

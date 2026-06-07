@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
+import { Edit,Plus } from 'lucide-react'
+import { useUser } from '../context/UserContext'
 import Default from '../assets/Image-not-found.png'
 import styles from '../Styles/News.module.css'
 import news1 from '../assets/3d-world-news-background-loop-free-video.jpg'
@@ -20,27 +22,41 @@ const listaNoticias = [{id:1, title:"pg", slug:"pg",
     },]
 
 function NewsGrid(){
+    const { role } = useUser(); 
     return (
+        
     
             <section className={styles.newsGridContainer}>
                 <h2>Notícias</h2>
                 <section className={styles.news}>
 
+                    {role === 'professor'? (
+                        <Link to={`/Noticias/Criar`} className={styles.create}><Plus size={20} /> Criar nova notícia</Link>
+                        ) : null}
+
+
                 {listaNoticias.map(noticia =>(
+                    <div className={styles.newWrapper}>
+
                     <Link to={`/Noticias/${noticia.slug}`}  key={noticia.id} className={styles.new}>
                         <div className={styles.newImage}> 
                             <img src={noticia.image} alt="" />
                         </div>
                         <div className={styles.newContent}>
-
                             <h3 className={styles.newTitle}>
                                 {noticia.title}
                             </h3>
                             <p className={styles.newDate}> 24 de março </p>
                         </div>
-             
-                    
                     </Link>
+
+                    {role === 'professor' ?(
+                    <Link to={`/Noticias/Editar/${noticia.id}`} className={styles.editBtn} title="Editar notícia">
+                        <Edit size={18} />
+                    </Link>
+                    ):null}
+
+                    </div>
                     ))}
 
                     {/* <div className="new">

@@ -7,6 +7,7 @@ import { UserProvider } from './context/UserContext.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from "./pages/Login.jsx"
 import Noticias from "./pages/Noticias.jsx"
+import NoticiaConfig from "./pages/NoticiaConfig.jsx"
 import Home from './pages/Home.jsx'
 import Projetos from './pages/Projetos.jsx'
 import ProjetoDetalhe from './pages/ProjetoDetalhe.jsx'
@@ -44,10 +45,17 @@ const router = createBrowserRouter([
       element: <Noticias/>
     },
     {
+      path: "/Noticias/Criar", 
+      element: <NoticiaConfig />
+    },
+    {
+      path: "/Noticias/Editar/:noticiaId",
+      element: <NoticiaConfig />
+    },
+    {
       path: "/Noticias/:noticiaId",
       element: <NoticiaDetalhe/> 
     },
-  
     {
       path:"/Contato",
       element:<Contato/>

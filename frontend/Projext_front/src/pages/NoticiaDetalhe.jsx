@@ -37,9 +37,10 @@ function NoticiaDetalhe() {
     const { noticiaId } = useParams();
    
     const noticia = listaNoticias.find(p => p.slug === noticiaId); 
+    
 
     if (!noticia) {
-        return <h1>Noticia Não Encontrado (404)</h1>;
+        return <h1>Noticia Não Encontrada (404)</h1>;
     }
 
     return (

@@ -15,20 +15,67 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+.newWrapper {
+    position: relative; 
+    width: 100%;
+}
+
 .news{
     display: flex;
     flex-direction: column;
     gap: 1.5rem; 
 }
 
+.create{
+    background-color: hsl(120, 100%, 43%);
+    border: 2px solid hsl(120, 100%, 40%); 
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-right: 0;
+    color: #fff;
+    border-radius: 5px;
+    width: 10%;
+    max-width: fit-content;
+    min-width: 180px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
 
+.create:hover{
+    background-color: #28a745;
+}
 
+.editBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: 700;
+    color: #20659f;
+    border-radius: 10px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid hsl(0, 0%, 70%);
+    transition: all 0.2s ease;
+    z-index: 10; 
+    text-decoration: none;
+}
+
+.editBtn:hover {
+    transform: scale(1.1);
+}
 
 .new{
     display: flex;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 10px;
     overflow: hidden;
     text-decoration: none; 
     color: inherit;
@@ -49,7 +96,7 @@
     line-clamp: 2;
     line-height: 1.3;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limita a 2 linhas */
+    -webkit-line-clamp: 2; 
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -59,7 +106,7 @@
 .newDate {
     margin: 0;
     font-size: 0.85rem;
-    color: #888; /* Cor cinza mais suave para a data */
+    color: #888; 
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -85,21 +132,22 @@
     .news{
         grid-template-columns: repeat(auto-fit,150px)
     }
-    .news > div{
-        width: 150px;
-        height: 180px;
-        font-size: 12px;
-    }
+
     .new .newImage{
         width: 120px;
         height: 90px;
     }
     .new .newTitle{
         font-size:1rem;
-        padding: 0 1rem;
     }
     .Shifted {
         margin-left: 0; 
-        z-index: 999999999;
+        z-index: 9999;
+    }
+    .editBtn {
+        width: 30px;
+        height: 30px;
+        top: 5px;
+        right: 5px;
     }
 }
