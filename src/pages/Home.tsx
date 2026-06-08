@@ -1,5 +1,5 @@
 import Header from '../components/Header.tsx'
-import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar.tsx"
+import { SidebarProvider } from "../components/ui/sidebar.tsx"
 import { AppSidebar } from "../components/app-sidebar.tsx"
 
 function Home() {
