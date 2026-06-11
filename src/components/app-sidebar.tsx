@@ -5,32 +5,32 @@ import { Link } from "react-router-dom"
 const items = [
   { 
     title: "Início", 
-    url: "#", 
+    url: "/", 
     icon: Home 
   },
   { 
     title: "Notícias", 
-    url: "#", 
+    url: "/Notícias", 
     icon: Newspaper 
   },
   { 
     title: "Projetos", 
-    url: "#", 
+    url: "/Projetos", 
     icon: FolderKanban 
   },
   { 
     title: "Contato", 
-    url: "#", 
+    url: "/Contato", 
     icon: Mail 
   },
   { 
     title: "Atividades", 
-    url: "#", 
+    url: "/Atividades", 
     icon: Activity 
   },
   { 
     title: "Relatórios", 
-    url: "#", 
+    url: "/Relatórios", 
     icon: BarChart3 
   },
 ]
