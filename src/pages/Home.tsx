@@ -14,11 +14,8 @@ function Home() {
 
                         <AppSidebar />
 
-                        <main className="flex-1 p-6 overflow-y-auto bg-slate-50/50">
-                            <h1 className="text-2xl font-bold">Bem-vindo ao Dashboard</h1>
-                            <p className="text-muted-foreground mt-2">
-                                Note que a barra lateral agora abre abaixo do header sem cobri-lo!
-                            </p>
+                        <main className="overflow-y-auto p-4 bg-slate-50/50">
+                            <h1 className="text-4xl font-bold overflow-hidden">Bem-vindo ao Dashboard</h1>
 
                         </main>
 

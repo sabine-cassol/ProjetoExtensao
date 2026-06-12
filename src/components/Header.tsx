@@ -22,30 +22,26 @@ function Header() {
 
                             <picture>
                                 <source srcSet={Logo} media="(min-width: 860px)" />
-                                {/* Caso contrário (telas menores), renderiza a logo mobile */}
                                 <img src={Logo2} alt="Logo" className="h-10 w-auto object-contain" />
                             </picture>
                         </div>
 
                         <nav className="hidden md:flex justify-center items-center gap-8 font-medium text-[1rem]">
-                            <a className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
+                            <Link to='/' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
                                 Início
-                            </a>
-                            <a className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
+                            </Link>
+                            <Link to='/Notícias' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
                                 Notícias
-                            </a>
-                            <a className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
+                            </Link>
+                            <Link to='/Projetos' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
                                 Projetos
-                            </a>
-                            <a className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
+                            </Link>
+                            <Link to='/Contato' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
                                 Contato
-                            </a>
+                            </Link>
                         </nav>
 
                         <div className="col-start-3 flex justify-end items-center gap-2 relative">
-                            {/* <button className="p-2 w-4 bg-cyan-400 cursor-pointer theme relative flex items-center justify-center before:content-[''] before:absolute  before:m-auto before:flex before:items-center before:justify-center before:w-0 before:h-0 before:rounded-full before:bg-darkWhite dark:before:bg-zinc-800 before:z-[-1] hover:before:w-10 hover:before:h-10 ">
-                                Inscrever-se
-                            </button> */}
 
                             <Link to="Login">
                                 <button className='p-2 px-4 cursor-pointer  text-white font-semibold rounded-lg bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-400'>
