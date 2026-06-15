@@ -12,7 +12,7 @@ function ProjectDetail(){
                     <div className="flex flex-1 h-[calc(100vh-64px)] w-full overflow-hidden">
                         <AppSidebar />
 
-                        <main className="flex-1 p-6 overflow-y-auto bg-slate-50/50">
+                        <main className="flex-1 p-6 overflow-y-auto ">
                             <h1 className="text-2xl font-bold">Projeto detail</h1>
                         </main>
                     </div>

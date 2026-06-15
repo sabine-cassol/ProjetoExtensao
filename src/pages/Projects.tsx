@@ -10,7 +10,7 @@ function Projects() {
                     <div className="flex flex-1 h-[calc(100vh-64px)] w-full overflow-hidden">
                         <AppSidebar />
 
-                        <main className="p-4 overflow-y-auto bg-slate-50/50">
+                        <main className="p-4 overflow-y-auto">
                             <h1 className="text-4xl font-bold overflow-hidden leading-tight">Projetos</h1>
                         </main>
                     </div>

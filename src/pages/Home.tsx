@@ -14,11 +14,9 @@ function Home() {
 
                         <AppSidebar />
 
-                        <main className="overflow-y-auto p-4 bg-slate-50/50">
-                            <h1 className="text-4xl font-bold overflow-hidden">Bem-vindo ao Dashboard</h1>
-
+                        <main className="overflow-y-auto p-4 ">
+                            <h1 className="text-4xl font-bold overflow-hidden"> Início </h1>
                         </main>
-
                     </div>
                 </div>
             </SidebarProvider>

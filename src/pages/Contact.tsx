@@ -11,7 +11,7 @@ function Contact() {
                     <div className="flex w-full overflow-hidden">
                         <AppSidebar />
 
-                        <main className=" p-4 overflow-y-auto bg-slate-50/50">
+                        <main className=" p-4 overflow-y-auto ">
                             <h1 className="text-4xl font-bold overflow-hidden">Contato</h1>
                         </main>
                     </div>
