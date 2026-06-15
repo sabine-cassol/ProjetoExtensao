@@ -1,10 +1,22 @@
 import Header from '../components/Header.tsx'
 import { SidebarProvider } from "../components/ui/sidebar.tsx"
 import { AppSidebar } from "../components/app-sidebar.tsx"
+import { useParams } from 'react-router-dom'
+import { PROJECTS } from '@/data/Projects.ts'
 
 
-function ProjectDetail(){
-    return(
+function ProjectDetail() {
+    const { projetoId } = useParams<{ projetoId: string }>();
+
+    const projeto = PROJECTS.find(p => p.id == projetoId);
+
+    if(!projeto){
+        return (
+            <h2>projeto nao encontrado</h2>
+        )
+    }
+
+    return (
         <>
             <SidebarProvider>
                 <div className="flex flex-col w-screen h-screen overflow-hidden">
@@ -13,7 +25,7 @@ function ProjectDetail(){
                         <AppSidebar />
 
                         <main className="flex-1 p-6 overflow-y-auto ">
-                            <h1 className="text-2xl font-bold">Projeto detail</h1>
+                            <h1 className="text-2xl font-bold">{projeto.id}</h1>
                         </main>
                     </div>
                 </div>

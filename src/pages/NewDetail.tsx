@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
 
 function NewDetail() {
-    const { id } = useParams<{ id: string }>();
+    const { noticiaId } = useParams<{ noticiaId: string }>();
 
-    const noticia = NEWS.find((n) => n.id === id);
+    const noticia = NEWS.find(n => n.id == noticiaId);
 
     if (!noticia) {
         return (
@@ -27,7 +27,7 @@ function NewDetail() {
                         <AppSidebar />
 
                         <main className="flex-1 p-6 overflow-y-auto">
-                            <h1 className="text-2xl font-bold">Notícias detail</h1>
+                            <h1 className="text-2xl font-bold">{noticia.id}</h1>
                         </main>
                     </div>
                 </div>
