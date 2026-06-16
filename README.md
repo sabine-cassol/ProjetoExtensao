@@ -56,23 +56,23 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 ---
 
-## Roadmap de desenvolvimento BackEnd
+## Roadmap de desenvolvimento
 
 ### Fundação
 
 - [x] Model — Aluno
 - [x] Model — Professor
-- [ ] Model — Atividade
-- [ ] Model — Presença
-- [ ] Model — Projeto
+- [x] Model — Atividade
+- [x] Model — Presença
+- [x] Model — Projeto
 
 ### Autenticação
 
-- [X] Repository, Service e Controller de Professor
-- [ ] Repository, Service e Controller de Aluno
-- [ ] Rota de cadastro e login (Professor e Aluno)
-- [ ] Middleware JWT para proteger rotas
-- [ ] Middleware de autorização por tipo de usuário (professor vs aluno)
+- [x] Repository, Service e Controller de Professor
+- [x] Repository, Service e Controller de Aluno
+- [x] Rota de cadastro e login (Professor e Aluno)
+- [x] Middleware JWT para proteger rotas
+- [x] Middleware de autorização por tipo de usuário (professor vs aluno)
 
 ### Projetos
 
