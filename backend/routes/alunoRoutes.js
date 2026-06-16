@@ -16,10 +16,10 @@ router.post("/", (req, res) => controller.cadastrarAluno(req, res));
 router.post("/login", (req, res) => controller.login(req, res));
 router.post("/logout", (req, res) => controller.logout(req, res));
 
-router.get("/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarPorId(req, res));
 router.get("/me", autenticar, autorizar("aluno"), (req, res) => controller.buscarPerfil(req, res));
 router.get("/todos", autenticar, autorizar("professor"), (req, res) => controller.buscarTodos(req, res));
-router.get("/:ra", autenticar, autorizar("aluno"), (req, res) => controller.buscarPorRa(req, res));
+router.get("/ra/:ra", autenticar, autorizar("aluno"), (req, res) => controller.buscarPorRa(req, res));
+router.get("/id/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarPorId(req, res));
 
 router.put("/atualizar", autenticar, autorizar("aluno"), (req, res) => controller.atualizar(req, res));
 router.put("/ativar/:id", autenticar, autorizar("professor"), (req, res) => controller.ativarAlunoPorId(req, res));

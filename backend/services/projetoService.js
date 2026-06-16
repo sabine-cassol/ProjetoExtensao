@@ -34,5 +34,12 @@ export default (projetoRepository) => {
         },
         async ativarProjeto(id) {
             const projetoAtivado = await projetoRepository.buscarPorId(id);
+            if (!projetoAtivado) {
+                throw new Error("Projeto de extensão não encontrado");
+            }
+            projetoAtivado.ativo = true;
+            await projetoAtivado.save();
+            return projetoAtivado;
+        }
     }
 }

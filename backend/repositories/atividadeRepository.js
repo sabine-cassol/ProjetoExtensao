@@ -1,4 +1,4 @@
-import { Projeto_extensao } from '../models/Projeto_extensao.js';
+import { Projeto_extensao } from '../models/index.js';
 
 export default (Atividade) => {
     return {

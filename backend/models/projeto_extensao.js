@@ -14,6 +14,10 @@ export default (sequelize) => {
         professorId: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        ativo: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         sequelize,

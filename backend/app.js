@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 import { sequelize } from "./models/index.js";
 import professorRoutes from "./routes/professorRoutes.js";
 import alunoRoutes from "./routes/alunoRoutes.js"
+import projetoRoutes from "./routes/projetoRoutes.js";
+import atividadeRoutes from "./routes/atividadeRoutes.js";
+import participacaoAtividadeRoutes from "./routes/participacaoAtividadeRoutes.js";
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -18,6 +21,9 @@ app.use(cookieParser());
 
 app.use("/professores", professorRoutes);
 app.use("/alunos", alunoRoutes);
+app.use("/projetos", projetoRoutes);
+app.use("/atividades", atividadeRoutes);
+app.use("/participacao_atividade", participacaoAtividadeRoutes);
 
 // Servir os arquivos estáticos do React (dist)
 app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));

@@ -48,7 +48,10 @@ export default (professorService) => {
         async buscarTodos(req, res) {
             try {
                 const professores = await professorService.listarTodos();
-                const {senha, ...dados} = professores.toJSON();
+                const dados = professores.map((p) => {
+                    const { senha, ...professor} = p.toJSON();
+                    return professor;
+                });
                 res.status(200).json(dados);
             }catch (erro) {
                 res.status(404).json({erro: erro.message});
@@ -77,7 +80,7 @@ export default (professorService) => {
 
         async desativarProfessorPorId(req, res) {
             try {
-                const professor = await professorService.desativarProfessorPorId(req.params.id);
+                const professor = await professorService.desativarProfessor(req.params.id);
                 const { senha, ...dados} = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
@@ -87,7 +90,7 @@ export default (professorService) => {
 
         async ativarProfessorPorId(req, res) {
             try {
-                const professor = await professorService.ativarProfessorPorId(req.params.id);
+                const professor = await professorService.ativarProfessor(req.params.id);
                 const { senha, ...dados} = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {

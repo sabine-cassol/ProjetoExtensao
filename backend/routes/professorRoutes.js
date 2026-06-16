@@ -18,7 +18,7 @@ router.post("/logout", (req, res) => controller.logout(req, res));
 
 router.get("/me", autenticar, autorizar("professor"), (req, res) => controller.buscarPerfil(req, res));
 router.get("/todos", autenticar, autorizar("professor"), (req, res) => controller.buscarTodos(req, res));
-router.get("/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarPorId(req, res));
+router.get("/id/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarPorId(req, res));
 
 router.put("/atualizar", autenticar, autorizar("professor"), (req, res) => controller.atualizar(req, res));
 router.put("/ativar/:id", autenticar, autorizar("professor"), (req, res) => controller.ativarProfessorPorId(req, res));

@@ -1,4 +1,4 @@
-import Professor from "../models/Professor.js";
+import Professor from "../models/index.js";
 
 export default (Projeto_extensao) => {
     return {

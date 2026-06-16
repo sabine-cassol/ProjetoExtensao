@@ -66,7 +66,7 @@ export default (alunoRepository) => {
         },
 
         async desativarAluno(id) {
-            const alunoDesativado = await alunoRepository.findByPk(id);
+            const alunoDesativado = await alunoRepository.buscarPorId(id);
             if (!alunoDesativado) {
                 throw new Error("Aluno não encontrado");
             }
@@ -76,7 +76,7 @@ export default (alunoRepository) => {
         },
 
         async ativarAluno(id) {
-            const alunoAtivado = await alunoRepository.findByPk(id);
+            const alunoAtivado = await alunoRepository.buscarPorId(id);
             if (!alunoAtivado) {
                 throw new Error("Aluno não encontrado");
             }
