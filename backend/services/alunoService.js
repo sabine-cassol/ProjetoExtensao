@@ -65,12 +65,24 @@ export default (alunoRepository) => {
             return aluno;
         },
 
-        async deletarAluno(id) {
-            const resultado = await alunoRepository.deletar(id);
-            if (!resultado) {
+        async desativarAluno(id) {
+            const alunoDesativado = await alunoRepository.findByPk(id);
+            if (!alunoDesativado) {
                 throw new Error("Aluno não encontrado");
             }
-            return true;
+            alunoDesativado.ativo = false;
+            await alunoDesativado.save();
+            return alunoDesativado;
+        },
+
+        async ativarAluno(id) {
+            const alunoAtivado = await alunoRepository.findByPk(id);
+            if (!alunoAtivado) {
+                throw new Error("Aluno não encontrado");
+            }
+            alunoAtivado.ativo = true;
+            await alunoAtivado.save();
+            return alunoAtivado;
         }
     }
 

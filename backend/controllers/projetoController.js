@@ -50,13 +50,24 @@ export default (projetoService) => {
             }
         },
 
-        async deletarProjeto(req, res) {
+        async desativarProjeto(req, res) {
             try {
-                await projetoService.deletarProjeto(req.params.id);
-                res.status(200).json({ mensagem: "Projeto de extensão deletado com sucesso"});
+                const projeto = await projetoService.desativarProjeto(req.params.id);
+                const dados = projeto.toJSON();
+                res.status(200).json(dados);
             } catch (erro) {
                 res.status(404).json({erro : erro.message});
             }
-        }
+        },
+
+        async ativarProjeto(req, res) {
+            try {
+                const projeto = await projetoService.ativarProjeto(req.params.id);
+                const dados = projeto.toJSON();
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(404).json({erro : erro.message});
+            }
+        }    
     }
 }

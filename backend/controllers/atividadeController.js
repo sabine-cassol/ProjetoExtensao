@@ -50,10 +50,21 @@ export default (atividadeService) => {
             }
         },
 
-        async deletarAtividade(req, res) {
+        async desativarAtividade(req, res) {
             try {
-                await atividadeService.deletarAtividade(req.params.id);
-                res.status(200).json({ mensagem: "Atividade deletada com sucesso"});
+                const atividade = await atividadeService.desativarAtividade(req.params.id);
+                const dados = atividade.toJSON();
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(404).json({erro : erro.message});
+            }
+        },
+
+        async ativarAtividade(req, res) {
+            try {
+                const atividade = await atividadeService.ativarAtividade(req.params.id);
+                const dados = atividade.toJSON();
+                res.status(200).json(dados);
             } catch (erro) {
                 res.status(404).json({erro : erro.message});
             }

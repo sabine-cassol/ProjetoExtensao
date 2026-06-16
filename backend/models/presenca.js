@@ -22,6 +22,10 @@ export default (sequelize) => {
         localizacaoCheckOut: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        ativo: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         sequelize,

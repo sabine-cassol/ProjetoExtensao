@@ -45,7 +45,7 @@ export default (professorService) => {
             }
         },
 
-        async buscarTodos(res) {
+        async buscarTodos(req, res) {
             try {
                 const professores = await professorService.listarTodos();
                 const {senha, ...dados} = professores.toJSON();
@@ -55,6 +55,15 @@ export default (professorService) => {
             }
         },
 
+        async buscarPorId(req, res) {
+            try {
+                const professor = await professorService.buscarPorId(req.params.id);
+                const { senha, ...dados} = professor.toJSON();
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(404).json({erro: erro.message});
+            }
+        },
 
         async atualizar(req, res) { 
             try {
@@ -63,6 +72,26 @@ export default (professorService) => {
                 res.status(200).json(dados);
             } catch (erro) {
                 res.status(400).json({ erro: erro.message})
+            }
+        },
+
+        async desativarProfessorPorId(req, res) {
+            try {
+                const professor = await professorService.desativarProfessorPorId(req.params.id);
+                const { senha, ...dados} = professor.toJSON();
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(404).json({erro: erro.message});
+            }
+        },
+
+        async ativarProfessorPorId(req, res) {
+            try {
+                const professor = await professorService.ativarProfessorPorId(req.params.id);
+                const { senha, ...dados} = professor.toJSON();
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(404).json({erro: erro.message});
             }
         }
     }

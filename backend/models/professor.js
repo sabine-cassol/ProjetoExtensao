@@ -32,6 +32,10 @@ export default (sequelize) => {
         matricula: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        ativo: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         sequelize,

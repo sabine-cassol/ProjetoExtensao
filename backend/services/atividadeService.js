@@ -23,12 +23,23 @@ export default (atividadeRepository) => {
             }
             return atividade; 
         },
-        async deletarAtividade(id) {
-            const resultado = await atividadeRepository.deletar(id);
-            if (!resultado) {
+        async desativarAtividade(id) {
+            const atividadeDesativada = await atividadeRepository.buscarPorId(id);
+            if (!atividadeDesativada) {
                 throw new Error("Atividade não encontrada");
             }
-            return true;
-        } 
+            atividadeDesativada.ativo = false;
+            await atividadeDesativada.save();
+            return atividadeDesativada;
+        },
+        async ativarAtividade(id) {
+            const atividadeAtivada = await atividadeRepository.buscarPorId(id);
+            if (!atividadeAtivada) {
+                throw new Error("Atividade não encontrada");
+            }
+            atividadeAtivada.ativo = true;
+            await atividadeAtivada.save();
+            return atividadeAtivada;
+        }
     }
 }

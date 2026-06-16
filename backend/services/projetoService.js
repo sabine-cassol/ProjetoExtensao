@@ -23,12 +23,16 @@ export default (projetoRepository) => {
             }
             return projeto; 
         },
-        async deletarProjeto(id) {
-            const resultado = await projetoRepository.deletar(id);
-            if (!resultado) {
+        async desativarProjeto(id) {
+            const projetoDesativado = await projetoRepository.buscarPorId(id);
+            if (!projetoDesativado) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            return true;
-        } 
+            projetoDesativado.ativo = false;
+            await projetoDesativado.save();
+            return projetoDesativado;
+        },
+        async ativarProjeto(id) {
+            const projetoAtivado = await projetoRepository.buscarPorId(id);
     }
 }

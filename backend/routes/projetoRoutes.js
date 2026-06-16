@@ -13,10 +13,14 @@ const service = projetoService(repository);
 const controller = projetoController(service);
 
 router.post("/", autenticar, autorizar("professor"), (req, res) => controller.cadastrarProjeto(req, res));
+
 router.get("/todos", autenticar, (req, res) => controller.listarTodos(req, res));
 router.get("/professor/:professorId", autenticar, (req, res) => controller.listarTodosPorProfessor(req, res));
 router.get("/:id", autenticar, (req, res) => controller.buscarProjetoPorId(req, res));
+
 router.put("/:id", autenticar, autorizar("professor"), (req, res) => controller.atualizarProjeto(req, res));
-router.delete("/:id", autenticar, autorizar("professor"), (req, res) => controller.deletarProjeto(req, res));
+router.put("/ativar/:id", autenticar, autorizar("professor"), (req, res) => controller.ativarProjeto(req, res));
+
+router.delete("/desativar/:id", autenticar, autorizar("professor"), (req, res) => controller.desativarProjeto(req, res));
 
 export default router;

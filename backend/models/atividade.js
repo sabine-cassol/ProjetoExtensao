@@ -21,6 +21,10 @@ export default (sequelize) => {
         projetoId: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        ativo: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         sequelize,
