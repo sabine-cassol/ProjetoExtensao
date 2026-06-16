@@ -1,4 +1,5 @@
 import Header from '../components/Header.tsx'
+// import Footer from '../components/Footer.tsx'
 import { SidebarProvider } from "../components/ui/sidebar.tsx"
 import { AppSidebar } from "../components/app-sidebar.tsx"
 import { useAuth } from '@/context/AuthContext.tsx'
@@ -10,7 +11,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
-import { Globe,Clock4, FileText, ScrollText } from 'lucide-react'
+import { Globe, Clock4, FileText, ScrollText } from 'lucide-react'
 
 function Home() {
     const { role } = useAuth();
@@ -61,26 +62,26 @@ function Home() {
                             <section className='mt-20'>
                                 <section className='grid grid-cols-4 gap-8'>
                                     <div className='flex justify-center items-center flex-col gap-4'>
-                                        <div className='bg-(--lightCyan) p-6 rounded-xl text-white '> 
-                                            <Globe size={40}/>
+                                        <div className='bg-(--lightCyan) p-6 rounded-xl text-white '>
+                                            <Globe size={40} />
                                         </div>
                                         <p>Projeto de extensão</p>
                                     </div>
                                     <div className='flex justify-center items-center flex-col gap-4'>
                                         <div className='bg-[#f71e1e] p-6 rounded-xl text-white' >
-                                            <Clock4 size={40}/>
+                                            <Clock4 size={40} />
                                         </div>
                                         <p>Check-in de horas</p>
                                     </div>
                                     <div className='flex justify-center items-center flex-col gap-4'>
                                         <div className='bg-[#ffc400] p-6 rounded-xl text-white'>
-                                            <FileText size={40}/>
+                                            <FileText size={40} />
                                         </div>
                                         <p>Relatórios</p>
                                     </div>
                                     <div className='flex justify-center items-center flex-col gap-4'>
                                         <div className='bg-[#203864] p-6 rounded-xl text-white'>
-                                            <ScrollText size={40}/>
+                                            <ScrollText size={40} />
                                         </div>
                                         <p>Certificados </p>
                                     </div>
@@ -90,7 +91,6 @@ function Home() {
                     </div>
                 </div>
             </SidebarProvider>
-
         </>
     )
 }
