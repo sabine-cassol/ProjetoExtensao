@@ -76,15 +76,15 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 ### Projetos
 
-- [ ] Repository, Service e Controller de Projeto
-- [ ] Rota pública para visitantes visualizarem projetos
-- [ ] Rota protegida para professor criar, editar e deletar projetos
+- [x] Repository, Service e Controller de Projeto
+- [x] Rota pública para visitantes visualizarem projetos
+- [x] Rota protegida para professor criar, editar e deletar projetos
 
 ### Atividades
 
-- [ ] Repository, Service e Controller de Atividade
-- [ ] Atividade sempre vinculada a um `projetoId`
-- [ ] Listagem de atividades por projeto
+- [x] Repository, Service e Controller de Atividade
+- [x] Atividade sempre vinculada a um `projetoId`
+- [x] Listagem de atividades por projeto
 
 ### Inscrições
 
