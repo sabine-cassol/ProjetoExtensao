@@ -17,11 +17,11 @@ export default (sequelize) => {
         },
         dataHoraCheckOut: {
             type: DataTypes.DATE,
-            allowNull: false 
+            allowNull: true 
         },
         localizacaoCheckOut: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         }
     }, {
         sequelize,

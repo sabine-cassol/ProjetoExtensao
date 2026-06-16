@@ -10,7 +10,10 @@ export default (Professor) => {
         },
 
         async buscarPorId(id){
-            return Professor.findByPk(id);
+            return Professor.findByPk(
+                id,
+                {attributes: {exclude: ["senha"]}}
+            );
         },
 
         async listarTodos() {
@@ -18,6 +21,7 @@ export default (Professor) => {
                 attributes: {exclude: ["senha"]} // não busca a senha quando puxar todos.
             });
         },
+
 
         async atualizarProfessor(id, novoProfessor) {
             const professor = await Professor.findByPk(id);

@@ -45,6 +45,17 @@ export default (professorService) => {
             }
         },
 
+        async buscarTodos(res) {
+            try {
+                const professores = await professorService.listarTodos();
+                const {senha, ...dados} = professores.toJSON();
+                res.status(200).json(dados);
+            }catch (erro) {
+                res.status(404).json({erro: erro.message});
+            }
+        },
+
+
         async atualizar(req, res) { 
             try {
                 const professor = await professorService.atualizar(req.usuario.id, req.body);
