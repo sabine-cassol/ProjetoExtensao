@@ -12,7 +12,7 @@ const repository = projetoRepository(Projeto_extensao);
 const service = projetoService(repository);
 const controller = projetoController(service);
 
-router.post("/", autenticar, autorizar("professor"), (req, res) => controller.cadastrarProjeto(req, res));
+router.post("/", autenticar, autorizar("professor"), (req, res) => controller.criarProjeto(req, res));
 
 router.get("/todos", autenticar, (req, res) => controller.listarTodos(req, res));
 router.get("/professor/:professorId", autenticar, (req, res) => controller.listarTodosPorProfessor(req, res));

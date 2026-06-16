@@ -21,7 +21,7 @@ router.get("/todos", autenticar, autorizar("professor"), (req, res) => controlle
 router.get("/ra/:ra", autenticar, autorizar("aluno"), (req, res) => controller.buscarPorRa(req, res));
 router.get("/id/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarPorId(req, res));
 
-router.put("/atualizar", autenticar, autorizar("aluno"), (req, res) => controller.atualizar(req, res));
+router.put("/atualizar", autenticar, autorizar("aluno"), (req, res) => controller.atualizarPerfil(req, res));
 router.put("/ativar/:id", autenticar, autorizar("professor"), (req, res) => controller.ativarAlunoPorId(req, res));
 
 router.delete("/desativar/:id", autenticar, autorizar("professor"), (req, res) => controller.desativarAlunoPorId(req, res));
