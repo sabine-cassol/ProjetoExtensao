@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { sequelize } from "./models/index.js";
 import professorRoutes from "./routes/professorRoutes.js";
+import alunoRoutes from "./routes/alunoRoutes.js"
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/professores", professorRoutes);
+app.use("/alunos", alunoRoutes);
 
 // Servir os arquivos estáticos do React (dist)
 app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));

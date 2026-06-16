@@ -40,27 +40,30 @@ export default (alunoService) => {
                 const { senha, ...dados} = aluno.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: message})
+                res.status(404).json({erro: erro.message})
             }
         },
 
-        async buscarTodos(res) {
+        async buscarTodos(req, res) {
             try {
                 const alunos = await alunoService.listarTodos();
-                const {senha, ...dados} = professores.toJSON();
+                const dados = alunos.map((a) => {
+                    const {senha, ...aluno} = a.toJSON();
+                    return aluno;
+                });
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: message});
+                res.status(404).json({erro: erro.message});
             }
         }, 
 
         async buscarPorRa(req, res) {
             try {
                 const aluno = await alunoService.buscarPorRa(req.usuario.ra);
-                const { senha, ...dado} = aluno.toJSON();
+                const { senha, ...dados} = aluno.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: message});
+                res.status(404).json({erro: erro.message});
             }
         },
 
