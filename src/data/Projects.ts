@@ -5,6 +5,7 @@ export interface Projeto {
   pretensao: string;
   requisitos: string;
   detalhes: string;
+  responsavel:string;
 }
 
 export const PROJECTS: Projeto[] = [
@@ -14,7 +15,8 @@ export const PROJECTS: Projeto[] = [
     justificativa: 'o avanço da inteligencia artificial.',
     pretensao: 'Orientar estudantes do ensino fun 1 e 2.',
     requisitos: 'O projeto busca capacitar estudantes do ensino fundamental',
-    detalhes: 'Os alunos de engenharia de software e ads serão divididos'
+    detalhes: 'Os alunos de engenharia de software e ads serão divididos',
+    responsavel: 'responsavel-1'
   },
   {
     id: '2',
@@ -22,6 +24,7 @@ export const PROJECTS: Projeto[] = [
     justificativa: 'a inclusão digital é um fator essencial na sociedade',
     pretensao: 'A inclusão digital é um fator essencial para o desenvolvimento profissional no mundo atual',
     requisitos: 'O projeto computação para a vida trabalhará com uma equipe de alunos academicos do curso de analise e desenvolvimento de sistemas e engenharia de software ',
-    detalhes: 'Datas: 16 de março a 18 de maio'
+    detalhes: 'Datas: 16 de março a 18 de maio',
+    responsavel: 'responsavel-2'
   }
 ];

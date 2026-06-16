@@ -14,21 +14,23 @@ function Projects() {
 
                         <main className="p-4 overflow-y-auto">
                             <h1 className="text-4xl font-bold overflow-hidden leading-tight">Projetos</h1>
-                            <div className="grid gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                                 {PROJECTS.map((projeto) => (
-                                    <section key={projeto.id} className="bg-white p-6 rounded-2xl shadow-sm border border-zinc-200 hover:border-indigo-500 transition-colors flex flex-col justify-between">
+                                <Link to={`/Projetos/${projeto.id}`}>
+                                    <section key={projeto.id} className="bg-white p-4 rounded-lg border border-zinc-200 hover:border-indigo-200 transition-colors flex flex-col justify-between">
                                         <div>
-                                            <h2 className="text-xl font-bold text-zinc-800 mb-2">{projeto.titulo}</h2>
+                                            <h2 className="text-lg font-bold text-zinc-800 mb-2">{projeto.titulo}</h2>
+                                            <p className='text-xs text-zinc-500 text-semibold'>{projeto.responsavel}</p>
                                         </div>
 
                                         <div className="flex justify-between items-center mt-2 pt-4 border-t border-zinc-100">
 
-                                            <Link to={`/Projetos/${projeto.id}`} className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
+                                            <Link to={`/Projetos/${projeto.id}`} className="text-sm font-semibold text-indigo-500 hover:text-indigo-800 flex items-center justify-center gap-1 group">
                                                 Ver detalhes do projeto
-                                                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                                             </Link>
                                         </div>
                                     </section>
+                                </Link>
                                 ))}
                             </div>
                         </main>
