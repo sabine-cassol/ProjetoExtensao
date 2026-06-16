@@ -3,14 +3,14 @@ import { DataTypes, Model } from "sequelize";
 
 export default (sequelize) => {
 
-    class Participacao_atividade extends Model {};
+    class Participacao_projeto extends Model {};
 
-    Participacao_atividade.init({
+    Participacao_projeto.init({
         alunoId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        atividadeId: {
+        projetoId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -20,8 +20,8 @@ export default (sequelize) => {
         }
     }, {
         sequelize,
-        modelName: "ParticipacaoAtividade"
+        modelName: "ParticipacaoProjeto"
         });
 
-        return Participacao_atividade;
+        return Participacao_projeto;
 }

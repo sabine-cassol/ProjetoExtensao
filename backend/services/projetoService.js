@@ -17,7 +17,7 @@ export default (projetoRepository) => {
             return projetoRepository.listarTodosPorProfessor(professorId);
         },
         async atualizarProjeto(id, dados) {
-            const projeto = await projetoRepository.buscarPorId(id);
+            const projeto = await projetoRepository.atualizarProjeto(id, dados);
             if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }

@@ -4,7 +4,7 @@ import AtividadeModel from "./atividade.js";
 import PresencaModel from "./presenca.js";
 import ProfessoreModel from "./professor.js";
 import ProjetoExtensaoModel from "./projeto_extensao.js";
-import ParticipacaoAtividade from "./participacao_atividade.js";
+import ParticipacaoProjeto from "./participacao_projeto.js";
 
 
 const Aluno = AlunoModel(sequelize);
@@ -12,7 +12,7 @@ const Presenca = PresencaModel(sequelize);
 const Professor = ProfessoreModel(sequelize);
 const Atividade = AtividadeModel(sequelize);
 const Projeto_extensao = ProjetoExtensaoModel(sequelize);
-const Participacao_atividade = ParticipacaoAtividade(sequelize); 
+const Participacao_projeto = ParticipacaoProjeto(sequelize); 
 
 
 //relacionamento 1 para muitos de aluno e presença
@@ -44,26 +44,26 @@ Atividade.belongsTo(Projeto_extensao, {
 })
 
 //relacionamento muitos para muitos de alunos e atividades
-Aluno.hasMany(Participacao_atividade, {
+Aluno.hasMany(Participacao_projeto, {
     foreignKey: "alunoId",
-    as: "participacoesEmAtividades"
+    as: "participacoesEmProjetos"
 });
-Participacao_atividade.belongsTo(Aluno, {
+Participacao_projeto.belongsTo(Aluno, {
     foreignKey: "alunoId",
     as: "aluno"
 });
 
-Atividade.hasMany(Participacao_atividade, {
-    foreignKey: "atividadeId",
-    as: "participacoesEmAtividades"
+Projeto_extensao.hasMany(Participacao_projeto, {
+    foreignKey: "projetoId",
+    as: "participacoesEmProjetos"
 });
-Participacao_atividade.belongsTo(Atividade, {
-    foreignKey: "atividadeId",
-    as: "atividade"
+Participacao_projeto.belongsTo(Projeto_extensao, {
+    foreignKey: "projetoId",
+    as: "projeto"
 });
 
 
 
 
 
-export {sequelize, Aluno, Presenca, Professor, Atividade, Projeto_extensao, Participacao_atividade};
+export {sequelize, Aluno, Presenca, Professor, Atividade, Projeto_extensao, Participacao_projeto};
