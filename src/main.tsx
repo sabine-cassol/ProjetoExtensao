@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.tsx'
+import Layout from './components/Layout.tsx'
 import Home from './pages/Home.tsx'
 import Login from './pages/Login.tsx'
 import News from './pages/News.tsx'
@@ -16,42 +17,49 @@ import './index.css'
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
+    // Rota de Login isolada (sem o Header, Sidebar e Footer)
     path: "/Login",
     element: <Login />,
   },
   {
-    path: "/Notícias",
-    element: <News />,
+    // O Layout vira a raiz para todas as outras rotas
+    path: "/",
+    element: <Layout />, 
+    children: [
+      {
+        path: "/", // Corresponde exatamente a o caminho "/"
+        element: <Home />,
+      },
+      {
+        path: "/Notícias",
+        element: <News />,
+      },
+      {
+        path: "/Notícias/:noticiaId",
+        element: <NewDetail />,
+      },
+      {
+        path: "/Projetos",
+        element: <Projects />,
+      },
+      {
+        path: "/Projetos/:projetoId",
+        element: <ProjectDetail />,
+      },
+      {
+        path: "/Contato",
+        element: <Contact />,
+      },
+      {
+        path: "/Atividades",
+        element: <Activities />,
+      },
+      {
+        path: "/Relatórios",
+        element: <Reports />,
+      },
+    ],
   },
-  {
-    path: "/Notícias/:noticiaId",
-    element: <NewDetail />,
-  },
-  {
-    path: "/Projetos",
-    element: <Projects />,
-  },
-  {
-    path: "/Projetos/:projetoId",
-    element: <ProjectDetail />,
-  },
-  {
-    path: "/Contato",
-    element: <Contact />,
-  },
-  {
-    path: "/Atividades",
-    element: <Activities />,
-  },
-  {
-    path: "/Relatórios",
-    element: <Reports />,
-  },
-
 ])
 
 createRoot(document.getElementById('root')!).render(

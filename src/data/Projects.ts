@@ -26,5 +26,6 @@ export const PROJECTS: Projeto[] = [
     requisitos: 'O projeto computação para a vida trabalhará com uma equipe de alunos academicos do curso de analise e desenvolvimento de sistemas e engenharia de software ',
     detalhes: 'Datas: 16 de março a 18 de maio',
     responsavel: 'responsavel-2'
-  }
+  },
+  
 ];
