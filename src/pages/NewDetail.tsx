@@ -56,7 +56,6 @@ function NewDetail() {
                                         {noticia.resumo}
                                     </p>
 
-
                                     <div className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8">
                                         {noticia.conteudo}
                                     </div>
