@@ -37,8 +37,8 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="sidebar"className="pt-16 bg-zinc-900">
-      <SidebarContent>
+    <Sidebar variant="sidebar"className=" bg-zinc-900">
+      <SidebarContent className="pt-16">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

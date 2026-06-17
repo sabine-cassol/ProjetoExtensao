@@ -2,12 +2,14 @@ import Header from '../components/Header.tsx'
 import Footer from '../components/Footer.tsx'
 import { SidebarProvider } from "../components/ui/sidebar.tsx"
 import { AppSidebar } from "../components/app-sidebar.tsx"
+import { useAuth } from '@/context/AuthContext.tsx'
 
 
 function Reports() {
+    const { role } = useAuth();
     return (
         <>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
                 <div className="flex flex-col w-screen min-h-screen ">
                     <Header />
                     <div className="flex flex-1 w-full">

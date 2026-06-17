@@ -57,7 +57,7 @@ export default function Login() {
               <div className='flex flex-col items-center justify-center gap-2.5 w-100 p-6  '>
                 <Link to="/" className='absolute top-8 right-8 bg-zinc-100 rounded-lg p-2 px-4 flex items-center gap-1 '>
                   <span>
-                    <ArrowLeft size={16}/>
+                    <ArrowLeft size={16} />
                   </span>
                   Início
                 </Link>

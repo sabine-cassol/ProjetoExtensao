@@ -12,15 +12,24 @@ function Header() {
 
     return (
         <>
-            <header className="top-0 sticky z-50 w-full border-b border-zinc-300 bg-background ">
+            <header className="top-0 sticky z-500 w-full border-b border-zinc-300 bg-background ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
                     <div className="flex justify-between items-center h-16">
 
                         <div className="flex flex-row justify-self-start items-center gap-3">
 
-
-                            {role === 'student' || role === 'teacher' ? (
-                                <button onClick={toggleSidebar} className="flex items-center justify-center h-9 w-9 rounded-full cursor-pointer transition-colors duration-200 hover:bg-zinc-500/10 active:bg-zinc-500/20 focus:outline-hidden">
+                            {(role === 'student' || role === 'teacher') ? (
+                                <button
+                                    onClick={toggleSidebar}
+                                    className="flex items-center justify-center h-9 w-9 rounded-full cursor-pointer transition-colors duration-200 hover:bg-zinc-500/10 active:bg-zinc-500/20 focus:outline-hidden"
+                                >
+                                    <Menu className="h-5 w-5 text-foreground" />
+                                </button>
+                            ) : role === 'guest' ? (
+                                <button
+                                    onClick={toggleSidebar}
+                                    className="flex md:hidden items-center justify-center h-9 w-9 rounded-full cursor-pointer transition-colors duration-200 hover:bg-zinc-500/10 active:bg-zinc-500/20 focus:outline-hidden"
+                                >
                                     <Menu className="h-5 w-5 text-foreground" />
                                 </button>
                             ) : null}

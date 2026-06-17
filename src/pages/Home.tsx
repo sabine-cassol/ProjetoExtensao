@@ -17,7 +17,7 @@ function Home() {
     const { role } = useAuth();
     return (
         <>
-            <SidebarProvider defaultOpen={role == 'guest' ? false : true}>
+            <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
                 <div className="flex flex-col w-screen min-h-screen">
                     <Header />
 
@@ -33,7 +33,7 @@ function Home() {
                                     opts={{
                                         align: "start",
                                         loop: true,
-                                        watchSlides: true, 
+                                        watchSlides: true,
                                     }}
                                 >
                                     <CarouselContent className="ml-0">
@@ -91,7 +91,7 @@ function Home() {
                     </div>
                 </div>
             </SidebarProvider>
-            <Footer/>
+            <Footer />
         </>
     )
 }

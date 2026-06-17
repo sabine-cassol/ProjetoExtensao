@@ -3,12 +3,13 @@ import { SidebarProvider } from "../components/ui/sidebar.tsx"
 import { AppSidebar } from "../components/app-sidebar.tsx"
 import Footer from '../components/Footer.tsx'
 import { Mail, Phone, MapPin } from 'lucide-react'
-
+import { useAuth } from '@/context/AuthContext.tsx'
 
 function Contact() {
+    const { role } = useAuth();
     return (
         <>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
                 <div className="flex flex-col w-screen min-h-screen">
                     <Header />
                     <div className="flex flex-1 w-full">
@@ -47,7 +48,7 @@ function Contact() {
                                     <div>
                                         <p className="text-sm font-medium">Instagram</p>
                                         <a href="https://github.com/seuuser" target="_blank" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                                Instagram.com/extensão
+                                            Instagram.com/extensão
                                         </a>
                                     </div>
                                 </div>

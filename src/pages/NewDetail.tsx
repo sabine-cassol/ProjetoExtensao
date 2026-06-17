@@ -5,9 +5,11 @@ import { AppSidebar } from "../components/app-sidebar.tsx"
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
-import { Calendar,ArrowLeft,User } from 'lucide-react'
+import { Calendar, ArrowLeft, User } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext.tsx'
 
 function NewDetail() {
+    const { role } = useAuth();
     const { noticiaId } = useParams<{ noticiaId: string }>();
 
     const noticia = NEWS.find(n => n.id == noticiaId);
@@ -22,7 +24,7 @@ function NewDetail() {
     }
     return (
         <>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
                 <div className="flex flex-col w-screen min-h-screen ">
                     <Header />
                     <div className="flex flex-1 w-full">

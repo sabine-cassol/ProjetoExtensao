@@ -22,7 +22,7 @@ function ProjectDetail() {
 
     return (
         <>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
                 <div className="flex flex-col w-screen min-h-screen">
                     <Header />
                     <div className="flex flex-1 w-full ">
@@ -89,7 +89,7 @@ function ProjectDetail() {
                     </div>
                 </div>
             </SidebarProvider>
-            <Footer/>
+            <Footer />
         </>
     )
 }
