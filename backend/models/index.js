@@ -15,7 +15,6 @@ const Projeto_extensao = ProjetoExtensaoModel(sequelize);
 const Inscricao_projeto = inscricaoProjeto(sequelize); 
 
 
-//relacionamento 1 para muitos de aluno e presença
 Aluno.hasMany(Presenca, {
     foreignKey: "alunoId",
     as: "presencas"
@@ -23,6 +22,15 @@ Aluno.hasMany(Presenca, {
 Presenca.belongsTo(Aluno, {
     foreignKey: "alunoId",
     as: "aluno"
+});
+
+Atividade.hasMany(Presenca, {
+    foreignKey: "atividadeId",
+    as: "presencas"
+});
+Presenca.belongsTo(Atividade, {
+    foreignKey: "atividadeId",
+    as: "atividade"
 });
 
 Professor.hasMany(Projeto_extensao, {

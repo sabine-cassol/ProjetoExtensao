@@ -38,7 +38,7 @@ export default (Projeto_extensao) => {
             const projeto = await Projeto_extensao.findByPk(id);
             if (!projeto) return null;
             await projeto.update(novoProjeto);
-            return projeto;
+            return Projeto_extensao.update(novoProjeto);
         },
 
         async deletar(id) {
