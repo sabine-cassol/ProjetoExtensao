@@ -12,11 +12,11 @@ function Header() {
 
     return (
         <>
-            <header className="top-0 sticky z-500 w-full border-b border-zinc-300 bg-background ">
+            <header className="top-0 sticky z-50 w-full border-b border-zinc-300 bg-background ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
-                    <div className="flex justify-between items-center h-16">
+                    <div className="grid grid-cols-3 items-center h-16">
 
-                        <div className="flex flex-row justify-self-start items-center gap-3">
+                        <div className="flex justify-self-start items-center gap-3">
 
                             {(role === 'student' || role === 'teacher') ? (
                                 <button
@@ -40,17 +40,17 @@ function Header() {
                             </picture>
                         </div>
 
-                        <nav className="hidden md:flex justify-center items-center gap-8 font-medium text-[1rem]">
-                            <Link to='/' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
+                        <nav className="hidden md:flex justify-center items-center gap-1 lg:gap-8 font-medium text-[1rem] w-full">
+                            <Link to='/' className=" cursor-pointer  rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
                                 Início
                             </Link>
-                            <Link to='/Notícias' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
+                            <Link to='/Notícias' className=" cursor-pointer rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
                                 Notícias
                             </Link>
-                            <Link to='/Projetos' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
+                            <Link to='/Projetos' className=" cursor-pointer rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10 ">
                                 Projetos
                             </Link>
-                            <Link to='/Contato' className="scroll-mt-10 cursor-pointer relative rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
+                            <Link to='/Contato' className=" cursor-pointer rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-500/10">
                                 Contato
                             </Link>
                         </nav>
