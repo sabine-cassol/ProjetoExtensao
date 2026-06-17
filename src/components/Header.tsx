@@ -12,7 +12,7 @@ function Header() {
 
     return (
         <>
-            <header className="top-0 sticky z-50 w-full border-b border-zinc-300 bg-background ">
+            <header className="top-0 sticky z-500 w-full border-b border-zinc-300 bg-background ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
                     <div className="grid grid-cols-3 items-center h-16">
 

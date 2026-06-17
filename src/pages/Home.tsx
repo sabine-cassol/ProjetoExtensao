@@ -1,33 +1,53 @@
-import { Carousel,CarouselContent,CarouselItem,CarouselNext,CarouselPrevious,} from "@/components/ui/carousel"
-import { Globe, Clock4, FileText, ScrollText } from 'lucide-react'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Globe, Clock4, FileText, ScrollText, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
 function Home() {
     return (
         <>
-            <main className="p-4 flex-1 bg-zinc-50/50">
-                <h1 className="text-4xl font-bold overflow-hidden"> Início </h1>
-                <div className="w-full max-w-6xl mx-auto border border-zinc-400 bg-card mt-6">
-                    <Carousel
-                        className="w-full"
-                        opts={{
-                            align: "start",
-                            loop: true,
-                            watchSlides: true,
-                        }}
-                    >
-                        <CarouselContent className="ml-0">
+            <main className="p-4 flex-1 bg-zinc-50/50 overflow-hidden">
+
+                <div className=" max-w-6xl ">
+                    <div className="w-full mx-auto border border-zinc-400 bg-card mt-6 relative group rounded-md overflow-hidden">
+                        <Swiper
+                            modules={[Navigation, Autoplay]}
+                            navigation={{
+                                prevEl: '.swiper-button-custom-prev',
+                                nextEl: '.swiper-button-custom-next',
+                            }}
+                            loop={true}
+                            spaceBetween={0}
+                            slidesPerView={1}
+                            breakpoints={{
+                                768: {
+                                    slidesPerView: 2,
+                                },
+                            }}
+
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false,
+                            }}
+                            className="w-full"
+                        >
                             {Array.from({ length: 6 }).map((_, index) => (
-                                <CarouselItem key={index} className="pl-0 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                                    <div className="flex aspect-video items-center justify-center bg-muted text-foreground border-r last:border-r-0 rounded-none h-48">
+                                <SwiperSlide key={index}>
+                                    <div className="flex w-full aspect-3/2 items-center justify-center bg-muted text-foreground border-zinc-400 md:border-r md:last:border-r-0 select-none">
                                         <span className="text-2xl font-semibold">{index + 1}</span>
                                     </div>
-                                </CarouselItem>
+                                </SwiperSlide>
                             ))}
-                        </CarouselContent>
+                        </Swiper>
+                        <button className="swiper-button-custom-prev hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-background border border-zinc-300 w-10 h-10 rounded-full items-center justify-center cursor-pointer shadow-md hover:bg-accent transition-colors disabled:opacity-50">
+                            <ChevronLeft className="h-4 w-4 text-foreground" />
+                        </button>
 
-                        <CarouselPrevious className="left-4" />
-                        <CarouselNext className="right-4" />
-                    </Carousel>
+                        <button className="swiper-button-custom-next hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-background border border-zinc-300 w-10 h-10 rounded-full items-center justify-center cursor-pointer shadow-md hover:bg-accent transition-colors disabled:opacity-50">
+                            <ChevronRight className="h-4 w-4 text-foreground" />
+                        </button>
+
+                    </div>
                 </div>
                 <div className='mt-12'>
                     <h2 className=' justify-self-center text-(--darkBlue) text-3xl font-bold'>
