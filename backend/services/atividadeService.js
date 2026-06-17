@@ -29,8 +29,7 @@ export default (atividadeRepository) => {
                 throw new Error("Atividade não encontrada");
             }
             atividadeDesativada.ativo = false;
-            await atividadeDesativada.save();
-            return atividadeDesativada;
+            return atividadeRepository.atualizarAtividade(id, atividadeDesativada);
         },
         async ativarAtividade(id) {
             const atividadeAtivada = await atividadeRepository.buscarPorId(id);
@@ -38,8 +37,7 @@ export default (atividadeRepository) => {
                 throw new Error("Atividade não encontrada");
             }
             atividadeAtivada.ativo = true;
-            await atividadeAtivada.save();
-            return atividadeAtivada;
+            return atividadeRepository.atualizarAtividade(id, atividadeAtivada);
         }
     }
 }

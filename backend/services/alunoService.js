@@ -71,8 +71,7 @@ export default (alunoRepository) => {
                 throw new Error("Aluno não encontrado");
             }
             alunoDesativado.ativo = false;
-            await alunoDesativado.save();
-            return alunoDesativado;
+            return alunoRepository.atualizarAluno(id, alunoDesativado);
         },
 
         async ativarAluno(id) {
@@ -81,8 +80,7 @@ export default (alunoRepository) => {
                 throw new Error("Aluno não encontrado");
             }
             alunoAtivado.ativo = true;
-            await alunoAtivado.save();
-            return alunoAtivado;
+            return alunoRepository.atualizarAluno(id, alunoAtivado);
         }
     }
 

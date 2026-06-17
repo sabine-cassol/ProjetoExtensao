@@ -29,8 +29,7 @@ export default (projetoRepository) => {
                 throw new Error("Projeto de extensão não encontrado");
             }
             projetoDesativado.ativo = false;
-            await projetoDesativado.save();
-            return projetoDesativado;
+            return projetoRepository.atualizarProjeto(id, projetoDesativado);
         },
         async ativarProjeto(id) {
             const projetoAtivado = await projetoRepository.buscarPorId(id);
@@ -38,8 +37,7 @@ export default (projetoRepository) => {
                 throw new Error("Projeto de extensão não encontrado");
             }
             projetoAtivado.ativo = true;
-            await projetoAtivado.save();
-            return projetoAtivado;
+            return projetoRepository.atualizarProjeto(id, projetoAtivado);
         }
     }
 }

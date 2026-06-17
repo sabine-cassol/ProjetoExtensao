@@ -73,8 +73,7 @@ export default (professorRepository) => {
                 throw new Error("Professor não encontrado");
             }
             professorDesativado.ativo = false;
-            await professorDesativado.save();
-            return professorDesativado;
+            return professorRepository.atualizarProfessor(id, professorDesativado);
         },
 
         async ativarProfessor(id) {
@@ -83,8 +82,7 @@ export default (professorRepository) => {
                 throw new Error("Professor não encontrado");
             }
             professorAtivado.ativo = true;
-            await professorAtivado.save();
-            return professorAtivado;
+            return professorRepository.atualizarProfessor(id, professorAtivado);
         }
     }
 }
