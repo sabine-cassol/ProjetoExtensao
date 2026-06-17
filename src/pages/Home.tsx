@@ -33,7 +33,7 @@ function Home() {
                                     opts={{
                                         align: "start",
                                         loop: true,
-                                        watchSlides: true, // Melhora a resposta ao clique/foco
+                                        watchSlides: true, 
                                     }}
                                 >
                                     <CarouselContent className="ml-0">
