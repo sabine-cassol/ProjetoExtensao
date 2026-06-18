@@ -1,8 +1,9 @@
 import express from "express";
-import {Presenca, Atividade, Inscricao_projeto} from "../models/index.js";
+import {Presenca, Atividade, Inscricao_projeto, Aluno} from "../models/index.js";
 import presencaRepository from "../repositories/presencaRepository.js";
 import atividadeRepository from "../repositories/atividadeRepository.js";
 import inscricaoRepository from "../repositories/inscricaoProjetoRepository.js";
+import alunoRepository from "../repositories/alunoRepository.js";
 import presencaService from "../services/presencaService.js";
 import presencaController from "../controllers/presencaController.js";
 import autenticar from "../middlewares/autenticar.js";
@@ -13,7 +14,8 @@ const router = express.Router();
 const presencaRepo = presencaRepository(Presenca);
 const atividadeRepo = atividadeRepository(Atividade);
 const inscricaoRepo = inscricaoRepository(Inscricao_projeto);
-const service = presencaService(presencaRepo, atividadeRepo, inscricaoRepo);
+const alunoRepo = alunoRepository(Aluno);
+const service = presencaService(presencaRepo, atividadeRepo, inscricaoRepo, alunoRepo);
 const controller = presencaController(service);
 
 router.post("/checkin", autenticar, autorizar("aluno"), (req, res) => controller.fazerCheckIn(req, res));

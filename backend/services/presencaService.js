@@ -1,4 +1,4 @@
-export default (presencaRepository, atividadeRepository, inscricaoRepository) => {
+export default (presencaRepository, atividadeRepository, inscricaoRepository, alunoRepository) => {
     return {
         async registrarCheckIn(alunoId, dados) {
             const atividade = await atividadeRepository.buscarPorId(dados.atividadeId);
@@ -21,7 +21,16 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository) =>
             }
             presenca.dataHoraCheckOut = new Date();
             presenca.localizacaoCheckOut = dados.localizacaoCheckOut;
-            return presencaRepository.atualizarPresenca(presenca.id, presenca);
+
+            const horasExtensao = Math.floor((presenca.dataHoraCheckOut - presenca.dataHoraCheckIn) / (1000 * 60 * 60));
+            const aluno = await alunoRepository.buscarPorId(alunoId);
+            aluno.horasExtensao += horasExtensao;
+            await alunoRepository.atualizarAluno(aluno.id, { horasExtensao: aluno.horasExtensao });
+
+            return presencaRepository.atualizarPresenca(presenca.id, {
+                dataHoraCheckOut: presenca.dataHoraCheckOut,
+                localizacaoCheckOut: presenca.localizacaoCheckOut
+            });
         },
         async listarPresencasPorAluno(alunoId) {
             return presencaRepository.listarTodasPorAluno(alunoId);

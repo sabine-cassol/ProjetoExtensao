@@ -2,7 +2,7 @@ export default (presencaService) => {
     return {
         async fazerCheckIn(req, res) {
             try {
-                const presenca = await presencaService.registrarCheckIn(req.user.id, req.body);
+                const presenca = await presencaService.registrarCheckIn(req.usuario.id, req.body);
                 const dados = presenca.toJSON();
                 res.status(201).json(dados);
             } catch (erro) {
@@ -11,7 +11,7 @@ export default (presencaService) => {
         },
         async fazerCheckOut(req, res) {
             try {
-                const presenca = await presencaService.registrarCheckOut(req.user.id, req.body);
+                const presenca = await presencaService.registrarCheckOut(req.usuario.id, req.body);
                 const dados = presenca.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
