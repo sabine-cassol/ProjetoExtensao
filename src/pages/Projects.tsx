@@ -6,7 +6,7 @@ function Projects() {
 
     return (
         <>
-            <main className="p-4 ">
+            <main className="">
                 <h1 className="text-4xl font-bold overflow-hidden leading-tight">Projetos</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                     {PROJECTS.map((projeto) => (

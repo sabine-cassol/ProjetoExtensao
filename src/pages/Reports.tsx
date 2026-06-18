@@ -3,7 +3,7 @@ function Reports() {
     return (
         <>
 
-            <main className="p-4 flex-1">
+            <main className="flex-1">
                 <h1 className="text-4xl font-bold overflow-hidden">Relatórios</h1>
                 <section className='mt-4'>
 

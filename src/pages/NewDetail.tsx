@@ -21,7 +21,7 @@ function NewDetail() {
     return (
         <>
 
-            <main className="flex-1 p-6 bg-zinc-50/50">
+            <main className="flex-1 bg-zinc-50/50">
                 <h1 className="text-2xl font-bold">
                     <Link to="/Notícias" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 mb-6 transition-colors">
                         <ArrowLeft size={16} /> Voltar para Notícias

@@ -18,7 +18,7 @@ function ProjectDetail() {
 
     return (
         <>
-            <main className="flex-1 p-6 bg-zinc-50/50">
+            <main className="flex-1 bg-zinc-50/50">
                 <section className="cursor-default">
                     <div className='bg-white border border-zinc-200 p-4'>
 

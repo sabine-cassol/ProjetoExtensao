@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin } from 'lucide-react'
 function Contact() {
     return (
         <>
-            <main className=" p-4 flex-1 ">
+            <main className=" flex-1 ">
                 <h1 className="text-4xl font-bold overflow-hidden">Contato</h1>
                 <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
 

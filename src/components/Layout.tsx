@@ -17,7 +17,7 @@ function Layout() {
           <AppSidebar />
           
 
-          <main className="flex-1">
+          <main className="flex-1 overflow-hidden p-4">
             <Outlet />
           </main>
         </div>

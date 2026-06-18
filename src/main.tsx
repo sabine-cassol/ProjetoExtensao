@@ -12,23 +12,28 @@ import ProjectDetail from './pages/ProjectDetail.tsx'
 import Contact from './pages/Contact.tsx'
 import Activities from './pages/Activities.tsx'
 import Reports from './pages/Reports.tsx'
+import Debug from './pages/Debug.tsx'
 
 import './index.css'
 
 const router = createBrowserRouter([
   {
-    // Rota de Login isolada (sem o Header, Sidebar e Footer)
     path: "/Login",
     element: <Login />,
   },
+
   {
     // O Layout vira a raiz para todas as outras rotas
     path: "/",
-    element: <Layout />, 
+    element: <Layout />,
     children: [
       {
         path: "/", // Corresponde exatamente a o caminho "/"
         element: <Home />,
+      },
+      {
+        path: "/Debug",
+        element: <Debug />,
       },
       {
         path: "/Notícias",
