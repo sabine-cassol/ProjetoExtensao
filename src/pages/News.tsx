@@ -7,7 +7,7 @@ function News() {
         <>
             <main className=" flex-1 bg-zinc-50/50">
                 <div className="min-h-screen ">
-                    <div className="max-w-4xl mx-auto">
+                    <div className=" w-full mx-auto">
                         <h1 className="text-3xl font-bold text-zinc-900 mb-2 ">Mural de Notícias</h1>
                         <p className="text-sm text-zinc-500 mb-8">Fique por dentro das últimas atualizações do campus.</p>
 
@@ -23,7 +23,7 @@ function News() {
                                         <div>
                                             <h2 className="text-[1.30rem] font-bold text-cyan-950 mb-2">{noticia.titulo}</h2>
                                             <span className="text-xs text-zinc-400 font-medium block mb-2">{noticia.data}</span>
-                                            <p className="text-zinc-600 text-sm mb-4 ">{noticia.resumo}</p>
+                                            <p className="text-zinc-600 text-sm mb-4 line-clamp-3 md:line-clamp-2 ">{noticia.resumo}</p>
                                         </div>
                                     </Link>
                                 </article>

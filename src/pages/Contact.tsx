@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin } from 'lucide-react'
 
+
 function Contact() {
     return (
         <>
@@ -35,14 +36,11 @@ function Contact() {
                         <Mail className="w-5 h-5 text-primary shrink-0" />
                         <div>
                             <p className="text-sm font-medium">Instagram</p>
-                            <a href="https://github.com/seuuser" target="_blank" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                Instagram.com/extensão
-                            </a>
+                            <p className="text-sm text-muted-foreground">extensão</p>
                         </div>
                     </div>
                 </div>
-
-            </main>
+        </main >
         </>
     )
 }
