@@ -88,21 +88,21 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 ### Inscrições
 
-- [ ] Rota para aluno se inscrever em um projeto
-- [ ] Rota para professor visualizar alunos inscritos
-- [ ] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
+- [x] Rota para aluno se inscrever em um projeto
+- [x] Rota para professor visualizar alunos inscritos
+- [x] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
 
 ### Presença
 
-- [ ] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
-- [ ] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
-- [ ] Validação: não permitir check-in duplo na mesma atividade
-- [ ] Validação: não permitir check-out sem check-in aberto
+- [x] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
+- [x] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
+- [x] Validação: não permitir check-in duplo na mesma atividade
+- [x] Validação: não permitir check-out sem check-in aberto
 
 ### Controle de horas
 
-- [ ] Calcular horas ao fazer check-out
-- [ ] Atualizar `horasExtensao` no model Aluno
+- [x] Calcular horas ao fazer check-out
+- [x] Atualizar `horasExtensao` no model Aluno
 - [ ] Rota para aluno consultar histórico de horas por projeto
 
 ### Notícias
