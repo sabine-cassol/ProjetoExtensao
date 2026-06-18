@@ -149,8 +149,8 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 | 2      | 2    |
 | 3      | 3    |
 
-| Banco de dados  | Documentação |
+| Testes  | Documentação |
 | -------|------|
-| 1  Ramon Albini| 1 Lucas Wessendorf de Araujo |
+| 1 Felipe Guimarães     | 1 Matheus da Silva |
 | 2      | 2    |
 | 3      | 3    |
