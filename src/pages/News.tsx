@@ -6,7 +6,7 @@ function News() {
     return (
         <>
             <main className=" flex-1 bg-zinc-50/50">
-                <div className="min-h-screen ">
+                <div className="min-h-full ">
                     <div className=" w-full mx-auto">
                         <h1 className="text-3xl font-bold text-zinc-900 mb-2 ">Mural de Notícias</h1>
                         <p className="text-sm text-zinc-500 mb-8">Fique por dentro das últimas atualizações do campus.</p>

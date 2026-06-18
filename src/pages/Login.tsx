@@ -35,7 +35,7 @@ export default function Login() {
     <section className="p-4 min-h-screen flex border bg-zinc-50/50 overflow-x-hidden">
 
       <section className='border border-zinc-200 bg-white w-full flex-1 flex justify-center items-center rounded-lg flex-row'>
-        <section className='w-1/2 h-full flex items-center justify-center  rounded-md '>
+        <section className='w-1/2 h-full hidden md:flex items-center justify-center  rounded-md '>
           <img src={Extension} className='absolute opacity-30 aspect-square min-w-65 bottom-0 left-0' />
           <div className='p-24 flex flex-col gap-4'>
             <h1 className='text-4xl font-bold text-(--darkBlue)'>
