@@ -5,9 +5,10 @@ function Reports() {
 
             <main className="flex-1">
                 <h1 className="text-4xl font-bold overflow-hidden">Relatórios</h1>
-                <section className='mt-4'>
+                <section className='mt-4 w-full'>
+                    <div className="w-full overflow-x-auto border border-zinc-200 dark:border-zinc-800 ">
 
-                    <table className="min-w-full divide-y border border-zinc-200 border-collapse text-align-center divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
+                    <table className="min-w-full divide-y text-align-center divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
                         <thead className="border-bottom border-zinc-200">
                             <tr>
                                 <th className="px-4 py-3 text-left font-semibold text-[rgba(44,44,44,.50)] font-segoe">Nome completo</th>
@@ -34,6 +35,8 @@ function Reports() {
                             </tr>
                         </tfoot>
                     </table>
+                    </div>
+
                 </section>
             </main>
 
