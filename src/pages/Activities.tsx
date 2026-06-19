@@ -24,7 +24,6 @@ function Activities() {
                                     <td className="px-4 py-3 font-segoe">15/12/2026</td>
                                     <td className="px-4 py-3 font-segoe">360h</td>
                                 </tr>
-
                                 <tr className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors font-segoe">
                                     <td className="px-4 py-3 font-segoe">Introdução à Inteligência Artificial</td>
                                     <td className="px-4 py-3 font-segoe">05/04/2026</td>
