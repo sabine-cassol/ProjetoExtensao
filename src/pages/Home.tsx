@@ -4,7 +4,7 @@ import Carrousel from '../components/Carrousel.tsx';
 function Home() {
     return (
         <>
-            <main>
+            <section>
             <Carrousel/>
 
                 <div className='mt-12 space-y-4'>
@@ -16,7 +16,7 @@ function Home() {
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora ut amet autem quia odit qui, excepturi, quae modi sed, labore obcaecati molestiae culpa? Repudiandae voluptatem officia aperiam blanditiis dolorum dolorem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, cum dolorem sapiente maxime, fuga eum in ex repellendus reiciendis quod minima consequuntur, nam ea quasi? Illum itaque asperiores quisquam sed?
                     </p>
                 </div>
-                <section className='mt-20'>
+                <section className='my-20 '>
                     <section className='grid grid-cols-2 lg:grid-cols-4 gap-8'>
                         <div className='flex justify-center text-center items-center flex-col gap-4'>
                             <div className='bg-(--lightCyan) p-6 rounded-xl text-white '>
@@ -44,7 +44,7 @@ function Home() {
                         </div>
                     </section>
                 </section>
-            </main>
+            </section>
         </>
     )
 }

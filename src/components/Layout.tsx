@@ -10,7 +10,7 @@ function Layout() {
 
   return (
     <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
-      <div className="flex flex-col w-screen min-h-screen bg-zinc-50/50">
+      <div className="flex flex-col w-full min-h-dvh bg-zinc-50/50">
         <Header />
         
         <div className="flex flex-1 w-full items-start">
