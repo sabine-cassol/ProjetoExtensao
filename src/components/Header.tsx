@@ -15,7 +15,7 @@ function Header() {
         <>
             <header className="top-0 sticky z-60 w-full border-b border-zinc-300 bg-background pointer-events-auto ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
-                    <div className="grid grid-cols-3 items-center h-16">
+                    <div className="flex items-center justify-between h-16 md:grid md:grid-cols-3">
 
                         <div className="flex justify-self-start items-center gap-3">
 
@@ -31,7 +31,10 @@ function Header() {
                                 </button>
                             ) : role === 'guest' ? (
                                 <button
-                                    onClick={toggleSidebar}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleSidebar();
+                                    }}
                                     className="flex md:hidden items-center justify-center h-9 w-9 rounded-full cursor-pointer transition-colors duration-200 hover:bg-zinc-500/10 active:bg-zinc-500/20 focus:outline-hidden"
                                 >
                                     <Menu className="h-5 w-5 text-foreground" />

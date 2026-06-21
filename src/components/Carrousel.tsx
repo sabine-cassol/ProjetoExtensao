@@ -12,7 +12,7 @@ function Carrousel() {
             <section >
                 <div className="w-full max-w-7xl overflow-hidden">
                     <div className="w-full border border-zinc-400 bg-card mt-2 relative group rounded-md overflow-hidden">
-                    <h1 className='absolute z-10 text-3xl font-semibold top-2 left-3 '>Notícias</h1>
+                    <h1 className='absolute z-10 text-xl md:text-3xl font-semibold top-2 left-3 '>Notícias</h1>
                         <Swiper
                             modules={[Navigation, Autoplay]}
                             navigation={{

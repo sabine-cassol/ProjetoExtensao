@@ -44,11 +44,15 @@ const items = [
 
 export function AppSidebar() {
   const { role } = useAuth();
+
   const filteredItems = items.filter(item => {
-    if (!item.roles) return true
-    return item.roles.includes(role)
-  })
-  
+    if (item.roles && !item.roles.includes(role)) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <Sidebar variant="sidebar" className=" bg-zinc-900">
       <SidebarContent className="pt-16">
@@ -56,7 +60,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {filteredItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className={item.mobileOnly ? "md:hidden" : ""}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
                       <item.icon />
