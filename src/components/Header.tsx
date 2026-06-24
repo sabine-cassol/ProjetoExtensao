@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 
 
 function Header() {
-
+ 
     const { toggleSidebar } = useSidebar();
     const { role } = useAuth();
 

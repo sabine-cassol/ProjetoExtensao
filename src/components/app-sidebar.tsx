@@ -1,5 +1,5 @@
 import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3 } from "lucide-react"
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { useSidebar, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 
@@ -45,16 +45,23 @@ const items = [
 export function AppSidebar() {
   const { role } = useAuth();
 
+  const { setOpenMobile, isMobile } = useSidebar();
+
   const filteredItems = items.filter(item => {
     if (item.roles && !item.roles.includes(role)) {
       return false;
     }
-
     return true;
   });
 
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   return (
-    <Sidebar variant="sidebar" className=" bg-zinc-900">
+    <Sidebar variant="sidebar" className="border-r border-zinc-400 bg-zinc-900">
       <SidebarContent className="pt-16">
         <SidebarGroup>
           <SidebarGroupContent>
@@ -62,7 +69,7 @@ export function AppSidebar() {
               {filteredItems.map((item) => (
                 <SidebarMenuItem key={item.title} className={item.mobileOnly ? "md:hidden" : ""}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link to={item.url} onClick={handleLinkClick}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
