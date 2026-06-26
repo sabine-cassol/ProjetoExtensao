@@ -20,7 +20,7 @@ function ProjectDetail() {
         <>
             <main className="flex-1 bg-zinc-50/50">
                 <section className="cursor-default">
-                    <div className='bg-white border border-zinc-200 p-4'>
+                    <div className='bg-white border border-zinc-300 p-4'>
 
                         <section>
                             <h1 className='text-2xl font-bold'> {projeto.titulo}</h1>
@@ -33,6 +33,97 @@ function ProjectDetail() {
                                 <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>Inscrito/Não inscrito</p>
                             </section>
                         ) : null}
+
+                        <div className="mt-4 overflow-x-auto">
+                            <table className="min-w-full border-collapse font-segoe text-sm text-[#626262] border border-gray-300">
+                                <tbody className="divide-y divide-gray-200">
+                                    {projeto.tipo && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Tipo</td>
+                                            <td className="px-3 py-2 text-justify ">{projeto.tipo}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.unidade && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Unidade</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.unidade}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.semestre && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Semestre</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.semestre}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.vagas && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Vagas</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.vagas}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.ciclo && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Ciclo</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.ciclo}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.eixo && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Eixo</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.eixo}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.competencia && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Competência</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.competencia}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.ods && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">ODS</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.ods}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.periodoInscricao && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Período de Inscrição</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.periodoInscricao}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.periodoExecucao && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Período de Execução</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.periodoExecucao}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.cursosVinculados && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.cursosVinculados}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.parceiros && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Parceiros</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.parceiros}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.colaboradores && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Colaboradores</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.colaboradores}</td>
+                                        </tr>
+                                    )}
+                                    {projeto.comunidadeParticipante && (
+                                        <tr>
+                                            <td className="px-3 py-2 font-bold text-zinc-900">Comunidade Participante</td>
+                                            <td className="px-3 py-2 text-justify">{projeto.comunidadeParticipante}</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
 
                         {projeto.pretensao && projeto.pretensao.length > 0 ? (
                             <section className="mt-3">
@@ -58,6 +149,8 @@ function ProjectDetail() {
                                 <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{projeto.detalhes}</p>
                             </section>
                         ) : null}
+
+
 
                         {role === 'guest' ? (
                             <section>
