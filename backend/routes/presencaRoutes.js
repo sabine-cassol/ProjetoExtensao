@@ -24,5 +24,6 @@ router.put("/checkout", autenticar, autorizar("aluno"), (req, res) => controller
 
 router.get("/aluno/:id", autenticar, autorizar("professor"), (req, res) => controller.buscarTodasPresencasDoAluno(req, res));
 router.get("/me", autenticar, autorizar("aluno"), (req, res) => controller.listarPresencasPorAluno(req, res));
+router.get("/me/horas/:projetoId", autenticar, autorizar("aluno"), (req, res) => controller.getHorasExtensaoPorProjeto(req, res));
 
 export default router;

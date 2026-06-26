@@ -32,6 +32,17 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
                 localizacaoCheckOut: presenca.localizacaoCheckOut
             });
         },
+        async getHorasExtensaoPorProjeto(alunoId, projetoId) {
+            const presencas = await presencaRepository.listarPresencasPorAlunoEProjeto(alunoId, projetoId);
+            let totalHoras = 0;
+            for (const presenca of presencas) {
+                if (presenca.dataHoraCheckOut && presenca.dataHoraCheckIn) {
+                    const horas = Math.floor((presenca.dataHoraCheckOut - presenca.dataHoraCheckIn) / (1000 * 60 * 60));
+                    totalHoras += horas;
+                }
+            }
+            return totalHoras;
+        },
         async listarPresencasPorAluno(alunoId) {
             return presencaRepository.listarTodasPorAluno(alunoId);
         }

@@ -35,6 +35,14 @@ export default (presencaService) => {
             } catch (erro) {
                 res.status(400).json({erro : erro.message});
             }
+        },
+        async getHorasExtensaoPorProjeto(req, res) {
+            try {
+                const totalHoras = await presencaService.getHorasExtensaoPorProjeto(req.usuario.id, req.params.projetoId);
+                res.status(200).json({ totalHoras });
+            } catch (erro) {
+                res.status(400).json({erro : erro.message});
+            }
         }
     }
 }

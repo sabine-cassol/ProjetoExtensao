@@ -1,3 +1,5 @@
+import { Atividade } from '../models/index.js';
+
 export default (Presenca) => {
     return {
         async criarCheckIn(dados) {
@@ -27,6 +29,20 @@ export default (Presenca) => {
             if (!presenca) return null;
             await presenca.update(novoPresenca);
             return presenca;
+        },
+        async listarPresencasPorAlunoEProjeto(alunoId, projetoId) {
+            return Presenca.findAll({
+                where: {
+                    alunoId: alunoId
+                },
+                include: [
+                    {
+                        model: Atividade,
+                        where: { projetoId: projetoId },
+                        attributes: []
+                    }
+                ]
+            });
         }
     }
 }

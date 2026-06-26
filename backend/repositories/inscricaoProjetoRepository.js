@@ -30,7 +30,7 @@ export default (Inscricao_projeto) => {
             });
         },
         
-        async buscarIncricao(alunoId, projetoId) {  
+        async buscarInscricao(alunoId, projetoId) {  
             return Inscricao_projeto.findOne({
                 where: { alunoId, projetoId }
             });
