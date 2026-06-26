@@ -5,8 +5,51 @@ function Activities() {
             <main className=" flex-1 ">
                 <h1 className="text-4xl font-bold overflow-hidden ">Atividades</h1>
                 <section className='mt-4'>
-                    <div className="w-full overflow-x-auto border border-zinc-200 dark:border-zinc-800 ">
+                    <div className="block md:hidden space-y-4">
+                        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
+                            <div className="mb-2">
+                                <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome</span>
+                                <span className="font-medium text-base">Desenvolvimento Web Full Stack</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+                                <div>
+                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Início</span>
+                                    <span>10/03/2026</span>
+                                </div>
+                                <div>
+                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Encerramento</span>
+                                    <span>15/12/2026</span>
+                                </div>
+                            </div>
+                            <div className="mt-3">
+                                <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Carga horária</span>
+                                <span className="inline-block bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-xs font-medium mt-0.5">360h</span>
+                            </div>
+                        </div>
 
+                        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
+                            <div className="mb-2">
+                                <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome</span>
+                                <span className="font-medium text-base">Introdução à Inteligência Artificial</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+                                <div>
+                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Início</span>
+                                    <span>05/04/2026</span>
+                                </div>
+                                <div>
+                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Encerramento</span>
+                                    <span>28/06/2026</span>
+                                </div>
+                            </div>
+                            <div className="mt-3">
+                                <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Carga horária</span>
+                                <span className="inline-block bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-xs font-medium mt-0.5">60h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="hidden md:block w-full overflow-x-auto border border-zinc-200 dark:border-zinc-800">
                         <table className="min-w-full divide-y border border-zinc-200 border-collapse text-align-center divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
                             <thead className="border-bottom border-zinc-200">
                                 <tr>
@@ -33,7 +76,7 @@ function Activities() {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan={5}> &nbsp;</td>
+                                    <td colSpan={4}> &nbsp;</td>
                                 </tr>
                             </tfoot>
                         </table>
