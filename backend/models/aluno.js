@@ -6,7 +6,12 @@ import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
 
-    class Aluno extends Model { };
+    class Aluno extends Model { 
+        //Método para verificar senha 
+        async verificarSenha(senhaDigita) {
+            return bcrypt.compare(senhaDigita, this.senha);
+        };
+    };
     
     Aluno.init({
         nome: {
@@ -39,6 +44,10 @@ export default (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        ativo: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         sequelize,

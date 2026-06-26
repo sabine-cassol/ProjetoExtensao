@@ -10,7 +10,10 @@ export default (Professor) => {
         },
 
         async buscarPorId(id){
-            return Professor.findByPk(id);
+            return Professor.findByPk(
+                id,
+                {attributes: {exclude: ["senha"]}}
+            );
         },
 
         async listarTodos() {
@@ -19,10 +22,12 @@ export default (Professor) => {
             });
         },
 
+
         async atualizarProfessor(id, novoProfessor) {
             const professor = await Professor.findByPk(id);
             if (!professor) return null;
             await professor.update(novoProfessor);
+            return professor;
         },
 
         async deletar(id) {

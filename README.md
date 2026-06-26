@@ -62,48 +62,48 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 - [x] Model — Aluno
 - [x] Model — Professor
-- [ ] Model — Atividade
-- [ ] Model — Presença
-- [ ] Model — Projeto
+- [x] Model — Atividade
+- [x] Model — Presença
+- [x] Model — Projeto
 
 ### Autenticação
 
-- [ ] Repository, Service e Controller de Professor
-- [ ] Repository, Service e Controller de Aluno
-- [ ] Rota de cadastro e login (Professor e Aluno)
-- [ ] Middleware JWT para proteger rotas
-- [ ] Middleware de autorização por tipo de usuário (professor vs aluno)
+- [x] Repository, Service e Controller de Professor
+- [x] Repository, Service e Controller de Aluno
+- [x] Rota de cadastro e login (Professor e Aluno)
+- [x] Middleware JWT para proteger rotas
+- [x] Middleware de autorização por tipo de usuário (professor vs aluno)
 
 ### Projetos
 
-- [ ] Repository, Service e Controller de Projeto
-- [ ] Rota pública para visitantes visualizarem projetos
-- [ ] Rota protegida para professor criar, editar e deletar projetos
+- [x] Repository, Service e Controller de Projeto
+- [x] Rota pública para visitantes visualizarem projetos
+- [x] Rota protegida para professor criar, editar e deletar projetos
 
 ### Atividades
 
-- [ ] Repository, Service e Controller de Atividade
-- [ ] Atividade sempre vinculada a um `projetoId`
-- [ ] Listagem de atividades por projeto
+- [x] Repository, Service e Controller de Atividade
+- [x] Atividade sempre vinculada a um `projetoId`
+- [x] Listagem de atividades por projeto
 
 ### Inscrições
 
-- [ ] Rota para aluno se inscrever em um projeto
-- [ ] Rota para professor visualizar alunos inscritos
-- [ ] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
+- [x] Rota para aluno se inscrever em um projeto
+- [x] Rota para professor visualizar alunos inscritos
+- [x] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
 
 ### Presença
 
-- [ ] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
-- [ ] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
-- [ ] Validação: não permitir check-in duplo na mesma atividade
-- [ ] Validação: não permitir check-out sem check-in aberto
+- [x] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
+- [x] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
+- [x] Validação: não permitir check-in duplo na mesma atividade
+- [x] Validação: não permitir check-out sem check-in aberto
 
 ### Controle de horas
 
-- [ ] Calcular horas ao fazer check-out
-- [ ] Atualizar `horasExtensao` no model Aluno
-- [ ] Rota para aluno consultar histórico de horas por projeto
+- [x] Calcular horas ao fazer check-out
+- [x] Atualizar `horasExtensao` no model Aluno
+- [x] Rota para aluno consultar histórico de horas por projeto
 
 ### Notícias
 
@@ -149,8 +149,8 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 | 2      | 2    |
 | 3      | 3    |
 
-| Banco de dados  | Documentação |
+| Testes  | Documentação |
 | -------|------|
-| 1  Ramon Albini| 1 Lucas Wessendorf de Araujo |
+| 1 Felipe Guimarães     | 1 Matheus da Silva |
 | 2      | 2    |
 | 3      | 3    |

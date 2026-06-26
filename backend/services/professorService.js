@@ -67,14 +67,22 @@ export default (professorRepository) => {
             return professor;
         },
 
-        async deletarProfessor(id) {
-            const resultado = await professorRepository.deletar(id);
-            if (!resultado) {
+        async desativarProfessor(id) {
+            const professorDesativado = await professorRepository.buscarPorId(id);
+            if (!professorDesativado) {
                 throw new Error("Professor não encontrado");
             }
-            return true;
+            professorDesativado.ativo = false;
+            return professorRepository.atualizarProfessor(id, professorDesativado);
+        },
+
+        async ativarProfessor(id) {
+            const professorAtivado = await professorRepository.buscarPorId(id);
+            if (!professorAtivado) {
+                throw new Error("Professor não encontrado");
+            }
+            professorAtivado.ativo = true;
+            return professorRepository.atualizarProfessor(id, professorAtivado);
         }
     }
-
-
 }
