@@ -103,7 +103,7 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 - [x] Calcular horas ao fazer check-out
 - [x] Atualizar `horasExtensao` no model Aluno
-- [ ] Rota para aluno consultar histórico de horas por projeto
+- [x] Rota para aluno consultar histórico de horas por projeto
 
 ### Notícias
 
