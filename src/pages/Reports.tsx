@@ -3,10 +3,10 @@ function Reports() {
     return (
         <>
             <main className="flex-1">
-                <h1 className="text-4xl font-bold overflow-hidden">Relatórios</h1>
+                <h1 className="text-4xl font-bold overflow-hidden">Relatórios de presença</h1>
                 <section className='mt-4 w-full'>
                     <div className="block md:hidden space-y-4">
-                        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
+                        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 ">
                             <div className="flex justify-between items-start mb-2">
                                 <div>
                                     <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome completo</span>
@@ -14,16 +14,16 @@ function Reports() {
                                 </div>
                                 <div className="text-right">
                                     <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Data</span>
-                                    <span className="text-zinc-600 dark:text-zinc-400">01/02/2025</span>
+                                    <span className="text-zinc-600 dark:text-zinc-400 font-mono font-semibold">01/02/2025</span>
                                 </div>
                             </div>
 
-                            <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800/50">
+                            <div className="pt-2 border-zinc-100 dark:border-zinc-800/50">
                                 <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Projeto</span>
                                 <span className="font-medium">InovaEdu</span>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-2 mt-3 p-2 bg-zinc-50 dark:bg-zinc-800/40 rounded-md">
+                            <div className="grid grid-cols-2 gap-2 mt-3 p-2">
                                 <div>
                                     <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Entrada</span>
                                     <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold">13:30</span>

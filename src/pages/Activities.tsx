@@ -3,15 +3,15 @@ function Activities() {
     return (
         <>
             <main className=" flex-1 ">
-                <h1 className="text-4xl font-bold overflow-hidden ">Atividades</h1>
+                <h1 className="text-4xl font-bold overflow-hidden ">Minhas Atividades</h1>
                 <section className='mt-4'>
                     <div className="block md:hidden space-y-4">
                         <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
-                            <div className="mb-2">
+                            <div>
                                 <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome</span>
                                 <span className="font-medium text-base">Desenvolvimento Web Full Stack</span>
                             </div>
-                            <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+                            <div className="grid grid-cols-2 gap-2 pt-3">
                                 <div>
                                     <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Início</span>
                                     <span>10/03/2026</span>
@@ -23,16 +23,16 @@ function Activities() {
                             </div>
                             <div className="mt-3">
                                 <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Carga horária</span>
-                                <span className="inline-block bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-xs font-medium mt-0.5">360h</span>
+                                <span className="inline-block py-0.5 rounded text-xs font-medium mt-0.5">360h</span>
                             </div>
                         </div>
 
                         <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
-                            <div className="mb-2">
+                            <div>
                                 <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome</span>
                                 <span className="font-medium text-base">Introdução à Inteligência Artificial</span>
                             </div>
-                            <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+                            <div className="grid grid-cols-2 gap-2 pt-3 border-zinc-100 dark:border-zinc-800/50">
                                 <div>
                                     <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Início</span>
                                     <span>05/04/2026</span>
@@ -44,7 +44,7 @@ function Activities() {
                             </div>
                             <div className="mt-3">
                                 <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Carga horária</span>
-                                <span className="inline-block bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-xs font-medium mt-0.5">60h</span>
+                                <span className="inline-block py-0.5 rounded text-xs font-medium mt-0.5">60h</span>
                             </div>
                         </div>
                     </div>

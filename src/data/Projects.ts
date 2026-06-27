@@ -1,5 +1,5 @@
 export interface Projeto {
-  id: String;
+  id: string;
   titulo: String;
   justificativa: String;
   pretensao: String;

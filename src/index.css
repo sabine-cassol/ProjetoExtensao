@@ -24,6 +24,7 @@
   --lightCyan: #00dbf2;
   --cyanHover: hsl(186, 100%, 30%);
   --darkBlue: #203864;
+  --loginTitle: hsl(199, 80%, 45%); 
   
 
   font: 18px/145% var(--sans);

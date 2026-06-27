@@ -24,7 +24,7 @@ function ProjectDetail() {
 
                         <section>
                             <h1 className='text-2xl font-bold'> {projeto.titulo}</h1>
-                            <div className='bg-[hsl(0,0%,75%)] min-w-3xs h-0.5 mt-2'></div>
+                            <div className='bg-zinc-300 min-w-3xs h-0.5 mt-2'></div>
                         </section>
 
                         {role === 'student' ? (
@@ -127,29 +127,21 @@ function ProjectDetail() {
 
                         {projeto.pretensao && projeto.pretensao.length > 0 ? (
                             <section className="mt-3">
-                                <span className='font-bold text-xs font-segoe text-[#626262]'>Pretensão da atividade</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{projeto.pretensao}</p>
+                                <span className='font-bold text-sm font-segoe text-[#424242]'>Pretensão da atividade</span>
+                                <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.pretensao}</p>
                             </section>) : null}
 
                         {projeto.requisitos && projeto.requisitos.length > 0 ? (
                             <section className="mt-3">
-                                <span className='font-bold text-xs font-segoe text-[#626262]'>Requisitios Técnicos</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{projeto.requisitos}</p>
+                                <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitios Técnicos</span>
+                                <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.requisitos}</p>
                             </section>) : null}
 
                         {projeto.justificativa && projeto.justificativa.length > 0 ? (
                             <section className="mt-3">
-                                <span className='font-bold text-xs font-segoe text-[#626262]'>Justificativa de Relevância</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{projeto.justificativa}</p>
+                                <span className='font-bold text-sm font-segoe text-[#424242]'>Justificativa de Relevância</span>
+                                <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.justificativa}</p>
                             </section>) : null}
-
-                        {projeto.detalhes && projeto.detalhes.length > 0 ? (
-                            <section className="mt-3">
-                                <span className='font-bold text-xs font-segoe text-[#626262]'>Detalhes da Atividade</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{projeto.detalhes}</p>
-                            </section>
-                        ) : null}
-
 
 
                         {role === 'guest' ? (
