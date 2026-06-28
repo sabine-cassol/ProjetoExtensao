@@ -1,8 +1,10 @@
-
 import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
+import { useAuth } from '@/context/AuthContext';
 
 function News() {
+    const { role } = useAuth();
+
     return (
         <>
             <main className=" flex-1 bg-zinc-50/50">
@@ -10,6 +12,16 @@ function News() {
                     <div className=" w-full mx-auto">
                         <h1 className="text-3xl font-bold text-zinc-900 mb-2 ">Mural de Notícias</h1>
                         <p className="text-sm text-zinc-500 mb-8">Fique por dentro das últimas atualizações do campus.</p>
+
+                        <div className="mt-4">
+                            {role === 'teacher' && (<Link to={'/CreateNew'} className="inline-flex items-center gap-2 bg-green-400 hover:bg-green-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 w-fit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">
+                                    <path d="M5 12h14" />
+                                    <path d="M12 5v14" />
+                                </svg>
+                                <span>Criar notícia</span>
+                            </Link>)}
+                        </div>
 
                         <div className="grid gap-6 mt-4">
                             {NEWS.map((noticia) => (

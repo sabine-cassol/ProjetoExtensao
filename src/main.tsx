@@ -13,6 +13,7 @@ import Contact from './pages/Contact.tsx'
 import Activities from './pages/Activities.tsx'
 import Reports from './pages/Reports.tsx'
 import Debug from './pages/Debug.tsx'
+import CreateNew from './pages/CreateNew.tsx'
 
 import './index.css'
 
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "/Relatórios",
         element: <Reports />,
+      },
+      {
+        path: "/CreateNew",
+        element: <CreateNew/>,
       },
     ],
   },
