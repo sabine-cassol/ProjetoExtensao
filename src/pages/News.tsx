@@ -14,7 +14,7 @@ function News() {
                         <p className="text-sm text-zinc-500 mb-8">Fique por dentro das últimas atualizações do campus.</p>
 
                         <div className="mt-4">
-                            {role === 'teacher' && (<Link to={'/CreateNew'} className="inline-flex items-center gap-2 bg-green-400 hover:bg-green-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 w-fit">
+                            {role === 'teacher' && (<Link to={'/CreateNew'} className="inline-flex items-center gap-2 bg-[#2ab646] hover:bg-green-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 w-fit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">
                                     <path d="M5 12h14" />
                                     <path d="M12 5v14" />

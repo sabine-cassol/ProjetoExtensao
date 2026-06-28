@@ -35,10 +35,10 @@ function CreateNew() {
                         <p className="text-[#9198a1]">Notícias podem ser visualizadas por todos usuários do site, incluindo visitantes</p>
                     </div>
                     <div className="mt-4 flex flex-col gap-2 ">
-                        <label htmlFor="input" className="font-semibold">Insira o Título da notícia</label>
-                        <input type="text" required value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
-                        <label htmlFor="input" className="font-semibold">Escreva um resumo para a notícia</label>
-                        <input type="text" required value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <label htmlFor="input" className="font-semibold">Digite o título da notícia</label>
+                        <input type="text" required max="254" value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <label htmlFor="input" className="font-semibold">Digite o resumo da notícia</label>
+                        <input type="text" required max="254" value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                     </div>
                     <div>
                         <Tiptap value={conteudo} onChange={setConteudo} />
@@ -88,7 +88,7 @@ function CreateNew() {
                     <div className="mt-4 flex flex-col gap-2">
                         <div>
                             <h2 className="text-xl font-bold">Prévia da notícia</h2>
-                            <p className="text-[#9198a1]">OBS.: A notícia publicada pode não ficar exatamente igual à prévia por conta do tamanho das páginas e espaçamentos diferentes </p>
+                            <p className="text-[#9198a1] text-xs">OBS.: A notícia publicada pode não ficar exatamente igual à prévia apenas em formatação por conta do tamanho das páginas e espaçamentos diferentes, o conteúdo permanece idêntico </p>
                         </div>
                         <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 shadow-xs">
 
@@ -120,7 +120,7 @@ function CreateNew() {
                     </div>
 
                     <div className="mt-4 flex justify-center items-center">
-                        <button className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer "> Publicar notícia </button>
+                        <button className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 "> Publicar notícia </button>
                     </div>
                 </section>
             </section>
