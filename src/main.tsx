@@ -14,6 +14,7 @@ import Activities from './pages/Activities.tsx'
 import Reports from './pages/Reports.tsx'
 import Debug from './pages/Debug.tsx'
 import CreateNew from './pages/CreateNew.tsx'
+import CreateProject from './pages/CreateProject.tsx'
 
 import './index.css'
 
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/CreateNew",
-        element: <CreateNew/>,
+        element: <CreateNew />,
+      },
+      {
+        path: "/CreateProject",
+        element: <CreateProject />,
       },
     ],
   },
