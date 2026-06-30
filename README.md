@@ -1,23 +1,33 @@
-# Descrição Resumida do Sistema
-O Sistema tem como objetivo facilitar o gerenciamento e a divulgação das atividades de extensão universitárias e suas dependências como controle de horas.  
-A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, alunos registrem presença e acompanhem suas horas, e professores administrem atividades, gerem relatórios e façam o upload de fotos dos eventos e de notícias.
+# Sistema de Extensão Universitária
 
-## 👤 Tipos de usuários
-* Visitantes (interessados nas atividades)
-* Alunos (participantes)
-* Professores (coordenadores dos projetos e administradores)
+Plataforma para gerenciamento e divulgação de atividades de extensão universitária, com controle de presença e horas. Visitantes conhecem os projetos e se inscrevem via formulário externo, alunos registram presença e acompanham suas horas, e professores administram atividades, geram relatórios e publicam notícias.
+
+## 👤 Tipos de usuário
+
+* **Visitante** — conhece os projetos publicamente; inscrição feita via Google Forms vinculado a cada projeto
+* **Aluno** — participa dos projetos, registra presença, acompanha suas horas
+* **Professor** — coordena projetos e atividades, administra notícias, gera relatórios
 
 ## 🎯 Objetivos
-* Divulgação dos projetos de extensão dos cursos;
-* Controle de presença e horas de alunos participantes (check-in/check-out);
-* Emissão de relatórios e ficha de frequência;
-* Upload de fotos das atividades.
+
+* Divulgação dos projetos de extensão dos cursos
+* Controle de presença e horas de alunos participantes (check-in/check-out)
+* Emissão de relatórios e ficha de frequência
+* Upload de fotos das atividades
+
+## 📱 Stack técnica
+
+**Backend** — Node.js + Express, Sequelize sobre MySQL, autenticação JWT via cookie httpOnly, senhas com hash bcrypt. Arquitetura em camadas: Repository → Service → Controller → Routes, com injeção de dependência manual via factory functions.
+
+**Frontend** — React 19 + TypeScript, Vite, Tailwind CSS 4, componentes Radix UI/shadcn, React Router para navegação, Swiper para carrosséis.
+
+**Banco de dados** — MySQL.
+
+**Infraestrutura** — backend e banco dockerizados via Docker Compose para facilitar o setup de ambiente entre os desenvolvedores. Veja [COMO_RODAR_DOCKER_BACKEND.md](./COMO_RODAR_DOCKER_BACKEND.md) para subir o ambiente localmente.
 
 ## ⚙ Funcionalidades
-* CRUD de notícias
-* Sistema de ponto/chamada 
 
-###  Como professor:
+### Como professor:
 * Cadastrar ativadades:
 * Gerar relatórios de alunos participantes;
 * Assinatura online de fichas de frequencia.
@@ -32,18 +42,13 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 * Inscrição nos projetos;
 * Visualizar horarios dos projetos inscritos.
 
-## 📱Tecnologias previstas
-* FrontEnd -> React.js
-* BackEnd -> Node.js
-* Banco de dados -> MySQL
-
 ## Requisitos
 
 | ID |	Requisito |	Tipo | Prioridade | Usuário |
 | --|----------|-----|-----------|--------| 
 | RF01 | Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno |
 | RF02 | CRUD de atividades de extensão |	Funcional	| Alta | Professor |
-| RF03 | Visualização e inscrição em projetos |	Funcional |	Alta | Visitante, Aluno |
+| RF03 | Visualização de projetos e inscrição via formulário externo |	Funcional |	Alta | Visitante |
 | RF04 | Sistema de presença via check-in/check-out |	Funcional |	Alta | Aluno |
 | RF05 | Controle e acompanhamento de horas por atividade |	Funcional |	Alta | Aluno, Professor|
 | RF06 | CRUD de notícias	| Funcional |	Média	| Professor |
@@ -86,7 +91,7 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 - [x] Atividade sempre vinculada a um `projetoId`
 - [x] Listagem de atividades por projeto
 
-### Inscrições
+### Inscrições (alunos)
 
 - [x] Rota para aluno se inscrever em um projeto
 - [x] Rota para professor visualizar alunos inscritos
@@ -103,7 +108,12 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 
 - [x] Calcular horas ao fazer check-out
 - [x] Atualizar `horasExtensao` no model Aluno
-- [ ] Rota para aluno consultar histórico de horas por projeto
+- [x] Rota para aluno consultar histórico de horas por projeto
+
+### Inscrição de visitantes
+
+- [ ] Campo de link do Google Forms vinculado a cada projeto
+- [ ] Exibição do link na página pública do projeto
 
 ### Notícias
 
@@ -122,17 +132,36 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 - [ ] Integração com serviço externo (S3 ou Cloudinary)
 - [ ] Rota de upload vinculada a um projeto ou atividade
 
+### Infraestrutura
+
+- [x] Dockerização do backend e do banco de dados
+- [x] Documentação de setup para novos colaboradores
+
 ---
 
-## Tipos de usuários
+## Tipos de usuários e permissões
 
 | Tipo | Permissões |
 |---|---|
-| Visitante | Visualizar projetos e atividades |
+| Visitante | Visualizar projetos e atividades; inscrição via link externo |
 | Aluno | Inscrição em projetos, check-in/check-out, histórico de horas |
 | Professor | CRUD de projetos e atividades, relatórios, notícias |
 
+---
 
+## Como rodar o projeto
+
+O backend e o banco de dados rodam via Docker. Veja o passo a passo completo em [COMO_RODAR_DOCKER_BACKEND.md](./COMO_RODAR_DOCKER_BACKEND.md).
+
+O frontend roda separadamente com Vite:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
 
 ## Integrantes
 
