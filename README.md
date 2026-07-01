@@ -1,156 +1,199 @@
-# Descrição Resumida do Sistema
-O Sistema tem como objetivo facilitar o gerenciamento e a divulgação das atividades de extensão universitárias e suas dependências como controle de horas.  
-A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, alunos registrem presença e acompanhem suas horas, e professores administrem atividades, gerem relatórios e façam o upload de fotos dos eventos e de notícias.
+# Sistema de Gerenciamento de Projetos de Extensão Universitária
 
-## 👤 Tipos de usuários
-* Visitantes (interessados nas atividades)
-* Alunos (participantes)
-* Professores (coordenadores dos projetos e administradores)
+<p align="center">
 
-## 🎯 Objetivos
-* Divulgação dos projetos de extensão dos cursos;
-* Controle de presença e horas de alunos participantes (check-in/check-out);
-* Emissão de relatórios e ficha de frequência;
-* Upload de fotos das atividades.
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-orange?style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Express](https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-## ⚙ Funcionalidades
-* CRUD de notícias
-* Sistema de ponto/chamada 
-
-###  Como professor:
-* Cadastrar ativadades:
-* Gerar relatórios de alunos participantes;
-* Assinatura online de fichas de frequencia.
-
-### Como Aluno
-* Marcação de presença por meio de um sistema de check-in/check-out (como sistemas de ponto em empresas);
-* Controle de horas e presenças;
-* Upload de fotos das atividades.
-
-### Como visitante
-* Visualizar os projetos disponíveis;
-* Inscrição nos projetos;
-* Visualizar horarios dos projetos inscritos.
-
-## 📱Tecnologias previstas
-* FrontEnd -> React.js
-* BackEnd -> Node.js
-* Banco de dados -> MySQL
-
-## Requisitos
-
-| ID |	Requisito |	Tipo | Prioridade | Usuário |
-| --|----------|-----|-----------|--------| 
-| RF01 | Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno |
-| RF02 | CRUD de atividades de extensão |	Funcional	| Alta | Professor |
-| RF03 | Visualização e inscrição em projetos |	Funcional |	Alta | Visitante, Aluno |
-| RF04 | Sistema de presença via check-in/check-out |	Funcional |	Alta | Aluno |
-| RF05 | Controle e acompanhamento de horas por atividade |	Funcional |	Alta | Aluno, Professor|
-| RF06 | CRUD de notícias	| Funcional |	Média	| Professor |
-| RF07 | Geração de relatórios e ficha de frequência |	Funcional |	Média	| Professor |
-| RF08 | Assinatura online de ficha de frequência	| Funcional	| Média	| Professor |
-| RF09 | Upload de fotos das atividades	| Funcional	| Baixa	| Professor, Aluno |
-| RNF01 |	Autenticação via JWT com proteção de rotas |	Não funcional |	Alta | Sistema |
-| RNF02 |	Senhas armazenadas com hash bcrypt	| Não funcional |	Alta | Sistema |
-| RNF03 |	API REST com Node.js e banco de dados MySQL	| Não funcional |	Alta | Sistema |
+</p>
 
 ---
 
-## Roadmap de desenvolvimento
+# Sobre o Projeto
 
-### Fundação
+O **Sistema de Gerenciamento de Projetos de Extensão Universitária** é uma plataforma desenvolvida para auxiliar instituições de ensino no gerenciamento de projetos de extensão, centralizando o cadastro de professores, alunos, projetos, atividades e registros de participação.
 
-- [x] Model — Aluno
-- [x] Model — Professor
-- [x] Model — Atividade
-- [x] Model — Presença
-- [x] Model — Projeto
+O sistema busca facilitar o acompanhamento das atividades extensionistas, automatizando processos como inscrições, controle de presença e contabilização da carga horária dos alunos.
 
-### Autenticação
-
-- [x] Repository, Service e Controller de Professor
-- [x] Repository, Service e Controller de Aluno
-- [x] Rota de cadastro e login (Professor e Aluno)
-- [x] Middleware JWT para proteger rotas
-- [x] Middleware de autorização por tipo de usuário (professor vs aluno)
-
-### Projetos
-
-- [x] Repository, Service e Controller de Projeto
-- [x] Rota pública para visitantes visualizarem projetos
-- [x] Rota protegida para professor criar, editar e deletar projetos
-
-### Atividades
-
-- [x] Repository, Service e Controller de Atividade
-- [x] Atividade sempre vinculada a um `projetoId`
-- [x] Listagem de atividades por projeto
-
-### Inscrições
-
-- [x] Rota para aluno se inscrever em um projeto
-- [x] Rota para professor visualizar alunos inscritos
-- [x] Validação: aluno só pode fazer check-in se estiver inscrito no projeto
-
-### Presença
-
-- [x] Rota de check-in — cria Presença com `atividadeId` e `alunoId`
-- [x] Rota de check-out — preenche `dataHoraCheckOut` e `localizacaoCheckOut`
-- [x] Validação: não permitir check-in duplo na mesma atividade
-- [x] Validação: não permitir check-out sem check-in aberto
-
-### Controle de horas
-
-- [x] Calcular horas ao fazer check-out
-- [x] Atualizar `horasExtensao` no model Aluno
-- [x] Rota para aluno consultar histórico de horas por projeto
-
-### Notícias
-
-- [ ] Repository, Service e Controller de Notícia
-- [ ] Rota pública para leitura
-- [ ] Rota protegida para professor criar e editar notícias
-
-### Relatórios
-
-- [ ] Relatório de presenças por atividade
-- [ ] Ficha de frequência por aluno com total de horas
-- [ ] Exportação em PDF
-
-### Upload de fotos
-
-- [ ] Integração com serviço externo (S3 ou Cloudinary)
-- [ ] Rota de upload vinculada a um projeto ou atividade
+O projeto está sendo desenvolvido como parte da disciplina de **Engenharia de Software**, aplicando conceitos de arquitetura de software, desenvolvimento web, modelagem de banco de dados, autenticação e documentação técnica.
 
 ---
 
-## Tipos de usuários
+# Objetivos
 
-| Tipo | Permissões |
-|---|---|
-| Visitante | Visualizar projetos e atividades |
-| Aluno | Inscrição em projetos, check-in/check-out, histórico de horas |
-| Professor | CRUD de projetos e atividades, relatórios, notícias |
+O sistema tem como objetivo:
 
+- Gerenciar professores e alunos;
+- Gerenciar projetos de extensão;
+- Organizar atividades extensionistas;
+- Controlar inscrições dos alunos;
+- Registrar presença nas atividades;
+- Calcular automaticamente as horas de extensão;
+- Centralizar as informações dos projetos em uma única plataforma.
 
+---
 
-## Integrantes
+# Funcionalidades
 
-| Analista de Requisitos  | UI/UX |
-| -------|------|
-| 1      | 1 Eduardo H.   |
-| 2      | 2    |
-| 3      | 3    |
+## Professores
 
+- Cadastro e autenticação
+- Gerenciamento de projetos
+- Gerenciamento de atividades
+- Consulta de alunos inscritos
+- Consulta de presenças
 
-| Frontend  | Backend |
-| -------|------|
-| 1 Eduardo H.     | 1 Ramon Albini|
-| 2      | 2    |
-| 3      | 3    |
+## Alunos
 
-| Testes  | Documentação |
-| -------|------|
-| 1 Felipe Guimarães     | 1 Matheus da Silva |
-| 2      | 2    |
-| 3      | 3    |
+- Cadastro e autenticação
+- Atualização de perfil
+- Inscrição em projetos
+- Registro de presença
+- Consulta da carga horária
+- Visualização das inscrições realizadas
+
+---
+
+# Tecnologias Utilizadas
+
+## Frontend
+
+- React
+- JavaScript
+- HTML5
+- CSS3
+
+## Backend
+
+- Node.js
+- Express.js
+- Sequelize ORM
+- JWT
+- bcrypt
+
+## Banco de Dados
+
+- MySQL
+
+## Ferramentas
+
+- Git
+- GitHub
+- Docker
+- Postman
+- Swagger (em desenvolvimento)
+
+---
+
+# Arquitetura Geral
+
+O sistema é dividido em duas aplicações principais:
+
+```
+Frontend
+
+↓
+
+API REST
+
+↓
+
+Banco de Dados
+```
+
+A comunicação entre o frontend e o backend ocorre por meio de uma API REST responsável pelo gerenciamento de todas as regras de negócio da aplicação.
+
+---
+
+# Estrutura do Projeto
+
+```
+ProjetoExtensao/
+
+├── frontend/
+├── backend/
+├── docs/
+└── README.md
+```
+
+> Atualmente o desenvolvimento ocorre em branches separadas, sendo unificadas posteriormente na branch principal.
+
+---
+
+# Desenvolvimento
+
+O projeto está organizado em diferentes frentes de desenvolvimento.
+
+| Componente | Branch |
+|------------|--------|
+| Frontend | `dev-eduardo-2` |
+| Backend | `dev-ramon` |
+| Integração | `dev` |
+
+---
+
+# Executando o Projeto
+
+## Backend
+
+O backend pode ser executado localmente ou utilizando Docker.
+
+A branch de integração (`dev`) contém a configuração necessária para execução utilizando Docker Compose. O Docker Compose permite iniciar todos os serviços da aplicação de forma integrada, simplificando a configuração do ambiente de desenvolvimento. :contentReference[oaicite:0]{index=0}
+
+Consulte a documentação específica do backend para instruções detalhadas.
+
+---
+
+# Documentação
+
+Toda a documentação técnica do backend encontra-se na pasta **docs**.
+
+## Arquitetura
+
+- `docs/arquitetura/ARQUITETURA.md`
+- `docs/arquitetura/BANCO_DE_DADOS.md`
+- `docs/arquitetura/REGRAS_NEGOCIO.md`
+
+## Autenticação
+
+- `docs/autenticacao/AUTENTICACAO.md`
+
+## Módulos
+
+- `docs/modulos/PROFESSOR.md`
+- `docs/modulos/ALUNO.md`
+- `docs/modulos/PROJETO.md`
+- `docs/modulos/ATIVIDADE.md`
+- `docs/modulos/PRESENCA.md`
+- `docs/modulos/INSCRICAO.md`
+
+## API REST
+
+- `docs/api/API.md`
+- `docs/api/PROFESSORES_API.md`
+- `docs/api/ALUNOS_API.md`
+- `docs/api/PROJETOS_API.md`
+- `docs/api/ATIVIDADES_API.md`
+- `docs/api/INSCRICOES_API.md`
+- `docs/api/PRESENCAS_API.md`
+
+---
+
+# Equipe
+
+Projeto desenvolvido para a disciplina de **Engenharia de Software**.
+
+**Integrantes**
+
+- Professora Sabine Cassol
+- Ramon Albini Vieira
+- Eduardo Henrique
+
+---
+
+# Licença
+
+Este projeto possui finalidade exclusivamente acadêmica e foi desenvolvido para fins de estudo e aprendizagem.
