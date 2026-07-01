@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
-import { Calendar, ArrowLeft, User, Pencil } from 'lucide-react'
+import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { type Noticia } from '@/data/New.ts'
 
@@ -46,6 +46,10 @@ function NewDetail() {
         console.log("Notícia atualizada localmente com sucesso!");
     };
 
+    const handleDelete = () =>{
+        confirm("deseja mesmo deletar a notícia?")
+    }
+
 
     if (!noticia) {
         return (
@@ -65,12 +69,19 @@ function NewDetail() {
                     </Link>
 
                     {role === 'teacher' && (<section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
-                        {!isEditing ? (<button onClick={handleStartEditing} className='cursor-pointer border border-zinc-300 bg-white rounded-lg p-2 hover:bg-slate-50' title='Editar Notícia'>
-                            <Pencil size={18}></Pencil>
-                        </button>) :
+                        {!isEditing ? (
+                            <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-sm'>
+                                <button onClick={handleStartEditing} className='cursor-pointer border-r border-zinc-300 bg-white rounded-l-sm p-2 hover:bg-slate-50' title='Editar Notícia'>
+                                    <Pencil size={18}></Pencil>
+                                </button>
+                                <button onClick={handleDelete} className='cursor-pointer  rounded-sm p-2 hover:bg-slate-50' title='Deletar Notícia'>
+                                    <Trash size={18}></Trash>
+                                </button>
+                            </div>
+                        ) :
                             (<div className='flex gap-3 font-normal text-sm'>
                                 <button onClick={() => setIsEditing(false)} className="flex-1 px-4 py-1.5 text-sm font-medium text-slate-700 bg-white border border-zinc-500 rounded-lg hover:bg-slate-50  hover:text-slate-800 active:bg-slate-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
-                                <button onClick={() => handleSaveEdit() } className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> Confirmar </button>
+                                <button onClick={() => handleSaveEdit()} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> Confirmar </button>
                             </div>)}
                     </section>)}
                     <article className={`bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 shadow-xs ${role === 'teacher' ? 'rounded-b-xl' : 'rounded-xl'}`}>

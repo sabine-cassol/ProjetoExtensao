@@ -4,7 +4,7 @@ import { PROJECTS } from '@/data/Projects.ts'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
-import { Pencil } from 'lucide-react'
+import { Pencil,Trash } from 'lucide-react'
 
 
 function ProjectDetail() {
@@ -45,6 +45,11 @@ function ProjectDetail() {
         console.log("Projeto atualizada localmente com sucesso!");
     };
 
+    const handleDelete = () => {
+        confirm("deseja mesmo deletar o projeto?")
+    }
+
+
     if (!projeto) {
         return (
             <h2>projeto nao encontrado</h2>
@@ -56,9 +61,16 @@ function ProjectDetail() {
             <main className="flex-1 bg-zinc-50/50">
                 <section className="cursor-default">
                     {role === 'teacher' && (<section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
-                        {!isEditing ? (<button onClick={handleStartEditing} className='cursor-pointer border border-zinc-300 bg-white rounded-lg p-2 hover:bg-slate-50' title='Editar Notícia'>
-                            <Pencil size={18}></Pencil>
-                        </button>) :
+                        {!isEditing ? (
+                            <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-sm'>
+                                <button onClick={handleStartEditing} className='cursor-pointer border-r border-zinc-300 bg-white rounded-l-sm p-2 hover:bg-slate-50' title='Editar Notícia'>
+                                    <Pencil size={18}></Pencil>
+                                </button>
+                                <button onClick={handleDelete} className='cursor-pointer  rounded-sm p-2 hover:bg-slate-50' title='Deletar Notícia'>
+                                    <Trash size={18}></Trash>
+                                </button>
+                            </div>
+                        ) :
                             (<div className='flex gap-3 font-normal text-sm'>
                                 <button onClick={() => setIsEditing(false)} className="flex-1 px-4 py-1.5 text-sm font-medium text-slate-700 bg-white border border-zinc-500 rounded-lg hover:bg-slate-50  hover:text-slate-800 active:bg-slate-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
                                 <button onClick={() => handleSaveEdit()} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> Confirmar </button>
@@ -283,7 +295,7 @@ function ProjectDetail() {
                             <section className="mt-3">
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitos Técnicos</span>
                                 {isEditing && role === 'teacher' ? (
-                                    <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y "/>
+                                    <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                 ) : (
                                     <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.requisitos}</p>
                                 )}
