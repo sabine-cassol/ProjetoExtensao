@@ -16,6 +16,7 @@ import Debug from './pages/Debug.tsx'
 import CreateNew from './pages/CreateNew.tsx'
 import CreateProject from './pages/CreateProject.tsx'
 import Presença from './pages/Presença.tsx'
+import ErrorPage from './pages/Error.tsx'
 
 import './index.css'
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",

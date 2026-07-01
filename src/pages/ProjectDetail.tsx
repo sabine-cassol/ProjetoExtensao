@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
 import { Pencil,Trash } from 'lucide-react'
+import Error from '../components/Error'
 
 
 function ProjectDetail() {
@@ -52,7 +53,7 @@ function ProjectDetail() {
 
     if (!projeto) {
         return (
-            <h2>projeto nao encontrado</h2>
+            <Error tipo="Projeto"></Error>
         )
     }
 

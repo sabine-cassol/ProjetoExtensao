@@ -6,6 +6,7 @@ import { NEWS } from '@/data/New.ts'
 import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { type Noticia } from '@/data/New.ts'
+import Error from '../components/Error.tsx'
 
 
 function NewDetail() {
@@ -53,9 +54,9 @@ function NewDetail() {
 
     if (!noticia) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50">
-                <p className="text-lg text-zinc-600 mb-4 font-medium">⚠️ Notícia não encontrada.</p>
-                <Link to="/" className="text-indigo-600 hover:underline text-sm font-semibold">Voltar para o início</Link>
+            <div className=" flex flex-col items-center justify-center ">
+                <Error tipo="Notícia"></Error>
+                {/* <Link to="/" className="text-indigo-600 hover:underline text-sm font-semibold">Voltar para o início</Link> */}
             </div>
         );
     }
