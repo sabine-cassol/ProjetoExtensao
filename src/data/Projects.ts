@@ -1,26 +1,26 @@
 export interface Projeto {
   id: string;
-  titulo: String;
-  justificativa: String;
-  pretensao: String;
-  requisitos: String;
-  detalhes: String;
-  responsavel: String;
-  cargaHoraria: String;
-  tipo: String;
-  unidade: String;
-  cursosVinculados: String;
-  parceiros: String;
-  colaboradores: String;
-  comunidadeParticipante: String;
-  semestre: String;
-  vagas: String;
-  ods: String;
-  competencia: String;
-  eixo: String;
-  ciclo: String;
-  periodoInscricao: String;
-  periodoExecucao: String
+  titulo: string;
+  justificativa: string;
+  pretensao: string;
+  requisitos: string;
+  detalhes: string;
+  responsavel: string;
+  cargaHoraria: string;
+  tipo: string;
+  unidade: string;
+  cursosVinculados: string;
+  parceiros: string;
+  colaboradores: string;
+  comunidadeParticipante: string;
+  semestre: string;
+  vagas: string;
+  ods: string;
+  competencia: string;
+  eixo: string;
+  ciclo: string;
+  periodoInscricao: string;
+  periodoExecucao: string
 }
 
 export const PROJECTS: Projeto[] = [
