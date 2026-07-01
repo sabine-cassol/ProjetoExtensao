@@ -1,4 +1,4 @@
-import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3 } from "lucide-react"
+import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3,Pin } from "lucide-react"
 import { useSidebar, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
@@ -27,6 +27,12 @@ const items = [
     url: "/Contato",
     icon: Mail,
     mobileOnly: true
+  },
+  {
+    title: "Registrar presença",
+    url: "/Presença",
+    icon: Pin,
+    roles: ["student"]
   },
   {
     title: "Atividades",

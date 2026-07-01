@@ -15,6 +15,7 @@ import Reports from './pages/Reports.tsx'
 import Debug from './pages/Debug.tsx'
 import CreateNew from './pages/CreateNew.tsx'
 import CreateProject from './pages/CreateProject.tsx'
+import Presença from './pages/Presença.tsx'
 
 import './index.css'
 
@@ -23,7 +24,6 @@ const router = createBrowserRouter([
     path: "/Login",
     element: <Login />,
   },
-
 
   {
     path: "/",
@@ -72,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "/CreateProject",
         element: <CreateProject />,
+      },
+      {
+        path: "/Presença",
+        element: <Presença />,
       },
     ],
   },
