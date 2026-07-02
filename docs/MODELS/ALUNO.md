@@ -1,12 +1,12 @@
-\# Módulo Aluno
+# Módulo Aluno
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O módulo \*\*Aluno\*\* é responsável pelo gerenciamento dos estudantes participantes dos projetos de extensão universitária. Além da autenticação, este módulo controla as inscrições em projetos, o registro de presenças e o acompanhamento da carga horária de extensão realizada por cada aluno.
+O módulo **Aluno** é responsável pelo gerenciamento dos estudantes participantes dos projetos de extensão universitária. Além da autenticação, este módulo controla as inscrições em projetos, o registro de presenças e o acompanhamento da carga horária de extensão realizada por cada aluno.
 
 
 
@@ -14,11 +14,11 @@ Por meio deste módulo, o aluno consegue acessar o sistema, participar das ativi
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -26,44 +26,38 @@ O módulo possui como principais objetivos:
 
 
 
-\- Realizar cadastro de alunos;
+- Realizar cadastro de alunos;
 
-\- Autenticar usuários;
+- Autenticar usuários;
 
-\- Atualizar informações cadastrais;
+- Atualizar informações cadastrais;
 
-\- Consultar dados do aluno;
+- Consultar dados do aluno;
 
-\- Ativar e desativar registros;
+- Ativar e desativar registros;
 
-\- Permitir participação em projetos de extensão;
+- Permitir participação em projetos de extensão;
 
-\- Controlar horas de extensão realizadas.
-
-
-
-\---
+- Controlar horas de extensão realizadas.
 
 
 
-\# Estrutura do Módulo
+---
+
+
+
+# Estrutura do Módulo
 
 
 
 ```
 
 Aluno
-
 │
-
 ├── Model
-
 ├── Repository
-
 ├── Service
-
 ├── Controller
-
 └── Routes
 
 ```
@@ -74,11 +68,11 @@ Cada camada possui uma responsabilidade específica dentro da arquitetura do sis
 
 
 
-\---
+---
 
 
 
-\# Model
+# Model
 
 
 
@@ -94,11 +88,11 @@ models/aluno.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
-Representa a entidade \*\*Aluno\*\* no banco de dados.
+Representa a entidade **Aluno** no banco de dados.
 
 
 
@@ -106,74 +100,53 @@ O Model define:
 
 
 
-\- estrutura da tabela;
+- estrutura da tabela;
 
-\- atributos do aluno;
+- atributos do aluno;
 
-\- tipos de dados;
+- tipos de dados;
 
-\- relacionamentos com outras entidades;
+- relacionamentos com outras entidades;
 
-\- restrições de integridade.
+- restrições de integridade.
 
 
 
-\## Principais atributos
+## Principais atributos
 
 
 
 | Campo | Descrição |
-
-|--------|-----------|
-
+|---|---|
 | id | Identificador do aluno |
-
 | nome | Nome completo |
-
 | email | Email institucional |
-
 | ra | Registro Acadêmico |
-
 | senha | Senha criptografada |
-
 | horasExtensao | Total de horas de extensão |
-
 | ativo | Situação do cadastro |
-
 | createdAt | Data de criação |
-
 | updatedAt | Última atualização |
 
 
 
-> \*\*Observação:\*\* Os nomes apresentados devem refletir exatamente os atributos definidos no Model Sequelize.
 
-
-
-\## Relacionamentos
+## Relacionamentos
 
 
 
 ```
 
 Aluno (N)
-
-&#x20;   │
-
-&#x20;   │
-
-&#x20;   ▼
-
+       │
+       ▼
 Projeto (N)
 
 
 
 Aluno (1)
-
-&#x20;   │
-
-&#x20;   ▼
-
+       │
+       ▼
 Presença (N)
 
 ```
@@ -184,11 +157,11 @@ Um aluno pode participar de diversos projetos e registrar diversas presenças.
 
 
 
-\---
+---
 
 
 
-\# Repository
+# Repository
 
 
 
@@ -204,7 +177,7 @@ repositories/alunoRepository.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -220,48 +193,36 @@ As principais operações realizadas incluem:
 
 
 
-\- cadastrar aluno;
+- cadastrar aluno;
 
-\- buscar aluno por ID;
+- buscar aluno por ID;
 
-\- buscar aluno por RA;
+- buscar aluno por RA;
 
-\- buscar aluno por email;
+- buscar aluno por email;
 
-\- listar alunos;
+- listar alunos;
 
-\- atualizar cadastro;
+- atualizar cadastro;
 
-\- ativar aluno;
+- ativar aluno;
 
-\- desativar aluno;
+- desativar aluno;
 
-\- atualizar carga horária.
+- atualizar carga horária.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Service
-
-
-
 ↓
-
-
-
 AlunoRepository
-
-
-
 ↓
-
-
-
 Banco de Dados
 
 ```
@@ -272,11 +233,11 @@ Nenhuma regra de negócio deve ser implementada nesta camada.
 
 
 
-\---
+---
 
 
 
-\# Service
+# Service
 
 
 
@@ -292,7 +253,7 @@ services/alunoService.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -304,50 +265,37 @@ Entre suas responsabilidades estão:
 
 
 
-\- validar dados obrigatórios;
+- validar dados obrigatórios;
 
-\- verificar duplicidade de email ou RA;
+- verificar duplicidade de email ou RA;
 
-\- criptografar senha utilizando bcrypt;
+- criptografar senha utilizando bcrypt;
 
-\- autenticar usuários;
+- autenticar usuários;
 
-\- gerar token JWT;
+- gerar token JWT;
 
-\- controlar horas de extensão;
+- controlar horas de extensão;
 
-\- validar permissões do aluno;
+- validar permissões do aluno;
 
-\- impedir login de usuários desativados.
-
+- impedir login de usuários desativados.
 
 
 Além disso, esta camada realiza integrações com os módulos de Presença e Inscrição para manter a consistência dos dados.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Controller
-
-
-
 ↓
-
-
-
 AlunoService
-
-
-
 ↓
-
-
-
 Repository
 
 ```
@@ -358,11 +306,11 @@ Toda regra de negócio deve permanecer centralizada nesta camada.
 
 
 
-\---
+---
 
 
 
-\# Controller
+# Controller
 
 
 
@@ -378,7 +326,7 @@ controllers/alunoController.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -390,13 +338,13 @@ Suas responsabilidades incluem:
 
 
 
-\- receber parâmetros da requisição;
+- receber parâmetros da requisição;
 
-\- validar dados básicos;
+- validar dados básicos;
 
-\- chamar os métodos do Service;
+- chamar os métodos do Service;
 
-\- retornar respostas HTTP adequadas.
+- retornar respostas HTTP adequadas.
 
 
 
@@ -404,47 +352,29 @@ O Controller não realiza consultas diretamente ao banco de dados.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Request
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Response
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Routes
+# Routes
 
 
 
@@ -460,7 +390,7 @@ routes/alunoRoutes.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -477,36 +407,23 @@ As principais operações disponibilizadas são:
 
 
 | Método | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | POST | Cadastro de aluno |
-
 | POST | Login |
-
 | POST | Logout |
-
 | GET | Buscar perfil |
-
 | GET | Buscar aluno por ID |
-
 | GET | Buscar aluno por RA |
-
 | GET | Listar alunos |
-
 | PUT | Atualizar cadastro |
-
 | PUT | Ativar aluno |
-
 | DELETE | Desativar aluno |
 
 
-
-\---
-
+---
 
 
-\# Fluxo Completo
+# Fluxo Completo
 
 
 
@@ -602,11 +519,11 @@ Resposta HTTP
 
 
 
-\---
+---
 
 
 
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
@@ -614,29 +531,29 @@ As principais regras implementadas pelo módulo são:
 
 
 
-\- O email deve ser único.
+- O email deve ser único.
 
-\- O RA deve ser único para cada aluno.
+- O RA deve ser único para cada aluno.
 
-\- A senha é armazenada utilizando hash bcrypt.
+- A senha é armazenada utilizando hash bcrypt.
 
-\- Apenas alunos ativos podem realizar login.
+- Apenas alunos ativos podem realizar login.
 
-\- O aluno deve estar autenticado para acessar recursos protegidos.
+- O aluno deve estar autenticado para acessar recursos protegidos.
 
-\- As horas de extensão são atualizadas automaticamente após o check-out de uma atividade.
+- As horas de extensão são atualizadas automaticamente após o check-out de uma atividade.
 
-\- Um aluno pode participar de vários projetos simultaneamente.
+- Um aluno pode participar de vários projetos simultaneamente.
 
-\- O aluno somente pode registrar presença em atividades de projetos nos quais esteja inscrito.
-
-
-
-\---
+- O aluno somente pode registrar presença em atividades de projetos nos quais esteja inscrito.
 
 
 
-\# Segurança
+---
+
+
+
+# Segurança
 
 
 
@@ -644,15 +561,15 @@ O módulo utiliza os seguintes mecanismos de segurança:
 
 
 
-\- autenticação por JWT;
+- autenticação por JWT;
 
-\- armazenamento do token em cookie HTTP Only;
+- armazenamento do token em cookie HTTP Only;
 
-\- criptografia de senhas utilizando bcrypt;
+- criptografia de senhas utilizando bcrypt;
 
-\- middleware de autenticação;
+- middleware de autenticação;
 
-\- middleware de autorização.
+- middleware de autorização.
 
 
 
@@ -660,11 +577,11 @@ Esses mecanismos garantem maior segurança na autenticação e no controle de ac
 
 
 
-\---
+---
 
 
 
-\# Dependências
+# Dependências
 
 
 
@@ -675,25 +592,10 @@ O módulo Aluno possui integração direta com diversos componentes do sistema.
 ```
 
 Aluno
-
-
-
 ├── Projeto
-
-
-
 ├── Presença
-
-
-
 ├── Inscrição
-
-
-
 ├── JWT
-
-
-
 └── Banco de Dados
 
 ```
@@ -704,35 +606,29 @@ Cada um desses módulos participa do ciclo de vida do aluno dentro da plataforma
 
 
 
-\---
+---
 
 
 
-\# Responsabilidades do Módulo
+# Responsabilidades do Módulo
 
 
 
 | Camada | Responsabilidade |
-
-|---------|------------------|
-
+|---|---|
 | Model | Representar a entidade Aluno |
-
 | Repository | Persistência dos dados |
-
 | Service | Implementação das regras de negócio |
-
 | Controller | Tratamento das requisições HTTP |
-
 | Routes | Definição dos endpoints da API |
 
 
 
-\---
+---
 
 
 
-\# Integração com Outros Módulos
+# Integração com Outros Módulos
 
 
 
@@ -741,30 +637,23 @@ O módulo Aluno mantém relacionamento com outros módulos da aplicação.
 
 
 | Módulo | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | Projeto | Participação em projetos de extensão |
-
 | Inscrição | Controle das inscrições do aluno |
-
 | Presença | Registro de check-in e check-out |
-
 | Atividade | Participação nas atividades |
-
 | Autenticação | Login e autorização |
-
 
 
 Essa integração garante que todas as informações do aluno permaneçam consistentes durante a utilização do sistema.
 
 
 
-\---
+---
 
 
 
-\# Melhorias Futuras
+# Melhorias Futuras
 
 
 
@@ -772,31 +661,30 @@ As seguintes funcionalidades podem ser incorporadas futuramente ao módulo:
 
 
 
-\- recuperação de senha;
+- recuperação de senha;
 
-\- alteração de senha;
+- alteração de senha;
 
-\- upload de foto do aluno;
+- upload de foto do aluno;
 
-\- emissão de certificado de extensão;
+- emissão de certificado de extensão;
 
-\- histórico completo de atividades realizadas;
+- histórico completo de atividades realizadas;
 
-\- exportação das horas de extensão em PDF;
+- exportação das horas de extensão em PDF;
 
-\- notificações sobre novas atividades e projetos.
-
-
-
-\---
+- notificações sobre novas atividades e projetos.
 
 
-
-\# Considerações Finais
+---
 
 
 
-O módulo \*\*Aluno\*\* representa o principal perfil de usuário participante do Sistema de Extensão Universitária. Sua implementação concentra funcionalidades relacionadas ao acesso, participação em projetos, controle de presença e acompanhamento das horas de extensão.
+# Considerações Finais
+
+
+
+O módulo **Aluno** representa o principal perfil de usuário participante do Sistema de Extensão Universitária. Sua implementação concentra funcionalidades relacionadas ao acesso, participação em projetos, controle de presença e acompanhamento das horas de extensão.
 
 
 
