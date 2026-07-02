@@ -214,21 +214,9 @@ As principais operações realizadas incluem:
 ```
 
 Service
-
-
-
 ↓
-
-
-
 PresencaRepository
-
-
-
 ↓
-
-
-
 Banco de Dados
 
 ```
