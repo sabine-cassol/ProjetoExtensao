@@ -141,21 +141,14 @@ O Model define:
 ```
 
 Aluno (1)
-
          │
-
          ▼
 
 Presença (N)
 
-
-
 Atividade (1)
-
          │
-
          ▼
-
 Presença (N)
 
 ```
@@ -305,21 +298,9 @@ Além disso, esta camada integra informações provenientes dos módulos de Alun
 ```
 
 Controller
-
-
-
 ↓
-
-
-
 PresencaService
-
-
-
 ↓
-
-
-
 Repository
 
 ```
@@ -382,29 +363,11 @@ O Controller não realiza acesso direto ao banco de dados.
 ```
 
 Request
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Response
 
 ```
@@ -472,85 +435,25 @@ Toda requisição relacionada ao módulo Presença percorre as seguintes camadas
 ```
 
 Cliente
-
-
-
 ↓
-
-
-
 Route
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Model
-
-
-
 ↓
-
-
-
 MySQL
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Resposta HTTP
 
 ```
