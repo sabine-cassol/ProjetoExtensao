@@ -124,7 +124,7 @@ O Model define:
 
 | Campo | Descrição |
 
-|--------|-----------|
+| ------ | --------- |
 
 | id | Identificador da presença |
 
