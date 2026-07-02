@@ -51,17 +51,11 @@ O módulo possui como principais objetivos:
 ```
 
 Presença
-
 │
-
 ├── Model
-
 ├── Repository
-
 ├── Service
-
 ├── Controller
-
 └── Routes
 
 ```
@@ -635,29 +629,11 @@ O módulo Presença possui integração direta com diversos componentes do siste
 ```
 
 Presença
-
-
-
 ├── Aluno
-
-
-
 ├── Projeto
-
-
-
 ├── Atividade
-
-
-
 ├── Inscrição
-
-
-
 ├── JWT
-
-
-
 └── Banco de Dados
 
 ```
