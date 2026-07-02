@@ -450,17 +450,11 @@ As principais operações disponibilizadas são:
 
 
 | Método | Finalidade |
-
 |---|---|
-
 | POST | Registrar check-in |
-
 | PUT | Registrar check-out |
-
 | GET | Consultar minhas presenças |
-
 | GET | Consultar presenças por aluno |
-
 | GET | Consultar carga horária |
 
 
