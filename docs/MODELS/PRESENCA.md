@@ -677,17 +677,11 @@ Esses módulos trabalham em conjunto para garantir que apenas participantes auto
 
 
 | Camada | Responsabilidade |
-
 |---------|------------------|
-
 | Model | Representar os registros de presença |
-
 | Repository | Persistência dos dados |
-
 | Service | Implementação das regras de negócio |
-
 | Controller | Tratamento das requisições HTTP |
-
 | Routes | Definição dos endpoints da API |
 
 
