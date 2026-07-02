@@ -677,7 +677,7 @@ Esses módulos trabalham em conjunto para garantir que apenas participantes auto
 
 
 | Camada | Responsabilidade |
-|---------|------------------|
+|---|---|
 | Model | Representar os registros de presença |
 | Repository | Persistência dos dados |
 | Service | Implementação das regras de negócio |
@@ -699,17 +699,11 @@ O módulo Presença mantém relacionamento com diversos componentes da aplicaç�
 
 
 | Módulo | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | Aluno | Identificação do participante |
-
 | Projeto | Validação da inscrição |
-
 | Atividade | Registro da participação |
-
 | Inscrição | Verificação de vínculo com o projeto |
-
 
 
 Essa integração garante que somente alunos autorizados possam registrar presença e que todas as horas sejam contabilizadas corretamente.
