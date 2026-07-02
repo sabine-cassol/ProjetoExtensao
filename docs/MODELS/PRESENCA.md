@@ -451,7 +451,7 @@ As principais operações disponibilizadas são:
 
 | Método | Finalidade |
 
-|---------|------------|
+|---|---|
 
 | POST | Registrar check-in |
 
