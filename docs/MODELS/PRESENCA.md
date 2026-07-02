@@ -123,25 +123,15 @@ O Model define:
 
 
 | Campo | Descrição |
-
 | ------ | --------- |
-
 | id | Identificador da presença |
-
 | alunoId | Aluno participante |
-
 | atividadeId | Atividade realizada |
-
 | dataHoraCheckIn | Horário de entrada |
-
 | dataHoraCheckOut | Horário de saída |
-
 | localizacaoCheckIn | Localização registrada no check-in |
-
 | localizacaoCheckOut | Localização registrada no check-out |
-
 | createdAt | Data de criação |
-
 | updatedAt | Última atualização |
 
 
