@@ -123,7 +123,7 @@ O Model define:
 
 
 | Campo | Descrição |
-| ------ | --------- |
+|---|---|
 | id | Identificador da presença |
 | alunoId | Aluno participante |
 | atividadeId | Atividade realizada |
