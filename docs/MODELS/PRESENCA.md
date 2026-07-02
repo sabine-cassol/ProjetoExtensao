@@ -1,12 +1,12 @@
-\# Módulo Presença
+# Módulo Presença
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O módulo \*\*Presença\*\* é responsável pelo controle de participação dos alunos nas atividades de extensão universitária. É através dele que o sistema registra os horários de entrada e saída dos participantes, calcula automaticamente a carga horária realizada e mantém o histórico de participação em cada atividade.
+O módulo **Presença** é responsável pelo controle de participação dos alunos nas atividades de extensão universitária. É através dele que o sistema registra os horários de entrada e saída dos participantes, calcula automaticamente a carga horária realizada e mantém o histórico de participação em cada atividade.
 
 
 
@@ -14,11 +14,11 @@ Este módulo garante que apenas alunos devidamente inscritos em um projeto possa
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -26,25 +26,25 @@ O módulo possui como principais objetivos:
 
 
 
-\- Registrar o check-in dos alunos;
+- Registrar o check-in dos alunos;
 
-\- Registrar o check-out dos alunos;
+- Registrar o check-out dos alunos;
 
-\- Calcular automaticamente a carga horária realizada;
+- Calcular automaticamente a carga horária realizada;
 
-\- Armazenar o histórico de presenças;
+- Armazenar o histórico de presenças;
 
-\- Permitir consultas de frequência;
+- Permitir consultas de frequência;
 
-\- Atualizar as horas de extensão do aluno.
-
-
-
-\---
+- Atualizar as horas de extensão do aluno.
 
 
 
-\# Estrutura do Módulo
+---
+
+
+
+# Estrutura do Módulo
 
 
 
@@ -72,11 +72,11 @@ Cada camada possui uma responsabilidade específica dentro da arquitetura do sis
 
 
 
-\---
+---
 
 
 
-\# Model
+# Model
 
 
 
@@ -92,7 +92,7 @@ models/presenca.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -108,19 +108,17 @@ O Model define:
 
 
 
-\- estrutura da tabela;
+- estrutura da tabela;
 
-\- horários de entrada e saída;
+- horários de entrada e saída;
 
-\- carga horária realizada;
+- relacionamentos;
 
-\- relacionamentos;
-
-\- restrições de integridade.
+- restrições de integridade.
 
 
 
-\## Principais atributos
+## Principais atributos
 
 
 
@@ -138,8 +136,6 @@ O Model define:
 
 | dataHoraCheckOut | Horário de saída |
 
-| horasRealizadas | Total de horas calculadas |
-
 | localizacaoCheckIn | Localização registrada no check-in |
 
 | localizacaoCheckOut | Localização registrada no check-out |
@@ -150,11 +146,11 @@ O Model define:
 
 
 
-> \*\*Observação:\*\* Os atributos apresentados devem refletir exatamente aqueles definidos no Model Sequelize.
+> **Observação:** Os atributos apresentados devem refletir exatamente aqueles definidos no Model Sequelize.
 
 
 
-\## Relacionamentos
+## Relacionamentos
 
 
 
@@ -186,11 +182,11 @@ Cada registro de presença pertence simultaneamente a um único aluno e a uma ú
 
 
 
-\---
+---
 
 
 
-\# Repository
+# Repository
 
 
 
@@ -206,7 +202,7 @@ repositories/presencaRepository.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -218,23 +214,23 @@ As principais operações realizadas incluem:
 
 
 
-\- registrar check-in;
+- registrar check-in;
 
-\- registrar check-out;
+- registrar check-out;
 
-\- buscar presença por ID;
+- buscar presença por ID;
 
-\- buscar presença aberta;
+- buscar presença aberta;
 
-\- listar presenças de um aluno;
+- listar presenças de um aluno;
 
-\- listar presenças por atividade;
+- listar presenças por atividade;
 
-\- atualizar registro de presença.
+- atualizar registro de presença.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
@@ -266,11 +262,11 @@ Esta camada não implementa regras de negócio, sendo responsável apenas pela p
 
 
 
-\---
+---
 
 
 
-\# Service
+# Service
 
 
 
@@ -286,7 +282,7 @@ services/presencaService.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -298,19 +294,19 @@ Entre suas responsabilidades estão:
 
 
 
-\- validar se o aluno está inscrito no projeto;
+- validar se o aluno está inscrito no projeto;
 
-\- verificar se a atividade existe;
+- verificar se a atividade existe;
 
-\- impedir check-in duplicado;
+- impedir check-in duplicado;
 
-\- impedir check-out sem check-in;
+- impedir check-out sem check-in;
 
-\- calcular automaticamente as horas realizadas;
+- calcular automaticamente as horas realizadas;
 
-\- atualizar as horas de extensão do aluno;
+- atualizar as horas de extensão do aluno;
 
-\- validar permissões de acesso.
+- validar permissões de acesso.
 
 
 
@@ -318,7 +314,7 @@ Além disso, esta camada integra informações provenientes dos módulos de Alun
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
@@ -350,11 +346,11 @@ Toda regra de negócio relacionada à presença permanece concentrada nesta cama
 
 
 
-\---
+---
 
 
 
-\# Controller
+# Controller
 
 
 
@@ -370,7 +366,7 @@ controllers/presencaController.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -382,21 +378,20 @@ Suas responsabilidades incluem:
 
 
 
-\- receber parâmetros da requisição;
+- receber parâmetros da requisição;
 
-\- validar informações básicas;
+- validar informações básicas;
 
-\- chamar os métodos do Service;
+- chamar os métodos do Service;
 
-\- retornar respostas HTTP apropriadas.
-
+- retornar respostas HTTP apropriadas.
 
 
 O Controller não realiza acesso direto ao banco de dados.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
@@ -432,11 +427,11 @@ Response
 
 
 
-\---
+---
 
 
 
-\# Routes
+# Routes
 
 
 
@@ -452,7 +447,7 @@ routes/presencaRoutes.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -484,11 +479,11 @@ Cada rota encaminha a requisição para o método correspondente do Controller.
 
 
 
-\---
+---
 
 
 
-\# Fluxo Completo
+# Fluxo Completo
 
 
 
@@ -584,11 +579,11 @@ Resposta HTTP
 
 
 
-\---
+---
 
 
 
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
@@ -596,29 +591,28 @@ As principais regras implementadas pelo módulo são:
 
 
 
-\- Apenas alunos autenticados podem registrar presença.
+- Apenas alunos autenticados podem registrar presença.
 
-\- O aluno deve estar inscrito no projeto ao qual a atividade pertence.
+- O aluno deve estar inscrito no projeto ao qual a atividade pertence.
 
-\- Não é permitido realizar dois check-ins simultâneos para a mesma atividade.
+- Não é permitido realizar dois check-ins simultâneos para a mesma atividade.
 
-\- O check-out somente pode ser realizado após um check-in válido.
+- O check-out somente pode ser realizado após um check-in válido.
 
-\- O horário de saída deve ser posterior ao horário de entrada.
+- O horário de saída deve ser posterior ao horário de entrada.
 
-\- A carga horária é calculada automaticamente no momento do check-out.
+- A carga horária é calculada automaticamente no momento do check-out.
 
-\- Após o cálculo da carga horária, o total de horas do aluno é atualizado automaticamente.
+- Após o cálculo da carga horária, o total de horas do aluno é atualizado automaticamente.
 
-\- O histórico de presença permanece armazenado para futuras consultas e emissão de relatórios.
-
-
-
-\---
+- O histórico de presença permanece armazenado para futuras consultas e emissão de relatórios.
 
 
+---
 
-\# Segurança
+
+
+# Segurança
 
 
 
@@ -626,15 +620,15 @@ O módulo utiliza os seguintes mecanismos de segurança:
 
 
 
-\- autenticação via JWT;
+- autenticação via JWT;
 
-\- autorização baseada no perfil do usuário;
+- autorização baseada no perfil do usuário;
 
-\- validação da identidade do aluno autenticado;
+- validação da identidade do aluno autenticado;
 
-\- proteção contra registros duplicados;
+- proteção contra registros duplicados;
 
-\- validação das permissões de acesso às informações de presença.
+- validação das permissões de acesso às informações de presença.
 
 
 
@@ -642,11 +636,11 @@ Esses mecanismos garantem a confiabilidade dos registros de frequência.
 
 
 
-\---
+---
 
 
 
-\# Dependências
+# Dependências
 
 
 
@@ -690,11 +684,11 @@ Esses módulos trabalham em conjunto para garantir que apenas participantes auto
 
 
 
-\---
+---
 
 
 
-\# Responsabilidades do Módulo
+# Responsabilidades do Módulo
 
 
 
@@ -714,11 +708,11 @@ Esses módulos trabalham em conjunto para garantir que apenas participantes auto
 
 
 
-\---
+---
 
 
 
-\# Integração com Outros Módulos
+# Integração com Outros Módulos
 
 
 
@@ -744,11 +738,11 @@ Essa integração garante que somente alunos autorizados possam registrar presen
 
 
 
-\---
+---
 
 
 
-\# Melhorias Futuras
+# Melhorias Futuras
 
 
 
@@ -756,31 +750,31 @@ As seguintes funcionalidades podem ser incorporadas futuramente ao módulo:
 
 
 
-\- check-in por QR Code;
+- check-in por QR Code;
 
-\- validação por geolocalização;
+- validação por geolocalização;
 
-\- registro por reconhecimento facial;
+- registro por reconhecimento facial;
 
-\- assinatura digital de presença;
+- assinatura digital de presença;
 
-\- notificações automáticas;
+- notificações automáticas;
 
-\- exportação do histórico em PDF;
+- exportação do histórico em PDF;
 
-\- dashboards de frequência por projeto e atividade.
-
-
-
-\---
+- dashboards de frequência por projeto e atividade.
 
 
 
-\# Considerações Finais
+---
 
 
 
-O módulo \*\*Presença\*\* é responsável pelo controle de frequência e pela contabilização das horas de extensão dos alunos. Ele desempenha um papel central no funcionamento do sistema, garantindo que a participação dos estudantes seja registrada de forma segura e consistente.
+# Considerações Finais
+
+
+
+O módulo **Presença** é responsável pelo controle de frequência e pela contabilização das horas de extensão dos alunos. Ele desempenha um papel central no funcionamento do sistema, garantindo que a participação dos estudantes seja registrada de forma segura e consistente.
 
 
 
