@@ -158,9 +158,9 @@ O Model define:
 
 Aluno (1)
 
-&#x20;   │
+         │
 
-&#x20;   ▼
+         ▼
 
 Presença (N)
 
@@ -168,9 +168,9 @@ Presença (N)
 
 Atividade (1)
 
-&#x20;   │
+         │
 
-&#x20;   ▼
+         ▼
 
 Presença (N)
 
