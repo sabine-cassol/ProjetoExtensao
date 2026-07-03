@@ -174,7 +174,7 @@ Nenhuma regra de negócio deve ser implementada nesta camada.
 
 
 
-As operações normalmente implementadas incluem:
+As principais operações implementadas incluem:
 
 
 
@@ -244,8 +244,6 @@ Entre elas:
 - autenticar usuário;
 
 - gerar token JWT;
-
-- validar permissões;
 
 - impedir login de usuário desativado.
 
