@@ -1,12 +1,12 @@
-\# Módulo Atividade
+# Módulo Atividade
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O módulo \*\*Atividade\*\* é responsável pelo gerenciamento das atividades vinculadas aos projetos de extensão universitária. Cada atividade representa uma ação, evento, oficina, palestra ou encontro realizado dentro de um projeto.
+O módulo **Atividade** é responsável pelo gerenciamento das atividades vinculadas aos projetos de extensão universitária. Cada atividade representa uma ação, evento, oficina, palestra ou encontro realizado dentro de um projeto.
 
 
 
@@ -18,11 +18,11 @@ Toda atividade pertence obrigatoriamente a um projeto de extensão, estabelecend
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -30,44 +30,38 @@ O módulo possui como principais objetivos:
 
 
 
-\- Cadastrar atividades;
+- Cadastrar atividades;
 
-\- Atualizar informações das atividades;
+- Atualizar informações das atividades;
 
-\- Consultar atividades;
+- Consultar atividades;
 
-\- Ativar e desativar atividades;
+- Ativar e desativar atividades;
 
-\- Vincular atividades a um projeto;
+- Vincular atividades a um projeto;
 
-\- Disponibilizar atividades para registro de presença;
+- Disponibilizar atividades para registro de presença;
 
-\- Registrar a carga horária prevista de cada atividade.
-
-
-
-\---
+- Registrar a carga horária prevista de cada atividade.
 
 
 
-\# Estrutura do Módulo
+---
+
+
+
+# Estrutura do Módulo
 
 
 
 ```
 
 Atividade
-
 │
-
 ├── Model
-
 ├── Repository
-
 ├── Service
-
 ├── Controller
-
 └── Routes
 
 ```
@@ -78,11 +72,11 @@ Cada camada possui uma responsabilidade específica dentro da arquitetura do sis
 
 
 
-\---
+---
 
 
 
-\# Model
+# Model
 
 
 
@@ -98,11 +92,11 @@ models/atividade.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
-Representa a entidade \*\*Atividade\*\* dentro do banco de dados.
+Representa a entidade **Atividade** dentro do banco de dados.
 
 
 
@@ -110,72 +104,54 @@ O Model define:
 
 
 
-\- estrutura da tabela;
+- estrutura da tabela;
 
-\- atributos da atividade;
+- atributos da atividade;
 
-\- tipos de dados;
+- tipos de dados;
 
-\- relacionamentos;
+- relacionamentos;
 
-\- restrições de integridade.
+- restrições de integridade.
 
 
-
-\## Principais atributos
+## Principais atributos
 
 
 
 | Campo | Descrição |
-
-|--------|-----------|
-
+|---|---|
 | id | Identificador da atividade |
-
 | titulo | Nome da atividade |
-
 | descricao | Descrição detalhada |
-
 | data | Data de realização |
-
 | cargaHoraria | Carga horária prevista |
-
 | ativo | Situação da atividade |
-
 | projetoId | Projeto ao qual pertence |
-
 | createdAt | Data de criação |
-
 | updatedAt | Última atualização |
 
 
 
-> \*\*Observação:\*\* Os atributos apresentados devem refletir exatamente os definidos no Model Sequelize.
 
 
 
-\## Relacionamentos
+## Relacionamentos
 
 
 
 ```
 
 Projeto (1)
-
-&#x20;     │
-
-&#x20;     ▼
-
+         │
+         ▼
 Atividade (N)
 
 
 
 Atividade (1)
-
-&#x20;     │
-
-&#x20;     ▼
-
+           │
+           ▼
 Presença (N)
 
 ```
@@ -186,11 +162,11 @@ Cada atividade pertence a um único projeto e pode possuir diversos registros de
 
 
 
-\---
+---
 
 
 
-\# Repository
+# Repository
 
 
 
@@ -206,7 +182,7 @@ repositories/atividadeRepository.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -218,44 +194,31 @@ As principais operações realizadas incluem:
 
 
 
-\- cadastrar atividade;
+- cadastrar atividade;
 
-\- buscar atividade por ID;
+- buscar atividade por ID;
 
-\- listar atividades;
+- listar atividades;
 
-\- listar atividades por projeto;
+- listar atividades por projeto;
 
-\- atualizar atividade;
+- atualizar atividade;
 
-\- ativar atividade;
+- ativar atividade;
 
-\- desativar atividade.
+- desativar atividade.
 
 
-
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Service
-
-
-
 ↓
-
-
-
 AtividadeRepository
-
-
-
 ↓
-
-
-
 Banco de Dados
 
 ```
@@ -266,11 +229,11 @@ Esta camada não implementa regras de negócio, sendo responsável apenas pela p
 
 
 
-\---
+---
 
 
 
-\# Service
+# Service
 
 
 
@@ -286,7 +249,7 @@ services/atividadeService.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -298,46 +261,32 @@ Entre suas responsabilidades estão:
 
 
 
-\- validar dados obrigatórios;
+- validar dados obrigatórios;
 
-\- verificar se o projeto informado existe;
+- verificar se o projeto informado existe;
 
-\- impedir cadastro de atividades sem projeto;
+- impedir cadastro de atividades sem projeto;
 
-\- validar permissões do professor responsável;
+- validar permissões do professor responsável;
 
-\- controlar ativação e desativação;
+- controlar ativação e desativação;
 
-\- impedir alterações em atividades inexistentes.
-
-
+- impedir alterações em atividades inexistentes.
 
 Além disso, esta camada realiza integrações com os módulos de Projeto e Presença.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Controller
-
-
-
 ↓
-
-
-
 AtividadeService
-
-
-
 ↓
-
-
-
 Repository
 
 ```
@@ -348,11 +297,11 @@ Toda regra de negócio referente às atividades permanece concentrada nesta cama
 
 
 
-\---
+---
 
 
 
-\# Controller
+# Controller
 
 
 
@@ -368,7 +317,7 @@ controllers/atividadeController.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -380,61 +329,42 @@ Suas responsabilidades incluem:
 
 
 
-\- receber parâmetros da requisição;
+- receber parâmetros da requisição;
 
-\- validar informações básicas;
+- validar informações básicas;
 
-\- chamar os métodos do Service;
+- chamar os métodos do Service;
 
-\- retornar respostas HTTP apropriadas.
-
+- retornar respostas HTTP apropriadas.
 
 
 O Controller não realiza acesso direto ao banco de dados.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Request
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Response
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Routes
+# Routes
 
 
 
@@ -450,7 +380,7 @@ routes/atividadeRoutes.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -463,21 +393,13 @@ As principais operações disponibilizadas são:
 
 
 | Método | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | POST | Criar atividade |
-
 | GET | Listar atividades |
-
 | GET | Buscar atividade por ID |
-
 | GET | Buscar atividades por projeto |
-
 | PUT | Atualizar atividade |
-
 | PUT | Ativar atividade |
-
 | DELETE | Desativar atividade |
 
 
@@ -486,11 +408,11 @@ Cada rota encaminha a requisição para o método correspondente do Controller.
 
 
 
-\---
+---
 
 
 
-\# Fluxo Completo
+# Fluxo Completo
 
 
 
@@ -501,96 +423,36 @@ Toda requisição relacionada às atividades percorre as seguintes camadas:
 ```
 
 Cliente
-
-
-
 ↓
-
-
-
 Route
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Model
-
-
-
 ↓
-
-
-
 MySQL
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Resposta HTTP
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
@@ -598,27 +460,27 @@ As principais regras implementadas pelo módulo são:
 
 
 
-\- Toda atividade deve estar vinculada a um projeto existente.
+- Toda atividade deve estar vinculada a um projeto existente.
 
-\- Apenas professores autenticados podem cadastrar ou alterar atividades.
+- Apenas professores autenticados podem cadastrar ou alterar atividades.
 
-\- Não é permitido cadastrar atividades para projetos inexistentes.
+- Não é permitido cadastrar atividades para projetos inexistentes.
 
-\- Atividades desativadas não devem aceitar novos registros de presença.
+- Atividades desativadas não devem aceitar novos registros de presença.
 
-\- Cada atividade possui apenas um projeto responsável.
+- Cada atividade possui apenas um projeto responsável.
 
-\- Uma atividade pode possuir diversos registros de presença.
+- Uma atividade pode possuir diversos registros de presença.
 
-\- A exclusão é realizada de forma lógica por meio da alteração do status da atividade.
-
-
-
-\---
+- A exclusão é realizada de forma lógica por meio da alteração do status da atividade.
 
 
 
-\# Segurança
+---
+
+
+
+# Segurança
 
 
 
@@ -626,25 +488,24 @@ O módulo utiliza os seguintes mecanismos de segurança:
 
 
 
-\- autenticação por JWT;
+- autenticação por JWT;
 
-\- autorização baseada no perfil do usuário;
+- autorização baseada no perfil do usuário;
 
-\- validação das permissões do professor;
+- validação das permissões do professor;
 
-\- proteção das rotas administrativas.
-
+- proteção das rotas administrativas.
 
 
 Esses mecanismos garantem que apenas usuários autorizados possam modificar as atividades cadastradas.
 
 
 
-\---
+---
 
 
 
-\# Dependências
+# Dependências
 
 
 
@@ -655,25 +516,10 @@ O módulo Atividade possui integração direta com diversos componentes do siste
 ```
 
 Atividade
-
-
-
 ├── Projeto
-
-
-
 ├── Presença
-
-
-
 ├── Professor
-
-
-
 ├── JWT
-
-
-
 └── Banco de Dados
 
 ```
@@ -684,35 +530,29 @@ Esses módulos trabalham em conjunto para controlar toda a execução das ativid
 
 
 
-\---
+---
 
 
 
-\# Responsabilidades do Módulo
+# Responsabilidades do Módulo
 
 
 
 | Camada | Responsabilidade |
-
-|---------|------------------|
-
+|---|---|
 | Model | Representar a entidade Atividade |
-
 | Repository | Persistência dos dados |
-
 | Service | Implementação das regras de negócio |
-
 | Controller | Tratamento das requisições HTTP |
-
 | Routes | Definição dos endpoints da API |
 
 
 
-\---
+---
 
 
 
-\# Integração com Outros Módulos
+# Integração com Outros Módulos
 
 
 
@@ -721,28 +561,22 @@ O módulo Atividade possui relacionamento direto com outros módulos do sistema.
 
 
 | Módulo | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | Projeto | Organização das atividades |
-
 | Professor | Responsável pelo gerenciamento |
-
 | Presença | Registro de participação dos alunos |
-
 | Aluno | Participação nas atividades |
-
 
 
 Essa integração permite controlar todo o ciclo de vida de uma atividade, desde seu cadastro até o registro das presenças dos participantes.
 
 
 
-\---
+---
 
 
 
-\# Melhorias Futuras
+# Melhorias Futuras
 
 
 
@@ -750,31 +584,31 @@ As seguintes funcionalidades podem ser incorporadas futuramente ao módulo:
 
 
 
-\- upload de materiais da atividade;
+- upload de materiais da atividade;
 
-\- anexação de fotos;
+- anexação de fotos;
 
-\- controle de vagas;
+- controle de vagas;
 
-\- confirmação de presença antecipada;
+- confirmação de presença antecipada;
 
-\- emissão automática de certificados;
+- emissão automática de certificados;
 
-\- integração com calendário institucional;
+- integração com calendário institucional;
 
-\- geração de relatórios por atividade.
-
-
-
-\---
+- geração de relatórios por atividade.
 
 
 
-\# Considerações Finais
+---
 
 
 
-O módulo \*\*Atividade\*\* é responsável por organizar e registrar todas as ações desenvolvidas nos projetos de extensão. Ele conecta professores, alunos e projetos, servindo como base para o controle de presença e da carga horária extensionista.
+# Considerações Finais
+
+
+
+O módulo **Atividade** é responsável por organizar e registrar todas as ações desenvolvidas nos projetos de extensão. Ele conecta professores, alunos e projetos, servindo como base para o controle de presença e da carga horária extensionista.
 
 
 
