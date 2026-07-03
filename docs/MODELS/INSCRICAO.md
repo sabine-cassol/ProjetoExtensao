@@ -1,12 +1,12 @@
-\# Módulo Inscrição
+# Módulo Inscrição
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O módulo \*\*Inscrição\*\* é responsável por gerenciar o vínculo entre alunos e projetos de extensão universitária. Ele implementa a relação de muitos para muitos (\*\*N:N\*\*) entre essas duas entidades, permitindo que um aluno participe de vários projetos e que um projeto possua diversos alunos inscritos.
+O módulo **Inscrição** é responsável por gerenciar o vínculo entre alunos e projetos de extensão universitária. Ele implementa a relação de muitos para muitos (\*\*N:N\*\*) entre essas duas entidades, permitindo que um aluno participe de vários projetos e que um projeto possua diversos alunos inscritos.
 
 
 
@@ -14,11 +14,11 @@ Além de registrar as inscrições, este módulo desempenha um papel fundamental
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -26,40 +26,34 @@ O módulo possui como principais objetivos:
 
 
 
-\- Registrar inscrições de alunos em projetos;
+- Registrar inscrições de alunos em projetos;
 
-\- Consultar alunos inscritos em um projeto;
+- Consultar alunos inscritos em um projeto;
 
-\- Consultar projetos nos quais um aluno está inscrito;
+- Consultar projetos nos quais um aluno está inscrito;
 
-\- Impedir inscrições duplicadas;
+- Impedir inscrições duplicadas;
 
-\- Servir como base para validação de presença nas atividades.
-
-
-
-\---
+- Servir como base para validação de presença nas atividades.
 
 
 
-\# Estrutura do Módulo
+---
+
+
+
+# Estrutura do Módulo
 
 
 
 ```
 
 Inscrição
-
 │
-
 ├── Model
-
 ├── Repository
-
 ├── Service
-
 ├── Controller
-
 └── Routes
 
 ```
@@ -70,11 +64,11 @@ Cada camada possui uma responsabilidade específica dentro da arquitetura do sis
 
 
 
-\---
+---
 
 
 
-\# Model
+# Model
 
 
 
@@ -90,7 +84,7 @@ models/inscricao\_projeto.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -106,56 +100,43 @@ O Model define:
 
 
 
-\- estrutura da tabela intermediária;
+- estrutura da tabela intermediária;
 
-\- chaves estrangeiras;
+- chaves estrangeiras;
 
-\- relacionamentos;
+- relacionamentos;
 
-\- restrições de integridade.
+- restrições de integridade.
 
 
 
-\## Principais atributos
+## Principais atributos
 
 
 
 | Campo | Descrição |
-
-|--------|-----------|
-
+|---|---|
 | alunoId | Identificador do aluno |
-
 | projetoId | Identificador do projeto |
-
 | createdAt | Data da inscrição |
-
 | updatedAt | Última atualização |
 
 
 
-> \*\*Observação:\*\* Os atributos apresentados devem refletir exatamente aqueles definidos no Model Sequelize.
 
 
-
-\## Relacionamentos
+## Relacionamentos
 
 
 
 ```
 
 Aluno (N)
-
-&#x20;    │
-
-&#x20;    ▼
-
+       │
+       ▼
 Inscrição
-
-&#x20;    ▲
-
-&#x20;    │
-
+       ▲
+       │
 Projeto (N)
 
 ```
@@ -166,11 +147,11 @@ A entidade Inscrição representa a tabela intermediária responsável pelo rela
 
 
 
-\---
+---
 
 
 
-\# Repository
+# Repository
 
 
 
@@ -186,7 +167,7 @@ repositories/inscricaoRepository.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -198,40 +179,26 @@ As principais operações realizadas incluem:
 
 
 
-\- registrar inscrição;
+- registrar inscrição;
 
-\- verificar inscrição existente;
+- verificar inscrição existente;
 
-\- listar alunos inscritos;
+- listar alunos inscritos;
 
-\- listar projetos do aluno;
-
-\- remover inscrição (quando aplicável).
+- listar projetos do aluno;
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Service
-
-
-
 ↓
-
-
-
 InscricaoRepository
-
-
-
 ↓
-
-
-
 Banco de Dados
 
 ```
@@ -242,11 +209,11 @@ Esta camada não implementa regras de negócio, sendo responsável apenas pela p
 
 
 
-\---
+---
 
 
 
-\# Service
+# Service
 
 
 
@@ -262,7 +229,7 @@ services/inscricaoService.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -274,46 +241,31 @@ Entre suas responsabilidades estão:
 
 
 
-\- validar se o aluno existe;
+- validar se o aluno existe;
 
-\- validar se o projeto existe;
+- validar se o projeto existe;
 
-\- impedir inscrições duplicadas;
+- impedir inscrições duplicadas;
 
-\- verificar se o projeto está ativo;
+- verificar se o projeto está ativo;
 
-\- validar permissões de acesso;
-
-\- fornecer informações para o módulo de Presença validar o check-in.
-
+- fornecer informações para o módulo de Presença validar o check-in.
 
 
 Além disso, esta camada integra informações provenientes dos módulos de Aluno e Projeto.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Controller
-
-
-
 ↓
-
-
-
 InscricaoService
-
-
-
 ↓
-
-
-
 Repository
 
 ```
@@ -324,11 +276,11 @@ Toda regra de negócio relacionada às inscrições permanece concentrada nesta 
 
 
 
-\---
+---
 
 
 
-\# Controller
+# Controller
 
 
 
@@ -344,7 +296,7 @@ controllers/inscricaoController.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -356,13 +308,13 @@ Suas responsabilidades incluem:
 
 
 
-\- receber parâmetros da requisição;
+- receber parâmetros da requisição;
 
-\- validar informações básicas;
+- validar informações básicas;
 
-\- chamar os métodos do Service;
+- chamar os métodos do Service;
 
-\- retornar respostas HTTP apropriadas.
+- retornar respostas HTTP apropriadas.
 
 
 
@@ -370,47 +322,29 @@ O Controller não realiza acesso direto ao banco de dados.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Request
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Response
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Routes
+# Routes
 
 
 
@@ -426,7 +360,7 @@ routes/inscricaoRoutes.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -439,28 +373,20 @@ As principais operações disponibilizadas são:
 
 
 | Método | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | POST | Inscrever aluno em um projeto |
-
 | GET | Listar alunos inscritos em um projeto |
-
 | GET | Listar projetos do aluno autenticado |
-
 | GET | Listar projetos de um aluno específico |
-
-
 
 Cada rota encaminha a requisição para o método correspondente do Controller.
 
 
 
-\---
+---
 
 
-
-\# Fluxo Completo
+# Fluxo Completo
 
 
 
@@ -471,96 +397,36 @@ Toda requisição relacionada ao módulo Inscrição percorre as seguintes camad
 ```
 
 Cliente
-
-
-
 ↓
-
-
-
 Route
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Model
-
-
-
 ↓
-
-
-
 MySQL
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Resposta HTTP
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
@@ -568,27 +434,27 @@ As principais regras implementadas pelo módulo são:
 
 
 
-\- Apenas alunos autenticados podem realizar inscrições.
+- Apenas alunos autenticados podem realizar inscrições.
 
-\- O projeto deve existir e estar ativo.
+- O projeto deve existir.
 
-\- O aluno deve existir e estar ativo.
+- O aluno deve existir.
 
-\- Não é permitido realizar inscrições duplicadas para o mesmo projeto.
+- Não é permitido realizar inscrições duplicadas para o mesmo projeto.
 
-\- Um aluno pode participar de diversos projetos.
+- Um aluno pode participar de diversos projetos.
 
-\- Um projeto pode possuir diversos alunos inscritos.
+- Um projeto pode possuir diversos alunos inscritos.
 
-\- A inscrição é obrigatória para que o aluno possa registrar presença nas atividades do projeto.
-
-
-
-\---
+- A inscrição é obrigatória para que o aluno possa registrar presença nas atividades do projeto.
 
 
 
-\# Segurança
+---
+
+
+
+# Segurança
 
 
 
@@ -596,15 +462,13 @@ O módulo utiliza os seguintes mecanismos de segurança:
 
 
 
-\- autenticação via JWT;
+- autenticação via JWT;
 
-\- autorização baseada no perfil do usuário;
+- autorização baseada no perfil do usuário;
 
-\- validação da identidade do aluno autenticado;
+- validação da identidade do aluno autenticado;
 
-\- proteção contra inscrições duplicadas;
-
-\- validação de acesso às informações das inscrições.
+- validação de acesso às informações das inscrições.
 
 
 
@@ -612,11 +476,11 @@ Esses mecanismos garantem que apenas usuários autorizados possam realizar ou co
 
 
 
-\---
+---
 
 
 
-\# Dependências
+# Dependências
 
 
 
@@ -627,25 +491,8 @@ O módulo Inscrição possui integração direta com diversos componentes do sis
 ```
 
 Inscrição
-
-
-
 ├── Aluno
-
-
-
 ├── Projeto
-
-
-
-├── Presença
-
-
-
-├── JWT
-
-
-
 └── Banco de Dados
 
 ```
@@ -656,35 +503,29 @@ Esses módulos trabalham em conjunto para garantir que somente alunos devidament
 
 
 
-\---
+---
 
 
 
-\# Responsabilidades do Módulo
+# Responsabilidades do Módulo
 
 
 
 | Camada | Responsabilidade |
-
-|---------|------------------|
-
+|---|---|
 | Model | Representar o vínculo entre Aluno e Projeto |
-
 | Repository | Persistência dos dados |
-
 | Service | Implementação das regras de negócio |
-
 | Controller | Tratamento das requisições HTTP |
-
 | Routes | Definição dos endpoints da API |
 
 
 
-\---
+---
 
 
 
-\# Integração com Outros Módulos
+# Integração com Outros Módulos
 
 
 
@@ -693,15 +534,10 @@ O módulo Inscrição mantém relacionamento com diversos componentes da aplica�
 
 
 | Módulo | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | Aluno | Participante do projeto |
-
 | Projeto | Projeto de extensão |
-
-| Presença | Validação do check-in |
-
+| Presença | Consulta as inscrições para validar o registro de presença |
 | Atividade | Permitir participação nas atividades |
 
 
@@ -710,11 +546,11 @@ Essa integração garante que o sistema mantenha consistência entre os particip
 
 
 
-\---
+---
 
 
 
-\# Melhorias Futuras
+# Melhorias Futuras
 
 
 
@@ -722,31 +558,31 @@ As seguintes funcionalidades podem ser incorporadas futuramente ao módulo:
 
 
 
-\- aprovação manual da inscrição pelo professor;
+- aprovação manual da inscrição pelo professor;
 
-\- lista de espera para projetos com limite de vagas;
+- lista de espera para projetos com limite de vagas;
 
-\- cancelamento de inscrição pelo aluno;
+- cancelamento de inscrição pelo aluno;
 
-\- histórico de inscrições concluídas;
+- histórico de inscrições concluídas;
 
-\- notificações automáticas de aprovação;
+- notificações automáticas de aprovação;
 
-\- geração de certificados de participação;
+- geração de certificados de participação;
 
-\- integração com formulários externos.
-
-
-
-\---
+- integração com formulários externos.
 
 
 
-\# Considerações Finais
+---
 
 
 
-O módulo \*\*Inscrição\*\* é responsável por controlar a participação dos alunos nos projetos de extensão e garantir que apenas participantes autorizados tenham acesso às atividades e ao registro de presença.
+# Considerações Finais
+
+
+
+O módulo **Inscrição** é responsável por gerenciar o vínculo entre alunos e projetos de extensão, permitindo controlar a participação dos alunos nas atividades e servindo como base para a validação dos registros de presença.
 
 
 
