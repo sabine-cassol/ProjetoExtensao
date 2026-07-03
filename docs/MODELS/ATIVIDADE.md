@@ -42,7 +42,7 @@ O módulo possui como principais objetivos:
 
 - Disponibilizar atividades para registro de presença;
 
-- Registrar a carga horária prevista de cada atividade.
+- Definir o período de realização da atividade;
 
 
 
@@ -124,8 +124,8 @@ O Model define:
 | id | Identificador da atividade |
 | titulo | Nome da atividade |
 | descricao | Descrição detalhada |
-| data | Data de realização |
-| cargaHoraria | Carga horária prevista |
+| dataHoraInicio | Data e horário de início da atividade |
+| dataHoraFim | Data e horário de término da atividade |
 | ativo | Situação da atividade |
 | projetoId | Projeto ao qual pertence |
 | createdAt | Data de criação |
@@ -262,15 +262,10 @@ Entre suas responsabilidades estão:
 
 
 - validar dados obrigatórios;
-
 - verificar se o projeto informado existe;
-
 - impedir cadastro de atividades sem projeto;
-
-- validar permissões do professor responsável;
-
+- validar consistência dos dados;
 - controlar ativação e desativação;
-
 - impedir alterações em atividades inexistentes.
 
 Além disso, esta camada realiza integrações com os módulos de Projeto e Presença.
@@ -466,8 +461,6 @@ As principais regras implementadas pelo módulo são:
 
 - Não é permitido cadastrar atividades para projetos inexistentes.
 
-- Atividades desativadas não devem aceitar novos registros de presença.
-
 - Cada atividade possui apenas um projeto responsável.
 
 - Uma atividade pode possuir diversos registros de presença.
@@ -519,7 +512,6 @@ Atividade
 ├── Projeto
 ├── Presença
 ├── Professor
-├── JWT
 └── Banco de Dados
 
 ```
