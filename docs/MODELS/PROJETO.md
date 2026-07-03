@@ -38,8 +38,6 @@ O módulo possui como principais objetivos:
 
 - Organizar atividades relacionadas ao projeto;
 
-- Permitir a inscrição de alunos.
-
 
 
 ---
@@ -117,7 +115,6 @@ O Model define:
 | id | Identificador do projeto |
 | titulo | Nome do projeto |
 | descricao | Descrição detalhada |
-| curso | Curso responsável |
 | ativo | Situação do projeto |
 | professorId | Professor coordenador |
 | createdAt | Data de criação |
@@ -462,8 +459,6 @@ As principais regras implementadas pelo módulo são:
 
 - Não é permitido atualizar projetos inexistentes.
 
-- Projetos desativados deixam de ser disponibilizados para novas inscrições.
-
 - Um projeto pode possuir diversas atividades.
 
 - Um projeto pode possuir diversos alunos inscritos.
@@ -515,10 +510,7 @@ O módulo Projeto possui integração direta com diversos componentes do sistema
 Projeto
 ├── Professor
 ├── Atividade
-├── Inscrição
-├── Aluno
-├── JWT
-└── Banco de Dados
+└── Inscrição
 
 ```
 
@@ -562,7 +554,6 @@ O módulo Projeto mantém relacionamento com diversos componentes do sistema.
 |---|---|
 | Professor | Responsável pelo projeto |
 | Atividade | Organização das atividades |
-| Aluno | Participantes do projeto |
 | Inscrição | Controle das inscrições |
 | Presença | Controle da participação nas atividades |
 
