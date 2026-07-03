@@ -1,12 +1,12 @@
-\# Módulo Professor
+# Módulo Professor
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O módulo \*\*Professor\*\* é responsável pelo gerenciamento dos usuários do tipo professor dentro do Sistema de Extensão Universitária.
+O módulo **Professor** é responsável pelo gerenciamento dos usuários do tipo professor dentro do Sistema de Extensão Universitária.
 
 
 
@@ -14,11 +14,11 @@ Além da autenticação, este módulo fornece as funcionalidades necessárias pa
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -26,42 +26,36 @@ O módulo possui como principais objetivos:
 
 
 
-\- Realizar cadastro de professores;
+- Realizar cadastro de professores;
 
-\- Autenticar usuários;
+- Autenticar usuários;
 
-\- Atualizar informações cadastrais;
+- Atualizar informações cadastrais;
 
-\- Consultar professores;
+- Consultar professores;
 
-\- Ativar e desativar registros;
+- Ativar e desativar registros;
 
-\- Servir como entidade responsável pelos projetos de extensão.
-
-
-
-\---
+- Servir como entidade responsável pelos projetos de extensão.
 
 
 
-\# Estrutura do Módulo
+---
+
+
+
+# Estrutura do Módulo
 
 
 
 ```
 
 Professor
-
 │
-
 ├── Model
-
 ├── Repository
-
 ├── Service
-
 ├── Controller
-
 └── Routes
 
 ```
@@ -72,11 +66,11 @@ Cada camada possui uma responsabilidade específica.
 
 
 
-\---
+---
 
 
 
-\# Model
+# Model
 
 
 
@@ -92,11 +86,11 @@ models/professor.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
-Representa a entidade \*\*Professor\*\* dentro do banco de dados.
+Representa a entidade **Professor** dentro do banco de dados.
 
 
 
@@ -104,54 +98,40 @@ O Model define:
 
 
 
-\- estrutura da tabela;
+- estrutura da tabela;
 
-\- tipos dos atributos;
+- tipos dos atributos;
 
-\- restrições;
+- restrições;
 
-\- relacionamentos com outras entidades.
+- relacionamentos com outras entidades.
 
 
 
-\## Principais atributos
+## Principais atributos
 
 
 
 | Campo | Descrição |
-
-|--------|-----------|
-
+|---|---|
 | id | Identificador do professor |
-
 | nome | Nome completo |
-
 | email | Email institucional |
-
 | senha | Senha criptografada |
-
 | ativo | Situação do cadastro |
-
 | createdAt | Data de criação |
-
 | updatedAt | Data da última atualização |
 
 
 
-\## Relacionamentos
+## Relacionamentos
 
 
 
 ```
 
 Professor (1)
-
-
-
 ↓
-
-
-
 Projeto (N)
 
 ```
@@ -162,11 +142,11 @@ Um professor pode coordenar diversos projetos de extensão.
 
 
 
-\---
+---
 
 
 
-\# Repository
+# Repository
 
 
 
@@ -182,7 +162,7 @@ repositories/professorRepository.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -198,55 +178,36 @@ As operações normalmente implementadas incluem:
 
 
 
-\- criar professor;
-
-\- buscar por ID;
-
-\- buscar por email;
-
-\- listar professores;
-
-\- atualizar cadastro;
-
-\- ativar professor;
-
-\- desativar professor.
+- criar professor;
+- buscar por ID;
+- buscar por email;
+- listar professores;
+- atualizar cadastro;
+- ativar professor;
+- desativar professor.
 
 
 
-\### Fluxo
-
+### Fluxo
 
 
 ```
 
 Service
-
-
-
 ↓
-
-
-
 ProfessorRepository
-
-
-
 ↓
-
-
-
 Banco de Dados
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Service
+# Service
 
 
 
@@ -262,7 +223,7 @@ services/professorService.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -274,44 +235,32 @@ Entre elas:
 
 
 
-\- validar dados obrigatórios;
+- validar dados obrigatórios;
 
-\- verificar email duplicado;
+- verificar email duplicado;
 
-\- criptografar senha;
+- criptografar senha;
 
-\- autenticar usuário;
+- autenticar usuário;
 
-\- gerar token JWT;
+- gerar token JWT;
 
-\- validar permissões;
+- validar permissões;
 
-\- impedir login de usuário desativado.
+- impedir login de usuário desativado.
 
 
 
-\### Fluxo
+### Fluxo
 
 
 
 ```
 
 Controller
-
-
-
 ↓
-
-
-
 ProfessorService
-
-
-
 ↓
-
-
-
 Repository
 
 ```
@@ -322,11 +271,11 @@ A camada Service concentra toda a lógica da aplicação.
 
 
 
-\---
+---
 
 
 
-\# Controller
+# Controller
 
 
 
@@ -342,7 +291,7 @@ controllers/professorController.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -354,13 +303,13 @@ O Controller possui como funções:
 
 
 
-\- receber parâmetros da requisição;
+- receber parâmetros da requisição;
 
-\- validar informações básicas;
+- validar informações básicas;
 
-\- chamar o Service correspondente;
+- chamar o Service correspondente;
 
-\- devolver códigos HTTP apropriados.
+- devolver códigos HTTP apropriados.
 
 
 
@@ -375,40 +324,22 @@ Fluxo:
 ```
 
 Request
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Response
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Routes
+# Routes
 
 
 
@@ -424,7 +355,7 @@ routes/professorRoutes.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
@@ -441,32 +372,23 @@ Exemplo de organização:
 
 
 | Método | Finalidade |
-
-|---------|------------|
-
+|---|---|
 | POST | Cadastro |
-
 | POST | Login |
-
 | POST | Logout |
-
 | GET | Buscar professor |
-
 | GET | Listar professores |
-
 | PUT | Atualizar professor |
-
 | PUT | Ativar professor |
-
 | DELETE | Desativar professor |
 
 
 
-\---
+---
 
 
 
-\# Fluxo Completo
+# Fluxo Completo
 
 
 
@@ -477,96 +399,36 @@ Uma requisição percorre todas as camadas do sistema.
 ```
 
 Cliente
-
-
-
 ↓
-
-
-
 Route
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Model
-
-
-
 ↓
-
-
-
 MySQL
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Resposta
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
@@ -574,23 +436,23 @@ As principais regras implementadas pelo módulo são:
 
 
 
-\- o email deve ser único;
+- o email deve ser único;
 
-\- a senha é armazenada utilizando bcrypt;
+- a senha é armazenada utilizando bcrypt;
 
-\- apenas professores autenticados podem acessar recursos protegidos;
+- apenas professores autenticados podem acessar recursos protegidos;
 
-\- usuários desativados não podem realizar login;
+- usuários desativados não podem realizar login;
 
-\- somente professores podem criar projetos.
-
-
-
-\---
+- somente professores podem criar projetos.
 
 
 
-\# Segurança
+---
+
+
+
+# Segurança
 
 
 
@@ -598,23 +460,23 @@ O módulo utiliza os seguintes mecanismos de segurança:
 
 
 
-\- autenticação por JWT;
+- autenticação por JWT;
 
-\- armazenamento do token em cookie HTTP Only;
+- armazenamento do token em cookie HTTP Only;
 
-\- hash de senha utilizando bcrypt;
+- hash de senha utilizando bcrypt;
 
-\- middleware de autenticação;
+- middleware de autenticação;
 
-\- middleware de autorização.
-
-
-
-\---
+- middleware de autorização.
 
 
 
-\# Dependências
+---
+
+
+
+# Dependências
 
 
 
@@ -622,65 +484,50 @@ O módulo Professor possui integração direta com:
 
 
 
-\- Projeto
+- Projeto
 
-\- Autenticação
+- Autenticação
 
-\- JWT
+- JWT
 
-\- Banco de Dados
+- Banco de Dados
 
 
 
 ```
 
 Professor
-
-
-
 ├── Projeto
-
-
-
 ├── JWT
-
-
-
 └── Banco
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Responsabilidades do Módulo
+# Responsabilidades do Módulo
 
 
 
 | Camada | Responsabilidade |
-
-|---------|------------------|
-
+|---|---|
 | Model | Representar a tabela Professor |
-
 | Repository | Comunicação com o banco |
-
 | Service | Regras de negócio |
-
 | Controller | Requisições HTTP |
-
 | Routes | Endpoints da API |
 
 
 
-\---
+---
 
 
 
-\# Melhorias Futuras
+# Melhorias Futuras
 
 
 
@@ -688,23 +535,23 @@ As seguintes melhorias podem ser incorporadas futuramente ao módulo:
 
 
 
-\- recuperação de senha;
+- recuperação de senha;
 
-\- alteração de senha;
+- alteração de senha;
 
-\- autenticação em dois fatores;
+- autenticação em dois fatores;
 
-\- upload de foto de perfil;
+- upload de foto de perfil;
 
-\- registro de auditoria das ações realizadas pelos professores.
-
-
-
-\---
+- registro de auditoria das ações realizadas pelos professores.
 
 
 
-\# Considerações Finais
+---
+
+
+
+# Considerações Finais
 
 
 
