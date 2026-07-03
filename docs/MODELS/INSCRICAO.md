@@ -6,7 +6,7 @@
 
 
 
-O módulo **Inscrição** é responsável por gerenciar o vínculo entre alunos e projetos de extensão universitária. Ele implementa a relação de muitos para muitos (\*\*N:N\*\*) entre essas duas entidades, permitindo que um aluno participe de vários projetos e que um projeto possua diversos alunos inscritos.
+O módulo **Inscrição** é responsável por gerenciar o vínculo entre alunos e projetos de extensão universitária. Ele implementa a relação de muitos para muitos (**N:N**) entre essas duas entidades, permitindo que um aluno participe de vários projetos e que um projeto possua diversos alunos inscritos.
 
 
 
