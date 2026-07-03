@@ -7,6 +7,8 @@ import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { type Noticia } from '@/data/New.ts'
 import Error from '../components/Error.tsx'
+import { toast } from "sonner"
+import { useNavigate } from 'react-router-dom'
 
 
 function NewDetail() {
@@ -17,6 +19,7 @@ function NewDetail() {
 
     const noticia = listaNews.find(n => n.id == noticiaId);
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate(); 
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -44,11 +47,13 @@ function NewDetail() {
 
         setIsEditing(false);
 
-        console.log("Notícia atualizada localmente com sucesso!");
+        toast.success("Notícia atualizada com sucesso!");
     };
 
-    const handleDelete = () =>{
-        confirm("deseja mesmo deletar a notícia?")
+    const handleDelete = () => {
+        confirm("deseja mesmo deletar a notícia?");
+        toast.success("Notícia deletada com sucesso!");
+        navigate("/Projetos");
     }
 
 
@@ -64,6 +69,7 @@ function NewDetail() {
         <>
 
             <main className="flex-1 bg-zinc-50/50">
+
                 <h1 className="text-2xl font-bold">
                     <Link to="/Notícias" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 mb-6 transition-colors">
                         <ArrowLeft size={16} /> Voltar para Notícias

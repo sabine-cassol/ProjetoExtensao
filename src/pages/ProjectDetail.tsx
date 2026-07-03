@@ -4,8 +4,10 @@ import { PROJECTS } from '@/data/Projects.ts'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
-import { Pencil,Trash } from 'lucide-react'
+import { Pencil, Trash } from 'lucide-react'
 import Error from '../components/Error'
+import { toast } from "sonner"
+import { useNavigate } from 'react-router-dom'
 
 
 function ProjectDetail() {
@@ -13,7 +15,8 @@ function ProjectDetail() {
     const { role } = useAuth();
     const [editForm, setEditForm] = useState<Projeto | undefined>(undefined);
     const [listaProjects, setListaProjects] = useState(PROJECTS);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);  
+    const navigate = useNavigate();
 
     const projeto = listaProjects.find(p => p.id == projetoId);
 
@@ -43,13 +46,14 @@ function ProjectDetail() {
 
         setIsEditing(false);
 
-        console.log("Projeto atualizada localmente com sucesso!");
+        toast.success("Projeto atualizado com sucesso!");
     };
 
     const handleDelete = () => {
         confirm("deseja mesmo deletar o projeto?")
+        toast.success("Projeto deletado com sucesso!");
+        navigate("/Projetos");
     }
-
 
     if (!projeto) {
         return (
