@@ -10,7 +10,7 @@ function Projects() {
     return (
         <>
             <main className="">
-                <h1 className="text-4xl font-bold overflow-hidden leading-tight">Projetos</h1>
+                <h1 className="text-3xl font-bold overflow-hidden leading-tight">Projetos</h1>
                 <div className="mt-4">
                     {role === 'teacher' && (<Link to={'/CreateProject'} className="inline-flex items-center gap-2 bg-[#2ab646] hover:bg-green-600 text-white text-sm font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 w-fit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">
