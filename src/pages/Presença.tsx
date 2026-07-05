@@ -84,7 +84,7 @@ export default function Presença() {
                     </div>
 
                     <button onClick={alternarPonto}
-                        className={`w-full rounded-xl hover:translate-y-[1px] active:translate-y-[3px] cursor-pointer py-4 text-base font-bold text-white transition-all duration-200 ${estaTrabalhando
+                        className={`w-full rounded-xl hover:translate-y-px active:translate-y-0.75 cursor-pointer py-4 text-base font-bold text-white transition-all duration-200 ${estaTrabalhando
                                 ? 'bg-rose-500 hover:bg-rose-600 shadow-lg shadow-rose-100'
                                 : 'bg-(--lightCyan) hover:bg-(--cyanHover) shadow-sm '
                             }`}

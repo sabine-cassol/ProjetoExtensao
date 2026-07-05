@@ -1,5 +1,5 @@
 import Tiptap from "@/components/TipTap"
-import { Calendar, User } from 'lucide-react'
+import { Calendar, User, ChevronUp, ChevronDown } from 'lucide-react'
 import { useState } from "react"
 
 function CreateNew() {
@@ -8,6 +8,11 @@ function CreateNew() {
     const [titulo, setTitulo] = useState('');
     const [resumo, setResumo] = useState('');
     const [conteudo, setConteudo] = useState('');
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const longText = conteudo && conteudo.length > 600;
+
+    const textoExibido = longText && !isExpanded ? `${conteudo.substring(0, 600)}...` : conteudo
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -17,7 +22,6 @@ function CreateNew() {
         setUploadStatus('loading');
 
         try {
-
             await new Promise((resolve) => setTimeout(resolve, 2000));
             setUploadStatus('success');
         } catch (error) {
@@ -113,8 +117,27 @@ function CreateNew() {
                             </p>
 
                             <div className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8">
-                                {conteudo || "-"}
+                                {textoExibido || "-"}
                             </div>
+
+                            {longText && (
+                                <div className="mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        className="flex items-center cursor-pointer gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 focus:outline-none"
+                                    >
+                                        {isExpanded ? (
+                                            <>
+                                                Ver menos <ChevronUp size={16} />
+                                            </>
+                                        ) : (
+                                            <>
+                                                Ler mais <ChevronDown size={16} />
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
 
                         </article>
                     </div>

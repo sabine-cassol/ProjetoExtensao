@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
 import { useAuth } from '@/context/AuthContext';
+import { useState } from 'react';
 
 function News() {
     const { role } = useAuth();
+
+    const [paginaAtual, setPaginaAtual] = useState(1);
+
+    const NOTICIAS_POR_PAGINA = 15;
+    const totalDePaginas = Math.ceil(NEWS.length / NOTICIAS_POR_PAGINA);
+    const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;
+    const indiceInicial = indiceFinal - NOTICIAS_POR_PAGINA;
+    const noticiasExibidas = NEWS.slice(indiceInicial, indiceFinal);
 
     return (
         <>
@@ -24,7 +33,7 @@ function News() {
                         </div>
 
                         <div className="grid gap-6 mt-4">
-                            {NEWS.map((noticia) => (
+                            {noticiasExibidas.map((noticia) => (
                                 <article key={noticia.id} className="bg-white p-6 rounded-lg border border-zinc-200 hover:border-indigo-200 transition-colors flex flex-col justify-between cursor-pointer">
                                     <Link to={`/Notícias/${noticia.id}`} className=" flex items-center">
                                         <div className='w-24 h-24 bg-zinc-200 border border-zinc-300 rounded-xl flex items-center cover justify-center mr-4 shrink-0 overflow-hidden'>
@@ -39,6 +48,32 @@ function News() {
                                 </article>
                             ))}
                         </div>
+                        {totalDePaginas > 1 && (
+                            <div className="flex items-center justify-center gap-2 mt-8 pt-6">
+                                <button onClick={() => setPaginaAtual((prev) => Math.max(prev - 1, 1))} disabled={paginaAtual === 1} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                                    Anterior
+                                </button>
+                                <div className="flex items-center gap-1">
+                                    {Array.from({ length: totalDePaginas }, (_, index) => {
+                                        const numeroPagina = index + 1;
+                                        const isAtiva = paginaAtual === numeroPagina;
+                                        return (
+                                            <button key={numeroPagina} onClick={() => setPaginaAtual(numeroPagina)}
+                                                className={`w-9 h-9 text-sm font-semibold rounded-md ${isAtiva
+                                                        ? 'bg-cyan-400 text-white'
+                                                        : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
+                                                    }`}>
+                                                {numeroPagina}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <button onClick={() => setPaginaAtual((prev) => Math.min(prev + 1, totalDePaginas))} disabled={paginaAtual === totalDePaginas} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                                    Próxima
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </main>
