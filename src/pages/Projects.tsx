@@ -25,15 +25,15 @@ function Projects() {
                         <Link to={`/Projetos/${projeto.id}`}>
                             <section key={projeto.id} className="bg-white p-4 rounded-lg border border-zinc-200 hover:border-indigo-200 flex flex-col justify-between transition-all ease-linear  hover:-translate-y-1.5">
                                 <div className='min-w-100'>
-                                    <h2 className="text-base font-bold text-zinc-800 mb-1">{projeto.titulo}</h2>
-                                    <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-                                        <p className='text-xs font-base'>{projeto.tipo}</p>
-                                        <span className="font-semibold">•</span>
-                                        <p className='text-xs font-base'>{projeto.cargaHoraria}h</p>
+                                    <h2 className="text-base font-bold text-zinc-900 tracking-tight mb-1">{projeto.titulo}</h2>
+                                    <div className="flex flex-wrap items-center gap-2 text-sm font-normal text-zinc-500">
+                                        <p className='text-xs font-medium text-zinc-600'>{projeto.tipo}</p>
+                                        <span className="font-semibold" aria-hidden="true">•</span>
+                                        <p className='text-xs font-medium text-zinc-600'>{projeto.cargaHoraria}h</p>
                                     </div>
-                                    <div className='mt-1 flex flex-row items- text-center gap-2'>
-                                        <IdCard className='font-semibold text-zinc-600'></IdCard>
-                                        <p className='text-xs text-zinc-600 font-semibold'>{projeto.responsavel}</p>
+                                    <div className='mt-1 flex flex-row  text-center gap-2'>
+                                        <IdCard className='font-semibold text-zinc-500'></IdCard>
+                                        <p className='text-xs text-zinc-500 font-medium'>{projeto.responsavel}</p>
                                     </div>
                                 </div>
 

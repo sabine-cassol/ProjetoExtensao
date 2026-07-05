@@ -39,7 +39,7 @@ export const NEWS: Noticia[] = [
     imageUrl: New1
   },
   {
-    id: '1',
+    id: '4',
     titulo: 'Novos prazos para a entrega do TCC',
     resumo: 'A coordenação alterou o calendário oficial devido ao feriado institucional.',
     conteudo: 'Atenção alunos e professores. As datas finais de entrega do Trabalho de Conclusão de Curso foram postergadas em uma semana. Verifique o portal do aluno para o novo cronograma completoizado.',
