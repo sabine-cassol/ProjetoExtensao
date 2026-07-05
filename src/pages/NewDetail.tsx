@@ -19,7 +19,7 @@ function NewDetail() {
 
     const noticia = listaNews.find(n => n.id == noticiaId);
     const [isEditing, setIsEditing] = useState(false);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -129,6 +129,14 @@ function NewDetail() {
                                 {noticia?.conteudo}
                             </div>
                         )}
+
+                        <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">
+                            <img
+                                src={noticia.imageUrl}
+                                alt="Imagem da notícia"
+                                className="w-full h-auto max-h-100 object-cover"
+                            />
+                        </div>
 
                     </article>
                 </h1>
