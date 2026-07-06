@@ -17,6 +17,7 @@ import CreateNew from './pages/CreateNew.tsx'
 import CreateProject from './pages/CreateProject.tsx'
 import Presença from './pages/Presença.tsx'
 import ErrorPage from './pages/Error.tsx'
+import Profile from './pages/Profile.tsx'
 
 import './index.css'
 
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: "/Projetos/:projetoId/Presença",
         element: <Presença />,
+      },
+      {
+        path: "/Profile",
+        element: <Profile />,
       },
     ],
   },

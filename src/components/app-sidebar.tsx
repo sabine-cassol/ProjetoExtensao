@@ -1,5 +1,5 @@
-import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3 } from "lucide-react"
-import { useSidebar, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3, CircleUser } from "lucide-react"
+import { useSidebar, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 
@@ -40,6 +40,7 @@ const items = [
     icon: BarChart3,
     roles: ["student", "teacher"]
   },
+
 ]
 
 export function AppSidebar() {
@@ -80,6 +81,18 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      {(role === 'teacher' || role === 'student') && (<SidebarFooter className="p-2.5 border-t border-zinc-800">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="text-zinc-400 hover:text-white hover:bg-zinc-800">
+              <Link to="/Profile">
+                <CircleUser className="size-4" />
+                <span>Meu Perfil</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>)}
     </Sidebar>
   )
 }
