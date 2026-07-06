@@ -19,6 +19,7 @@ export interface Projeto {
   competencia: string;
   eixo: string;
   ciclo: string;
+  numEncontros: string;
   periodoInscricao: string;
   periodoExecucao: string
 }
@@ -33,7 +34,7 @@ export const PROJECTS: Projeto[] = [
     detalhes: 'Os alunos de engenharia de software e ads serão divididos',
     responsavel: 'responsavel-1',
     cargaHoraria: '100',
-    tipo:'Prestação de serviço',
+    tipo: 'Prestação de serviço',
     unidade: 'Ponta Grossa',
     cursosVinculados: 'Análise e desenvolvimento de sistemas, engenharia de software',
     parceiros: 'Nenhum',
@@ -45,6 +46,7 @@ export const PROJECTS: Projeto[] = [
     competencia: 'Competencia 1',
     eixo: '	[3] - Inovação, Tecnologia e Desenvolvimento Social',
     ciclo: 'Semestral',
+    numEncontros: '15',
     periodoInscricao: '09/03/2026 - 20/03/2026',
     periodoExecucao: '16/03/2026 - 30/06/2026'
   },
@@ -57,7 +59,7 @@ export const PROJECTS: Projeto[] = [
     detalhes: 'Datas: 16 de março a 18 de maio',
     responsavel: 'responsavel-2',
     cargaHoraria: '80',
-    tipo:'Prestação de serviço',    
+    tipo: 'Prestação de serviço',
     unidade: 'Ponta Grossa',
     cursosVinculados: 'Análise e desenvolvimento de sistemas, engenharia de software',
     parceiros: 'Nenhum',
@@ -69,6 +71,7 @@ export const PROJECTS: Projeto[] = [
     competencia: 'Competencia 1',
     eixo: '	[3] - Inovação, Tecnologia e Desenvolvimento Social',
     ciclo: 'Semestral',
+    numEncontros: '30',
     periodoInscricao: '09/03/2026 - 20/03/2026',
     periodoExecucao: '16/03/2026 - 30/06/2026'
   },
@@ -81,7 +84,7 @@ export const PROJECTS: Projeto[] = [
     detalhes: 'Datas: 16 de março a 18 de maio',
     responsavel: 'responsavel-2',
     cargaHoraria: '80',
-    tipo:'Prestação de serviço',    
+    tipo: 'Prestação de serviço',
     unidade: 'Ponta Grossa',
     cursosVinculados: 'Análise e desenvolvimento de sistemas, engenharia de software',
     parceiros: 'Nenhum',
@@ -93,6 +96,7 @@ export const PROJECTS: Projeto[] = [
     competencia: 'Competencia 1',
     eixo: '	[3] - Inovação, Tecnologia e Desenvolvimento Social',
     ciclo: 'Semestral',
+    numEncontros: '30',
     periodoInscricao: '09/03/2026 - 20/03/2026',
     periodoExecucao: '16/03/2026 - 30/06/2026'
   },

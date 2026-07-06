@@ -15,7 +15,7 @@ function ProjectDetail() {
     const { role } = useAuth();
     const [editForm, setEditForm] = useState<Projeto | undefined>(undefined);
     const [listaProjects, setListaProjects] = useState(PROJECTS);
-    const [isEditing, setIsEditing] = useState(false);  
+    const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
 
     const projeto = listaProjects.find(p => p.id == projetoId);
@@ -81,6 +81,13 @@ function ProjectDetail() {
                                 <button onClick={() => handleSaveEdit()} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> Confirmar </button>
                             </div>)}
                     </section>)}
+                    {role === 'student' && (
+                        <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
+                            <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
+                                <Link to={`/Projetos/${projetoId}/Presença`} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'> Registrar presença </Link>
+                            </div>
+                        </section>
+                    )}
                     <div className='bg-white border border-zinc-300 p-4'>
 
                         <section>
@@ -313,13 +320,7 @@ function ProjectDetail() {
                             </section>
                         ) : null}
 
-                        {role === 'student' ? (
-                            <section>
-                                <Link to={'/Presenca'}>
-                                    <button className='mt-5 flex bg-(--darkBlue) text-white p-2 cursor-pointer rounded-sm justify-self-center hover:bg-indigo-900 active:bg-indigo-500'> Registrar presença </button>
-                                </Link>
-                            </section>
-                        ) : null}
+
                     </div>
                 </section>
 

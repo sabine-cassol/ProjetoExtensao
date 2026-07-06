@@ -1,9 +1,14 @@
+import { useAuth } from "@/context/AuthContext"
 function Activities() {
-
+    const { role } = useAuth();
     return (
         <>
             <main className=" flex-1 ">
-                <h1 className="text-3xl font-bold overflow-hidden ">Minhas Atividades</h1>
+                {role === 'teacher' ? (
+                    <h1 className="text-3xl font-bold overflow-hidden">Meus projetos</h1>
+                ) : (
+                    <h1 className="text-3xl font-bold overflow-hidden">Minhas Atividades</h1>
+                )}
                 <section className='mt-4'>
                     <div className="block md:hidden space-y-4">
                         <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 shadow-sm">
