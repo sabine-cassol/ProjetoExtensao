@@ -9,6 +9,7 @@ function CreateNew() {
     const [resumo, setResumo] = useState('');
     const [conteudo, setConteudo] = useState('');
     const [isExpanded, setIsExpanded] = useState(false);
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
     const longText = conteudo && conteudo.length > 600;
 
@@ -19,6 +20,7 @@ function CreateNew() {
         if (!file) return;
 
         setFileName(file.name);
+        setImageFile(file);
         setUploadStatus('loading');
 
         try {
@@ -119,6 +121,11 @@ function CreateNew() {
                             <div className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8">
                                 {textoExibido || "-"}
                             </div>
+
+                            {uploadStatus === 'success' && imageFile && (
+                                <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">
+                                    <img loading='lazy' src={URL.createObjectURL(imageFile)} alt="Preview da notícia" className="w-full h-auto max-h-100 object-cover"/>
+                                </div>)}
 
                             {longText && (
                                 <div className="mt-4 flex justify-center">

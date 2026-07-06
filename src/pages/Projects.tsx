@@ -39,9 +39,9 @@ function Projects() {
 
                                 <div className="flex justify-center items-center mt-6 pt-4">
 
-                                    <Link to={`/Projetos/${projeto.id}`} className="text-sm font-semibold text-indigo-500 hover:text-indigo-800 flex items-center justify-center gap-1 group">
+                                    <p className="text-sm font-semibold text-indigo-500 hover:text-indigo-800 flex items-center justify-center gap-1 group">
                                         Ver detalhes do projeto
-                                    </Link>
+                                    </p>
                                 </div>
                             </section>
                         </Link>

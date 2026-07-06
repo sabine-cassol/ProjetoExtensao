@@ -37,7 +37,7 @@ function News() {
                                 <article key={noticia.id} className="bg-white p-6 rounded-lg border border-zinc-200 hover:border-indigo-200 transition-colors flex flex-col justify-between cursor-pointer">
                                     <Link to={`/Notícias/${noticia.id}`} className=" flex items-center">
                                         <div className='w-24 h-24 bg-zinc-200 border border-zinc-300 rounded-xl flex items-center cover justify-center mr-4 shrink-0 overflow-hidden'>
-                                            <img src={noticia.imageUrl} className="text-xs object-cover size-full text-zinc-400 font-medium uppercase tracking-wider" />
+                                            <img src={noticia.imageUrl} loading='lazy' className="text-xs object-cover size-full text-zinc-400 font-medium uppercase tracking-wider" />
                                         </div>
                                         <div>
                                             <h2 className="text-[1.30rem] font-bold text-cyan-950 mb-2">{noticia.titulo}</h2>

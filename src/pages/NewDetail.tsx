@@ -1,6 +1,6 @@
 
 import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
 import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
@@ -8,18 +8,23 @@ import { useAuth } from '@/context/AuthContext'
 import { type Noticia } from '@/data/New.ts'
 import Error from '../components/Error.tsx'
 import { toast } from "sonner"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 
 function NewDetail() {
     const { noticiaId } = useParams<{ noticiaId: string }>();
     const { role } = useAuth();
+    const { pathname } = useLocation();
     const [editForm, setEditForm] = useState<Noticia | undefined>(undefined);
     const [listaNews, setListaNews] = useState(NEWS);
 
     const noticia = listaNews.find(n => n.id == noticiaId);
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -134,6 +139,7 @@ function NewDetail() {
                             <img
                                 src={noticia.imageUrl}
                                 alt="Imagem da notícia"
+                                loading='lazy'
                                 className="w-full h-auto max-h-100 object-cover"
                             />
                         </div>
