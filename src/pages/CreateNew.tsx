@@ -1,6 +1,7 @@
 import Tiptap from "@/components/TipTap"
 import { Calendar, User, ChevronUp, ChevronDown } from 'lucide-react'
 import { useState } from "react"
+import imageCompression from 'browser-image-compression';
 
 function CreateNew() {
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'loading' | 'success'>('idle');
@@ -23,6 +24,7 @@ function CreateNew() {
         setImageFile(file);
         setUploadStatus('loading');
 
+        
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000));
             setUploadStatus('success');
@@ -31,6 +33,43 @@ function CreateNew() {
             setUploadStatus('idle');
         }
     };
+
+//     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (!file) return;
+
+//     setFileName(file.name);
+//     setImageFile(file);
+//     setUploadStatus('loading');
+
+//     const options = {
+//         maxSizeMB: 50,           // Definimos um limite alto em MB para a lib NÃO forçar a barra na compressão por tamanho
+//         maxWidthOrHeight: 1920,  // Mantém o limite de tamanho dimensional (resolução máxima)
+//         useWebWorker: true,      
+//         fileType: 'image/webp' as const, // Força a conversão para WebP
+//         initialQuality: 1,       // <-- Garante 100% da qualidade original na conversão (sem perdas adicionais)
+//     };
+
+//     try {
+//         // Executa a conversão e o redimensionamento (se a imagem passar de 1920px)
+//         const compressedBlob = await imageCompression(file, options);
+
+//         // Troca a extensão para .webp
+//         const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+        
+//         const compressedFile = new File([compressedBlob], newFileName, {
+//             type: 'image/webp',
+//         });
+
+//         setFileName(compressedFile.name);
+//         setImageFile(compressedFile); 
+
+//         setUploadStatus('success');
+//     } catch (error) {
+//         console.error("Erro no processamento da imagem", error);
+//         setUploadStatus('idle');
+//     }
+// };
 
     return (
         <>
