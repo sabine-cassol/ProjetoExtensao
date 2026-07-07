@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import logo1 from '../assets/IMG_20251114_003344.png'
 import extension from '../assets/Extension.svg'
-import { Eye, EyeOff, XCircle } from 'lucide-react';
+import { Eye, EyeOff, XCircle} from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 
 
@@ -13,8 +13,16 @@ function Login() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [activeScreen, setActiveScreen] = useState<'login' | 'register'>('login');
     const navigate = useNavigate();
+
+    const [regName, setRegName] = useState('');
+    const [regRA, setRegRA] = useState('');
+    const [regPassword, setRegPassword] = useState('');
+    const [regConfirmPassword, setRegConfirmPassword] = useState('');
+    const [erroRegister, setErroRegister] = useState('');
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -33,86 +41,160 @@ function Login() {
         } catch (error) {
             console.error(error);
         } finally {
-        setLoading(false);
-    }
+            setLoading(false);
+        }
 
-};
-return (
-    <>
-        <section className="flex h-screen w-full items-center justify-center p-4 overflow-hidden">
-            <section className="relative grid size-full max-w-400 place-items-center justify-center gap-10 overflow-hidden rounded-lg border border-neutral-300 p-4 shadow-sm lg:h-fit lg:grid-cols-2">
-                <Link to="/" className="inline-flex cursor-pointer justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-500 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 absolute items-center top-5 right-5 hover:translate-y-px active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-left text-primary" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
-                    <p>Início</p>
-                </Link>
-                <div className="size-full max-h-[90svh] max-lg:hidden ">
-                    <div className='absolute -bottom-15 rotate-120 -left-15 opacity-40'>
-                        <img src={extension} alt="logo extensão" className="w-60 h-auto shadow-" />
-                    </div>
-                    <div className="relative h-full flex items-center pl-6" role="region" aria-rolesdescription="carrousel" data-slot="carrousel" style={{ aspectRatio: 0.9 / 1 }}>
+    };
 
-                        <div className="text-left pl-3">
+    const handleRegisterSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setErroRegister('');
 
-                            <h1 className="text-sm font-black text-(--loginTitle) font-sans tracking-tight sm:text-5xl mb-3">
-                                Seu portal de extensão
-                            </h1>
-                            <p className="text-muted-foreground text-base leading-relaxed">
-                                Acesse sua conta para acompanhar seus projetos, relatórios e atividades em tempo real. De estudantes para estudantes.
-                            </p>
+        if (regPassword !== regConfirmPassword) {
+            setErroRegister('As senhas não coincidem!');
+            return;
+        }
 
+        setLoading(true);
+        setActiveScreen('login')
+        setLoading(false)
+        // lógica de envio para o banco de dados aqui
+    };
+    return (
+        <>
+            <section className="flex h-screen w-full items-center justify-center p-4 overflow-hidden">
+                <section className="relative grid size-full max-w-400 place-items-center justify-center gap-10 overflow-hidden rounded-lg border border-neutral-300 p-4 shadow-sm lg:h-fit lg:grid-cols-2">
+                    <Link to="/" className="inline-flex cursor-pointer justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-500 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 absolute items-center top-5 right-5 hover:translate-y-px active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-left text-primary" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+                        <p>Início</p>
+                    </Link>
+                    <div className="size-full max-h-[90svh] max-lg:hidden ">
+                        <div className='absolute -bottom-15 rotate-120 -left-15 opacity-40'>
+                            <img src={extension} alt="logo extensão" className="w-60 h-auto shadow-" />
+                        </div>
+                        <div className="relative h-full flex items-center pl-6" role="region" aria-rolesdescription="carrousel" data-slot="carrousel" style={{ aspectRatio: 0.9 / 1 }}>
+
+                            <div className="text-left pl-3">
+
+                                <h1 className="text-sm font-black text-(--loginTitle) font-sans tracking-tight sm:text-5xl mb-3">
+                                    Seu portal de extensão
+                                </h1>
+                                <p className="text-muted-foreground text-base leading-relaxed">
+                                    Acesse sua conta para acompanhar seus projetos, relatórios e atividades em tempo real. De estudantes para estudantes.
+                                </p>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="flex w-full max-w-100 flex-col items-center gap-10 overflow-hidden">
-                    <div className="flex flex-col items-center gap-5 ">
-                        <img src={logo1} alt="logo1" className="size-18" />
-                        <h1 className="font-bold text-3xl text-(#005387cc)"> Entrar na sua conta</h1>
-                        {erroAuth && (
-                            <p className="mt-2 flex min-h-4 items-center font-bold text-destructive text-xs">Ocorreu um erro</p>
-                        )}
-                    </div>
-                    <form onSubmit={handleSubmit} className="w-full space-y-6">
-                        <div className="flex w-full flex-col">
-                            <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Digite seu usuário</label>
-                            <div className="relative mb-4">
-                                <input data-slot="input" value={login} onChange={(e) => setLogin(e.target.value)} required className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" id="login" max="254" placeholder="aluno@exemplo.com" type="text" autoComplete="off" name="login"></input>
-                                <div className="absolute inset-y-0 right-0 hidden items-center pr-3 pointer-events-none text-destructive [input:invalid:not(:placeholder-shown)~&]:flex [form:submitted_&]:flex">
-                                    <XCircle className="size-4" />
+                    <div className={`flex w-full max-w-100 flex-col items-center overflow-hidden ${activeScreen === 'login' ? 'gap-10' : 'gap-4'}`}>
+                        {activeScreen === 'login' && (
+                            <>
+                                <div className="flex flex-col items-center gap-5 ">
+                                    <img src={logo1} alt="logo1" className="size-18" />
+                                    <h1 className="font-bold text-3xl text-(#005387cc)"> Entrar na sua conta</h1>
+                                    {erroAuth && (
+                                        <p className="mt-2 flex min-h-4 items-center font-bold text-destructive text-xs">Ocorreu um erro</p>
+                                    )}
                                 </div>
-                            </div>
-                            <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none ">Digite sua senha</label>
-                            <div className="relative mb-2">
-                                <input data-slot="input" value={password} onChange={(e) => setPassword(e.target.value)} required type={showPassword ? "text" : "password"} className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" id="password" max="254" placeholder="••••••••••" name="password"></input>
-                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-600 focus:outline-none transition-colors" aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}>
-                                    {showPassword ? (
-                                        <EyeOff className="size-4" />
-                                    ) : (
-                                        <Eye className="size-4" />
-                                    )}
-                                </button>
-                            </div>
+                                <form onSubmit={handleSubmit} className="w-full space-y-6">
+                                    <div className="flex w-full flex-col">
+                                        <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Digite seu usuário</label>
+                                        <div className="relative mb-4">
+                                            <input data-slot="input" value={login} onChange={(e) => setLogin(e.target.value)} required className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" id="login" max="254" placeholder="aluno@exemplo.com" type="text" autoComplete="off" name="login"></input>
+                                            <div className="absolute inset-y-0 right-0 hidden items-center pr-3 pointer-events-none text-destructive [input:invalid:not(:placeholder-shown)~&]:flex [form:submitted_&]:flex">
+                                                <XCircle className="size-4" />
+                                            </div>
+                                        </div>
+                                        <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none ">Digite sua senha</label>
+                                        <div className="relative mb-2">
+                                            <input data-slot="input" value={password} onChange={(e) => setPassword(e.target.value)} required type={showPassword ? "text" : "password"} className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" id="password" max="254" placeholder="••••••••••" name="password"></input>
+                                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-600 focus:outline-none transition-colors" aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}>
+                                                {showPassword ? (
+                                                    <EyeOff className="size-4" />
+                                                ) : (
+                                                    <Eye className="size-4" />
+                                                )}
+                                            </button>
+                                        </div>
 
-                            <div className="mt-4 flex items-center justify-center gap-2 ">
-                                <button type="submit" className="inline-flex min-w-0 w-1/3 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[1px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-primary bg-(--lightCyan) text-primary-foreground hover:bg-(--cyanHover) h-9 px-4 py-2 has-[&gt;svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
-                                    {loading ? (
-                                        <>
-                                            <Spinner></Spinner>
-                                        </>
-                                    ) : (
-                                        "Entrar"
-                                    )}
+                                        <div className="mt-4 flex items-center justify-center gap-2 ">
+                                            <button type="submit" className="inline-flex min-w-0 w-1/3 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[1px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-primary bg-(--lightCyan) text-primary-foreground hover:bg-(--cyanHover) h-9 px-4 py-2 has-[&gt;svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
+                                                {loading ? (
+                                                    <>
+                                                        <Spinner></Spinner>
+                                                    </>
+                                                ) : (
+                                                    "Entrar"
+                                                )}
 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <button onClick={() => setActiveScreen('register')} className="font-bold text-blue-600 hover:underline cursor-pointer">
+                                    Não tem uma conta? Crie uma agora
                                 </button>
-                            </div>
-                        </div>
-                    </form>
-                    <a data-disabled="false" className="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border-2 font-bold outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-none underline-offset-4 hover:underline h-9 px-4 py-2 has-[&gt;svg]:px-3 text-foreground text-xs shadow-none hover:translate-y-0 hover:shadow-none active:translate-y-0 active:shadow-none dark:shadow-none dark:active:shadow-none dark:hover:shadow-none">Problemas com o login? contate o TI</a>
-                </div>
-            </section>
-        </section>
-    </>
-)
+
+                            </>)}
+                        {activeScreen === 'register' && (
+                            <>
+                                <div className="flex flex-col items-center gap-3">
+                                    <h1 className="font-bold text-2xl text-(#005387cc)">Criar sua conta</h1>
+                                    {erroRegister && (
+                                        <p className="mt-2 text-red-600 font-bold text-xs bg-red-50 px-3 py-1.5 rounded border border-red-200">{erroRegister}</p>
+                                    )}
+                                </div>
+
+                                <form onSubmit={handleRegisterSubmit} className="w-full space-y-4">
+                                    <div className="flex flex-col">
+                                        <label htmlFor="regName" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Nome completo</label>
+                                        <input id="regName" required value={regName} onChange={(e) => setRegName(e.target.value)} type="text" placeholder="digite seu nome completo" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regName"></input>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <label htmlFor="regRA" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">RA</label>
+                                        <input id="regRA" required value={regRA} onChange={(e) => setRegRA(e.target.value)} type="text" placeholder="seu nome completo" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regRA"></input>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <label htmlFor="regPassword" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Escolha uma Senha</label>
+                                        <div className="relative">
+                                            <input id="regPassword" required value={regPassword} onChange={(e) => setRegPassword(e.target.value)} type={showPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regPassword" />
+                                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-600">
+                                                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <label htmlFor="regConfirmPassword" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Confirme a Senha</label>
+                                        <div className="relative">
+                                            <input id="regConfirmPassword" required value={regConfirmPassword} onChange={(e) => setRegConfirmPassword(e.target.value)} type={showConfirmPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regConfirmPassword"></input>
+                                            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400 hover:text-zinc-600">
+                                                {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-2 flex justify-center">
+                                        <button type="submit" className="inline-flex min-w-0 w-fit cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[1px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-primary bg-(--lightCyan) text-primary-foreground hover:bg-(--cyanHover) h-9 px-4 py-2 has-[&gt;svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
+                                            {loading ? <Spinner /> : "Cadastrar Conta"}
+                                        </button>
+                                    </div>
+                                </form>
+                                <button onClick={() => setActiveScreen('login')} className=" flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-800 transition cursor-pointer" >
+                                    Voltar para o Login
+                                </button>
+                            </>
+                        )}
+
+                    </div>
+                </section>
+            </section >
+        </>
+    )
 }
 
 export default Login
