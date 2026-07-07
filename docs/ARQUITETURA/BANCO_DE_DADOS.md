@@ -1,33 +1,18 @@
 # Banco de Dados
 
-
-
 ## 1. Visão Geral
-
-
 
 O Sistema de Extensão Universitária utiliza um banco de dados relacional **MySQL**, acessado por meio do ORM **Sequelize**. O banco foi modelado para representar professores, alunos, projetos de extensão, atividades, inscrições e presenças, preservando a integridade dos dados através de relacionamentos entre as tabelas.
 
-
-
 Cada entidade do sistema representa um conceito do domínio da aplicação e possui responsabilidades bem definidas.
-
-
 
 ---
 
-
-
-# 2. Modelo Conceitual
-
-
+## 2. Modelo Conceitual
 
 A estrutura geral do banco pode ser representada da seguinte forma:
 
-
-
-```
-
+```text
 Professor
     │
     │ 1:N
@@ -36,654 +21,292 @@ Projeto
     │
     ├──────────────┐
     │              │
-    │1:N           │N:N
+    │ 1:N          │ N:N
     ▼              ▼
-Atividade        Aluno
-    │              │
-    │1:N           │
-    ▼              │
-Presença ◄─────────┘
-
+Atividade         Aluno
+    │               │
+    │ 1:N           │
+    ▼               │
+Presença ◄──────────┘
 ```
-
-
 
 ---
 
-
-
-# 3. Entidade Professor
-
-
+## 3. Entidade Professor
 
 Representa os professores responsáveis pelos projetos de extensão.
 
+### Finalidade
 
+- Autenticação do professor
+- Gerenciamento dos projetos
+- Gerenciamento das atividades
 
-## Finalidade
-
-
-
-* autenticação do professor;
-
-* gerenciamento dos projetos;
-
-* gerenciamento das atividades.
-
-
-
-## Atributos
-
-
+### Atributos
 
 | Campo     | Tipo    | Descrição                       |
-|---|---|---|
-| id        | Integer | Identificador único             |
-| nome      | String  | Nome completo                   |
-| email     | String  | Email institucional             |
-| senha     | String  | Senha criptografada com bcrypt  |
-| ativo     | Boolean | Indica se o cadastro está ativo |
-| createdAt | Date    | Data de criação                 |
-| updatedAt | Date    | Última atualização              |
+|-----------|---------|----------------------------------|
+| id        | Integer | Identificador único              |
+| nome      | String  | Nome completo                    |
+| email     | String  | Email institucional               |
+| senha     | String  | Senha criptografada com bcrypt   |
+| matricula | String  | Matrícula de identificação        |
+| curso     | String  | Curso que o professor leciona     |
+| ativo     | Boolean | Indica se o cadastro está ativo   |
+| createdAt | Date    | Data de criação                   |
+| updatedAt | Date    | Última atualização                |
 
-
-\## Relacionamentos
-
-
-
-Um professor pode coordenar vários projetos.
-
-
+### Relacionamentos
 
 ```text
-
 Professor (1)
-
-&#x20;     │
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Projeto (N)
-
 ```
 
+---
 
-
-\---
-
-
-
-\# 4. Entidade Aluno
-
-
+## 4. Entidade Aluno
 
 Representa os estudantes participantes dos projetos.
 
+### Finalidade
 
+- Autenticação
+- Inscrição em projetos
+- Registro de presença
+- Acompanhamento das horas de extensão
 
-\## Finalidade
+### Atributos
 
+| Campo         | Tipo    | Descrição                  |
+|---------------|---------|------------------------------|
+| id            | Integer | Identificador                |
+| nome          | String  | Nome completo                |
+| email         | String  | Email                        |
+| RA            | String  | Registro acadêmico           |
+| senha         | String  | Senha criptografada          |
+| horasExtensao | Integer | Total de horas acumuladas    |
+| curso         | String  | Curso do aluno                |
+| periodo       | String  | Período do aluno              |
+| ativo         | Boolean | Situação do cadastro          |
+| createdAt     | Date    | Cadastro                      |
+| updatedAt     | Date    | Atualização                   |
 
+### Relacionamentos
 
-\* autenticação;
+```text
+Projeto (N)
+    │
+    ▼
+Aluno (N)
+```
 
-\* inscrição em projetos;
+---
 
-\* registro de presença;
-
-\* acompanhamento das horas de extensão.
-
-
-
-\## Atributos
-
-
-
-| Campo         | Tipo    | Descrição                 |
-
-| ------------- | ------- | ------------------------- |
-
-| id            | Integer | Identificador             |
-
-| nome          | String  | Nome completo             |
-
-| email         | String  | Email                     |
-
-| RA            | String  | Registro acadêmico        |
-
-| senha         | String  | Senha criptografada       |
-
-| horasExtensao | Decimal | Total de horas acumuladas |
-
-| ativo         | Boolean | Situação do cadastro      |
-
-| createdAt     | Date    | Cadastro                  |
-
-| updatedAt     | Date    | Atualização               |
-
-
-
-\---
-
-
-
-\# 5. Entidade Projeto
-
-
+## 5. Entidade Projeto
 
 Representa um projeto de extensão desenvolvido pela universidade.
 
-
-
-\## Finalidade
-
-
+### Finalidade
 
 Agrupar atividades e alunos participantes.
 
+### Atributos
 
+| Campo       | Tipo    | Descrição             |
+|-------------|---------|-------------------------|
+| id          | Integer | Identificador           |
+| titulo      | String  | Título do projeto       |
+| descricao   | Text    | Descrição do projeto    |
+| ativo       | Boolean | Situação do cadastro    |
+| professorId | Integer | Professor responsável   |
 
-\## Atributos
-
-
-
-| Campo       | Tipo    |
-
-| ----------- | ------- |
-
-| id          | Integer |
-
-| titulo      | String  |
-
-| descricao   | Text    |
-
-| curso       | String  |
-
-| ativo       | Boolean |
-
-| professorId | Integer |
-
-
-
-\## Relacionamentos
-
-
+### Relacionamentos
 
 ```text
-
 Professor (1)
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Projeto (N)
-
-
-
-Projeto (1)
-
-&#x20;     │
-
-&#x20;     ▼
-
-Atividade (N)
-
-
-
-Projeto (N)
-
-&#x20;     │
-
-&#x20;     ▼
-
-Aluno (N)
-
+    │
+    ├──────────────┐
+    │               │
+    ▼               ▼
+Atividade (N)     Aluno (N)
 ```
 
+---
 
-
-\---
-
-
-
-\# 6. Entidade Atividade
-
-
+## 6. Entidade Atividade
 
 Cada projeto possui diversas atividades.
 
-
-
-\## Finalidade
-
-
+### Finalidade
 
 Registrar encontros, eventos ou ações realizadas dentro de um projeto.
 
+### Atributos
 
+| Campo          | Tipo    | Descrição                  |
+|----------------|---------|------------------------------|
+| id             | Integer | Identificador                |
+| titulo         | String  | Título da atividade          |
+| descricao      | Text    | Descrição da atividade       |
+| dataHoraInicio | Date    | Início da atividade          |
+| dataHoraFim    | Date    | Fim da atividade             |
+| ativo          | Boolean | Situação do cadastro         |
+| projetoId      | Integer | Projeto ao qual pertence     |
 
-\## Atributos
-
-
-
-| Campo        | Tipo    |
-
-| ------------ | ------- |
-
-| id           | Integer |
-
-| titulo       | String  |
-
-| descricao    | Text    |
-
-| data         | Date    |
-
-| cargaHoraria | Decimal |
-
-| ativo        | Boolean |
-
-| projetoId    | Integer |
-
-
-
-\## Relacionamentos
-
-
+### Relacionamentos
 
 ```text
-
-Projeto
-
-
-
-1
-
-
-
-↓
-
-
-
-Atividade
-
-
-
-1
-
-
-
-↓
-
-
-
-Presença
-
+Projeto (1)
+    │
+    ▼
+Atividade (N)
+    │
+    ▼
+Presença (N)
 ```
 
+---
 
-
-\---
-
-
-
-\# 7. Entidade Presença
-
-
+## 7. Entidade Presença
 
 Representa a participação do aluno em determinada atividade.
 
-
-
-\## Finalidade
-
-
+### Finalidade
 
 Controlar entrada, saída e carga horária.
 
+### Atributos
 
+| Campo               | Tipo     | Descrição                       |
+|----------------------|----------|-----------------------------------|
+| id                  | Integer  | Identificador                     |
+| alunoId             | Integer  | Aluno vinculado (via associação)  |
+| atividadeId         | Integer  | Atividade vinculada (via associação) |
+| dataHoraCheckIn     | DateTime | Início da presença                |
+| localizacaoCheckIn  | String   | Localização no check-in           |
+| dataHoraCheckOut    | DateTime | Fim da presença                   |
+| localizacaoCheckOut | String   | Localização no check-out          |
+| ativo               | Boolean  | Situação do registro              |
 
-\## Atributos
+> **Nota:** `alunoId` e `atividadeId` são definidos via associações (`hasMany`/`belongsTo`) em `models/index.js`, não diretamente no `init()` do model. As horas realizadas são calculadas dinamicamente a partir do check-in/check-out — não existe uma coluna `horasRealizadas` armazenada.
 
+### Regras
 
+- Somente um check-in aberto por atividade.
+- Check-out obrigatório para finalizar a presença.
+- Horas calculadas automaticamente.
 
-| Campo               | Tipo     |
+### Relacionamentos
 
-| ------------------- | -------- |
+```text
+Atividade (1)
+    │
+    ▼
+Presença (N)
 
-| id                  | Integer  |
+Aluno (1)
+    │
+    ▼
+Presença (N)
+```
 
-| alunoId             | Integer  |
+---
 
-| atividadeId         | Integer  |
-
-| dataHoraCheckIn     | DateTime |
-
-| dataHoraCheckOut    | DateTime |
-
-| horasRealizadas     | Decimal  |
-
-| localizacaoCheckIn  | String   |
-
-| localizacaoCheckOut | String   |
-
-
-
-\## Regras
-
-
-
-\* somente um check-in aberto por atividade;
-
-\* check-out obrigatório para finalizar a presença;
-
-\* horas calculadas automaticamente.
-
-
-
-\---
-
-
-
-\# 8. Entidade Inscrição
-
-
+## 8. Entidade Inscrição
 
 Representa a participação de um aluno em um projeto.
 
-
-
-Essa tabela resolve o relacionamento \*\*muitos para muitos\*\* entre alunos e projetos.
-
-
+Essa tabela resolve o relacionamento **muitos para muitos** entre alunos e projetos.
 
 ```text
-
-Aluno
-
-
-
-N
-
-
-
-↓
-
-
-
-Inscrição
-
-
-
-↑
-
-
-
-N
-
-
-
-Projeto
-
+Aluno (N) ──► Inscrição ◄── (N) Projeto
 ```
 
+### Atributos
 
+| Campo       | Tipo     | Descrição                      |
+|-------------|----------|-----------------------------------|
+| alunoId     | Integer  | Aluno inscrito                    |
+| projetoId   | Integer  | Projeto associado                 |
+| dataCadastro| DateOnly | Data da inscrição (campo próprio, não é o `createdAt` automático) |
 
-\## Atributos
+> **Nota:** o registro de data usa o campo customizado `dataCadastro`, e não os timestamps padrão do Sequelize.
 
-
-
-| Campo     | Tipo    |
-
-| --------- | ------- |
-
-| alunoId   | Integer |
-
-| projetoId | Integer |
-
-| createdAt | Date    |
-
-| updatedAt | Date    |
-
-
-
-\---
-
-
-
-\# 9. Relacionamentos
-
-
-
-\## Professor → Projeto
-
-
-
-Um professor pode coordenar diversos projetos.
-
-
-
-Cardinalidade:
-
-
+### Relacionamentos
 
 ```text
-
-1 : N
-
+Aluno (1)
+    │
+    ▼
+Inscrição (N)
+    ▲
+    │
+Projeto (1)
 ```
 
+---
 
+## 9. Relacionamentos Gerais
 
-\---
+| Relação              | Cardinalidade | Implementação                          |
+|-----------------------|----------------|-------------------------------------------|
+| Professor → Projeto   | 1 : N          | FK `professorId` em Projeto               |
+| Projeto → Atividade   | 1 : N          | FK `projetoId` em Atividade               |
+| Projeto → Aluno       | N : N          | Tabela `Inscrição`                        |
+| Atividade → Presença  | 1 : N          | FK `atividadeId` (via associação)         |
+| Aluno → Presença      | 1 : N          | FK `alunoId` (via associação)             |
 
+---
 
-
-\## Projeto → Atividade
-
-
-
-Cada projeto pode possuir diversas atividades.
-
-
-
-Cardinalidade:
-
-
-
-```text
-
-1 : N
-
-```
-
-
-
-\---
-
-
-
-\## Projeto → Aluno
-
-
-
-Um projeto possui vários alunos inscritos.
-
-
-
-Um aluno pode participar de diversos projetos.
-
-
-
-Cardinalidade:
-
-
-
-```text
-
-N : N
-
-```
-
-
-
-A implementação é feita por meio da tabela \*\*Inscrição\*\*.
-
-
-
-\---
-
-
-
-\## Atividade → Presença
-
-
-
-Cada atividade possui vários registros de presença.
-
-
-
-Cada presença pertence a apenas uma atividade.
-
-
-
-Cardinalidade:
-
-
-
-```text
-
-1 : N
-
-```
-
-
-
-\---
-
-
-
-\## Aluno → Presença
-
-
-
-Cada aluno pode registrar diversas presenças.
-
-
-
-Cada presença pertence a um único aluno.
-
-
-
-Cardinalidade:
-
-
-
-```text
-
-1 : N
-
-```
-
-
-
-\---
-
-
-
-\# 10. Regras de Integridade
-
-
+## 10. Regras de Integridade
 
 O banco de dados segue algumas regras para garantir consistência:
 
+- Um professor deve existir antes da criação de um projeto.
+- Um projeto deve existir antes da criação de uma atividade.
+- Um aluno deve estar inscrito em um projeto para registrar presença em suas atividades.
+- Uma presença sempre pertence simultaneamente a um aluno e a uma atividade.
+- A exclusão lógica (ativação/desativação) preserva o histórico dos registros.
 
+---
 
-\* Um professor deve existir antes da criação de um projeto.
-
-\* Um projeto deve existir antes da criação de uma atividade.
-
-\* Um aluno deve estar inscrito em um projeto para registrar presença em suas atividades.
-
-\* Uma presença sempre pertence simultaneamente a um aluno e a uma atividade.
-
-\* A exclusão lógica (ativação/desativação) preserva o histórico dos registros.
-
-
-
-\---
-
-
-
-\# 11. Fluxo dos Dados
-
-
+## 11. Fluxo dos Dados
 
 O ciclo de funcionamento do banco ocorre da seguinte maneira:
 
-
-
 ```text
-
 Professor
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Cria Projeto
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Projeto recebe Atividades
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Aluno realiza Inscrição
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Aluno faz Check-in
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Registro de Presença
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Check-out
-
-&#x20;     │
-
-&#x20;     ▼
-
+    │
+    ▼
 Horas de Extensão Atualizadas
-
 ```
 
+---
 
-
-\---
-
-
-
-\# 12. Considerações
-
-
+## 12. Considerações
 
 A modelagem adotada foi projetada para atender aos requisitos do sistema de extensão universitária, permitindo controlar projetos, atividades, participantes e carga horária de maneira organizada. O uso de relacionamentos bem definidos reduz a redundância de dados e facilita futuras expansões do sistema, como inclusão de notícias, certificados, relatórios e upload de arquivos.
-
-
-
