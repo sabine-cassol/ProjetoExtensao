@@ -1,16 +1,16 @@
 import { Outlet } from "react-router-dom";
-import { SidebarProvider,SidebarTrigger } from "./ui/sidebar";
+import { SidebarProvider} from "./ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useAuth } from "../context/AuthContext";
 import { Toaster } from "@/components/ui/sonner"
+import { useAuth } from "@/context/AuthContext";
 
 function Layout() {
   const { role } = useAuth();
 
   return (
-    <SidebarProvider>
+    <SidebarProvider key={role} defaultOpen={false}>
       <div className="flex flex-col w-full min-h-dvh bg-zinc-50/50">
         <Header />
 
