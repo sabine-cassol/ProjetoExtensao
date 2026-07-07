@@ -1,8 +1,8 @@
-\# Regras de Negócio
+# Regras de Negócio
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
@@ -14,11 +14,11 @@ As regras de negócio definem como o sistema deve se comportar diante das açõe
 
 
 
-\---
+---
 
 
 
-\# Objetivos
+# Objetivos
 
 
 
@@ -26,23 +26,23 @@ As regras de negócio possuem como objetivos:
 
 
 
-\- Garantir a integridade dos dados;
+- Garantir a integridade dos dados;
 
-\- Controlar o acesso às funcionalidades do sistema;
+- Controlar o acesso às funcionalidades do sistema;
 
-\- Validar informações antes da persistência no banco de dados;
+- Validar informações antes da persistência no banco de dados;
 
-\- Evitar operações inconsistentes;
+- Evitar operações inconsistentes;
 
-\- Definir o fluxo de utilização da plataforma.
-
-
-
-\---
+- Definir o fluxo de utilização da plataforma.
 
 
 
-\# Papéis do Sistema
+---
+
+
+
+# Papéis do Sistema
 
 
 
@@ -50,7 +50,7 @@ O sistema possui dois perfis principais de usuários.
 
 
 
-\## Professor
+## Professor
 
 
 
@@ -62,33 +62,33 @@ Permissões:
 
 
 
-\- realizar cadastro;
+- realizar cadastro;
 
-\- realizar login;
+- realizar login;
 
-\- atualizar seu perfil;
+- atualizar seu perfil;
 
-\- cadastrar projetos;
+- cadastrar projetos;
 
-\- editar projetos;
+- editar projetos;
 
-\- ativar ou desativar projetos;
+- ativar ou desativar projetos;
 
-\- cadastrar atividades;
+- cadastrar atividades;
 
-\- editar atividades;
+- editar atividades;
 
-\- consultar alunos;
+- consultar alunos;
 
-\- consultar presenças.
-
-
-
-\---
+- consultar presenças.
 
 
 
-\## Aluno
+---
+
+
+
+## Aluno
 
 
 
@@ -100,31 +100,31 @@ Permissões:
 
 
 
-\- realizar cadastro;
+- realizar cadastro;
 
-\- realizar login;
+- realizar login;
 
-\- atualizar seu perfil;
+- atualizar seu perfil;
 
-\- inscrever-se em projetos;
+- inscrever-se em projetos;
 
-\- registrar presença nas atividades;
+- registrar presença nas atividades;
 
-\- consultar suas horas de extensão;
+- consultar suas horas de extensão;
 
-\- visualizar suas inscrições.
-
-
-
-\---
+- visualizar suas inscrições.
 
 
 
-\# Regras Gerais
+---
 
 
 
-\## RG001 - Autenticação obrigatória
+# Regras Gerais
+
+
+
+## RG001 - Autenticação obrigatória
 
 
 
@@ -144,11 +144,11 @@ Caso contrário, o sistema retorna:
 
 
 
-\---
+---
 
 
 
-\## RG002 - Controle de permissões
+## RG002 - Controle de permissões
 
 
 
@@ -164,11 +164,11 @@ Professor:
 
 
 
-\- cadastrar projeto;
+- cadastrar projeto;
 
-\- cadastrar atividade;
+- cadastrar atividade;
 
-\- listar todos os alunos.
+- listar todos os alunos.
 
 
 
@@ -176,11 +176,11 @@ Aluno:
 
 
 
-\- registrar presença;
+- registrar presença;
 
-\- realizar inscrição;
+- realizar inscrição;
 
-\- consultar suas informações.
+- consultar suas informações.
 
 
 
@@ -196,11 +196,11 @@ Caso o usuário não possua permissão:
 
 
 
-\---
+---
 
 
 
-\## RG003 - Exclusão lógica
+## RG003 - Exclusão lógica
 
 
 
@@ -216,15 +216,15 @@ Isso preserva o histórico das informações.
 
 
 
-\---
+---
 
 
 
-\# Regras do Professor
+# Regras do Professor
 
 
 
-\## RP001 - Cadastro
+## RP001 - Cadastro
 
 
 
@@ -236,11 +236,11 @@ Não são permitidos e-mails duplicados.
 
 
 
-\---
+---
 
 
 
-\## RP002 - Login
+## RP002 - Login
 
 
 
@@ -248,19 +248,19 @@ O login somente é permitido quando:
 
 
 
-\- o e-mail existe;
+- o e-mail existe;
 
-\- a senha está correta;
+- a senha está correta;
 
-\- o professor está ativo.
-
-
-
-\---
+- o professor está ativo.
 
 
 
-\## RP003 - Atualização
+---
+
+
+
+## RP003 - Atualização
 
 
 
@@ -268,23 +268,23 @@ O professor pode alterar apenas seus próprios dados.
 
 
 
-\---
+---
 
 
 
-\## RP004 - Projetos
-
+# RP004 - Projetos
+ 
 
 
 Apenas professores autenticados podem criar projetos.
 
 
 
-\---
+---
 
 
 
-\## RP005 - Atividades
+## RP005 - Atividades
 
 
 
@@ -292,15 +292,15 @@ Somente professores podem cadastrar, alterar, ativar ou desativar atividades.
 
 
 
-\---
+---
 
 
 
-\# Regras do Aluno
+# Regras do Aluno
 
 
 
-\## RA001 - Cadastro
+## RA001 - Cadastro
 
 
 
@@ -312,11 +312,11 @@ Não é permitido cadastrar dois alunos utilizando o mesmo RA.
 
 
 
-\---
+---
 
 
 
-\## RA002 - Login
+## RA002 - Login
 
 
 
@@ -324,19 +324,19 @@ O login somente é permitido quando:
 
 
 
-\- o RA ou e-mail existir (conforme implementação);
+- o RA ou e-mail existir (conforme implementação);
 
-\- a senha estiver correta;
+- a senha estiver correta;
 
-\- o aluno estiver ativo.
-
-
-
-\---
+- o aluno estiver ativo.
 
 
 
-\## RA003 - Atualização
+---
+
+
+
+## RA003 - Atualização
 
 
 
@@ -344,15 +344,15 @@ O aluno pode atualizar apenas seu próprio perfil.
 
 
 
-\---
+---
 
 
 
-\# Regras dos Projetos
+# Regras dos Projetos
 
 
 
-\## RJ001 - Professor responsável
+## RJ001 - Professor responsável
 
 
 
@@ -364,11 +364,11 @@ Não é permitido criar projetos sem professor.
 
 
 
-\---
+---
 
 
 
-\## RJ002 - Projeto ativo
+## RJ002 - Projeto ativo
 
 
 
@@ -376,11 +376,11 @@ Apenas projetos ativos podem receber novas inscrições.
 
 
 
-\---
+---
 
 
 
-\## RJ003 - Atualização
+## RJ003 - Atualização
 
 
 
@@ -388,11 +388,11 @@ Somente professores autorizados podem editar projetos.
 
 
 
-\---
+---
 
 
 
-\## RJ004 - Exclusão
+## RJ004 - Exclusão
 
 
 
@@ -404,15 +404,15 @@ Os registros permanecem armazenados no banco de dados.
 
 
 
-\---
+---
 
 
 
-\# Regras das Atividades
+# Regras das Atividades
 
 
 
-\## RA001
+## RA001
 
 
 
@@ -420,11 +420,11 @@ Toda atividade deve pertencer a um projeto existente.
 
 
 
-\---
+---
 
 
 
-\## RA002
+## RA002
 
 
 
@@ -432,11 +432,11 @@ Não é permitido cadastrar atividades sem projeto.
 
 
 
-\---
+---
 
 
 
-\## RA003
+## RA003
 
 
 
@@ -444,11 +444,11 @@ Somente professores podem criar atividades.
 
 
 
-\---
+---
 
 
 
-\## RA004
+## RA004
 
 
 
@@ -456,15 +456,15 @@ Atividades desativadas não devem aceitar novos registros de presença.
 
 
 
-\---
+---
 
 
 
-\# Regras das Inscrições
+# Regras das Inscrições
 
 
 
-\## RI001
+## RI001
 
 
 
@@ -472,11 +472,11 @@ O aluno deve existir.
 
 
 
-\---
+---
 
 
 
-\## RI002
+## RI002
 
 
 
@@ -484,11 +484,11 @@ O projeto deve existir.
 
 
 
-\---
+---
 
 
 
-\## RI003
+## RI003
 
 
 
@@ -496,11 +496,11 @@ O projeto deve estar ativo.
 
 
 
-\---
+---
 
 
 
-\## RI004
+## RI004
 
 
 
@@ -508,11 +508,11 @@ Não é permitido que um aluno realize duas inscrições para o mesmo projeto.
 
 
 
-\---
+---
 
 
 
-\## RI005
+## RI005
 
 
 
@@ -520,11 +520,11 @@ Um aluno pode participar de diversos projetos.
 
 
 
-\---
+---
 
 
 
-\## RI006
+## RI006
 
 
 
@@ -532,15 +532,15 @@ Um projeto pode possuir diversos alunos.
 
 
 
-\---
+---
 
 
 
-\# Regras das Presenças
+# Regras das Presenças
 
 
 
-\## RP001
+## RP001
 
 
 
@@ -548,11 +548,11 @@ O aluno deve estar inscrito no projeto da atividade.
 
 
 
-\---
+---
 
 
 
-\## RP002
+## RP002
 
 
 
@@ -560,11 +560,11 @@ O aluno somente pode realizar check-in em atividades pertencentes aos projetos n
 
 
 
-\---
+---
 
 
 
-\## RP003
+## RP003
 
 
 
@@ -572,11 +572,11 @@ Não é permitido realizar dois check-ins simultaneamente para a mesma atividade
 
 
 
-\---
+---
 
 
 
-\## RP004
+## RP004
 
 
 
@@ -584,11 +584,11 @@ O check-out somente pode ocorrer após um check-in válido.
 
 
 
-\---
+---
 
 
 
-\## RP005
+## RP005
 
 
 
@@ -596,11 +596,11 @@ O horário de saída deve ser posterior ao horário de entrada.
 
 
 
-\---
+---
 
 
 
-\## RP006
+## RP006
 
 
 
@@ -608,11 +608,11 @@ Após o check-out, o sistema calcula automaticamente a carga horária da ativida
 
 
 
-\---
+---
 
 
 
-\## RP007
+## RP007
 
 
 
@@ -620,15 +620,15 @@ As horas calculadas são adicionadas automaticamente ao histórico do aluno.
 
 
 
-\---
+---
 
 
 
-\# Regras de Autenticação
+# Regras de Autenticação
 
 
 
-\## RAU001
+## RAU001
 
 
 
@@ -636,11 +636,11 @@ As senhas são armazenadas utilizando criptografia com bcrypt.
 
 
 
-\---
+---
 
 
 
-\## RAU002
+## RAU002
 
 
 
@@ -648,11 +648,11 @@ Após o login, o sistema gera um JWT.
 
 
 
-\---
+---
 
 
 
-\## RAU003
+## RAU003
 
 
 
@@ -660,35 +660,35 @@ O JWT é armazenado em um cookie HTTP Only.
 
 
 
-\---
+---
 
 
 
-\## RAU004
+## RAU004
 
 
 
-O middleware \*\*autenticar\*\* valida o JWT antes da execução da rota.
+O middleware **autenticar** valida o JWT antes da execução da rota.
 
 
 
-\---
+---
 
 
 
-\## RAU005
+## RAU005
 
 
 
-O middleware \*\*autorizar\*\* verifica se o perfil possui permissão para acessar a funcionalidade.
+O middleware **autorizar** verifica se o perfil possui permissão para acessar a funcionalidade.
 
 
 
-\---
+---
 
 
 
-\# Fluxo Geral do Sistema
+# Fluxo Geral do Sistema
 
 
 
@@ -699,224 +699,82 @@ O funcionamento esperado do sistema pode ser representado pelo seguinte fluxo:
 ```
 
 Professor
-
-
-
 ↓
-
-
-
 Cadastro
-
-
-
 ↓
-
-
-
 Login
-
-
-
 ↓
-
-
-
 Criar Projeto
-
-
-
 ↓
-
-
-
 Cadastrar Atividades
 
-
-
-────────────────────────────
-
-
+───────────────────────────
 
 Aluno
-
-
-
 ↓
-
-
-
 Cadastro
-
-
-
 ↓
-
-
-
 Login
-
-
-
 ↓
-
-
-
 Inscrição no Projeto
-
-
-
 ↓
-
-
-
 Check-in
-
-
-
 ↓
-
-
-
 Participação na Atividade
-
-
-
 ↓
-
-
-
 Check-out
-
-
-
 ↓
-
-
-
 Horas Calculadas
-
-
-
 ↓
-
-
-
 Consulta das Horas de Extensão
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Fluxo de Autorização
+# Fluxo de Autorização
 
 
 
 ```
 
 Requisição
-
-
-
 ↓
-
-
-
 Middleware autenticar
-
-
-
 ↓
-
-
-
 Token válido?
-
-
-
 ├── Não → 401 Unauthorized
-
-
-
 └── Sim
-
-
-
 ↓
-
-
-
 Middleware autorizar
-
-
-
 ↓
-
-
-
 Perfil permitido?
-
-
-
 ├── Não → 403 Forbidden
-
-
-
 └── Sim
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Banco de Dados
-
-
-
 ↓
-
-
-
 Resposta
 
 ```
 
 
 
-\---
+---
 
 
 
-\# Integridade dos Dados
+# Integridade dos Dados
 
 
 
@@ -924,59 +782,50 @@ Para garantir a consistência das informações, o sistema aplica as seguintes v
 
 
 
-\- e-mails únicos para professores;
+- e-mails únicos para professores;
 
-\- RA único para alunos;
+- RA único para alunos;
 
-\- projetos vinculados a professores existentes;
+- projetos vinculados a professores existentes;
 
-\- atividades vinculadas a projetos existentes;
+- atividades vinculadas a projetos existentes;
 
-\- inscrições sem duplicidade;
+- inscrições sem duplicidade;
 
-\- presença apenas para alunos inscritos;
+- presença apenas para alunos inscritos;
 
-\- atualização apenas pelo usuário autorizado;
+- atualização apenas pelo usuário autorizado;
 
-\- exclusão lógica dos registros.
-
-
-
-\---
+- exclusão lógica dos registros.
 
 
 
-\# Tratamento de Erros
+---
+
+
+
+# Tratamento de Erros
 
 
 
 | Código | Situação |
-
-|---------|----------|
-
+|---|---|
 |200|Operação realizada com sucesso|
-
 |201|Recurso criado|
-
 |400|Dados inválidos|
-
 |401|Usuário não autenticado|
-
 |403|Usuário sem permissão|
-
 |404|Recurso não encontrado|
-
 |409|Conflito de dados (duplicidade)|
-
 |500|Erro interno do servidor|
 
 
 
-\---
+---
 
 
 
-\# Considerações Finais
+# Considerações Finais
 
 
 
