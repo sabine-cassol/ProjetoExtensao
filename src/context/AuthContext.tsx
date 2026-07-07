@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { USERS } from '../data/Users.ts'
 
 export type UserRole = 'guest' | 'student' | 'teacher';
 
@@ -14,33 +15,27 @@ interface AuthContextData {
   loading: boolean;
   erroAuth: string | null;
   role: UserRole;
-  loginAction: (loginField: string, passwordField: string) => Promise<boolean>; 
+  loginAction: (loginField: string, passwordField: string) => Promise<boolean>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
-
-
-const MOCK_USERS = [
-  { id: '1', login: 'professor@escola.com', password: '123', role: 'teacher' as UserRole, ra: '9876543-2' },
-  { id: '2', login: 'aluno@escola.com', password: '123', role: 'student' as UserRole, ra: '1234567-8'}
-];
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [erroAuth, setErroAuth] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const role: UserRole = user ? user.role : 'guest';
-
-
+  const role: UserRole = user ? (user.role as UserRole) : 'guest';
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+    const storedUser = localStorage.getItem('@SeuApp:user');
 
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    setLoading(false);
+  }, []);
 
   const loginAction = async (loginField: string, passwordField: string): Promise<boolean> => {
     setLoading(true);
@@ -48,31 +43,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-
-        const foundUser = MOCK_USERS.find(
+        const foundUser = USERS.find(
           (u) => u.login === loginField && u.password === passwordField
         );
 
         if (foundUser) {
-
-          setUser({
+          const loggedInUser: User = {
             id: foundUser.id,
             login: foundUser.login,
-            role: foundUser.role,
-            ra: foundUser.ra
-          });
+            role: foundUser.role as UserRole,
+            ra: foundUser.RA
+          };
+
+          // 2. SALVAR NO LOCALSTORAGE: Guarda a sessão do usuário como string JSON
+          localStorage.setItem('@SeuApp:user', JSON.stringify(loggedInUser));
+
+          setUser(loggedInUser);
           setLoading(false);
-          resolve(true); 
+          resolve(true);
         } else {
           setErroAuth('Usuário ou senha incorretos.');
           setLoading(false);
-          resolve(false); 
+          resolve(false);
         }
       }, 1500);
     });
   };
 
   const logout = () => {
+    localStorage.removeItem('@SeuApp:user');
     setUser(null);
     setErroAuth(null);
   };

@@ -15,7 +15,6 @@ export const USERS: Users[] = [
         RA: "1234567-8",
         role: 'teacher',
         password: '123',
-        
     },
     {
         id: '2',
