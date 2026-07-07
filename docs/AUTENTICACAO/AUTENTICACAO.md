@@ -1,16 +1,16 @@
-\# Autenticação
+# Autenticação
 
 
 
-\## Visão Geral
+## Visão Geral
 
 
 
-O Sistema de Extensão Universitária utiliza autenticação baseada em \*\*JSON Web Token (JWT)\*\* para identificar usuários autenticados e controlar o acesso aos recursos protegidos da aplicação.
+O Sistema de Extensão Universitária utiliza autenticação baseada em **JSON Web Token (JWT)** para identificar usuários autenticados e controlar o acesso aos recursos protegidos da aplicação.
 
 
 
-Após uma autenticação bem-sucedida, o sistema gera um token JWT, que é armazenado em um \*\*cookie HTTP Only\*\*. Esse token acompanha automaticamente as requisições subsequentes realizadas pelo navegador, permitindo que o servidor identifique o usuário sem a necessidade de reenviar suas credenciais.
+Após uma autenticação bem-sucedida, o sistema gera um token JWT, que é armazenado em um **cookie HTTP Only**. Esse token acompanha automaticamente as requisições subsequentes realizadas pelo navegador, permitindo que o servidor identifique o usuário sem a necessidade de reenviar suas credenciais.
 
 
 
@@ -18,11 +18,11 @@ Além da autenticação, o sistema implementa um mecanismo de autorização base
 
 
 
-\---
+---
 
 
 
-\# Objetivos da Autenticação
+# Objetivos da Autenticação
 
 
 
@@ -30,49 +30,43 @@ O sistema de autenticação possui os seguintes objetivos:
 
 
 
-\- Identificar usuários autenticados;
+- Identificar usuários autenticados;
 
-\- Garantir acesso apenas a usuários autorizados;
+- Garantir acesso apenas a usuários autorizados;
 
-\- Proteger rotas sensíveis da aplicação;
+- Proteger rotas sensíveis da aplicação;
 
-\- Impedir acesso não autorizado aos recursos;
+- Impedir acesso não autorizado aos recursos;
 
-\- Diferenciar permissões entre professores e alunos;
+- Diferenciar permissões entre professores e alunos;
 
-\- Garantir maior segurança no armazenamento do token.
-
-
-
-\---
+- Garantir maior segurança no armazenamento do token.
 
 
 
-\# Tecnologias Utilizadas
+---
+
+
+
+# Tecnologias Utilizadas
 
 
 
 | Tecnologia | Finalidade |
-
-|------------|------------|
-
+|---|---|
 | JWT (JSON Web Token) | Identificação do usuário autenticado |
-
 | Cookies HTTP Only | Armazenamento seguro do token |
-
 | bcrypt | Criptografia das senhas |
-
 | Middleware `autenticar` | Validação da autenticação |
-
 | Middleware `autorizar` | Controle de permissões |
 
 
 
-\---
+---
 
 
 
-\# Fluxo Geral da Autenticação
+# Fluxo Geral da Autenticação
 
 
 
@@ -83,112 +77,40 @@ O processo completo de autenticação ocorre conforme o fluxo abaixo.
 ```
 
 Usuário
-
-
-
 ↓
-
-
-
 Login
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Validação do usuário
-
-
-
 ↓
-
-
-
 Comparação da senha (bcrypt)
-
-
-
 ↓
-
-
-
 JWT criado
-
-
-
 ↓
-
-
-
 Cookie HTTP Only
-
-
-
 ↓
-
-
-
 Resposta HTTP
-
-
-
 ↓
-
-
-
 Requisições autenticadas
-
-
-
 ↓
-
-
-
 Middleware autenticar
-
-
-
 ↓
-
-
-
 Middleware autorizar
-
-
-
 ↓
-
-
-
 Controller
 
 ```
 
 
 
-\---
+---
 
 
 
-\# JSON Web Token (JWT)
+# JSON Web Token (JWT)
 
 
 
@@ -204,13 +126,13 @@ De forma geral, o token armazena informações como:
 
 
 
-\- identificador do usuário;
+- identificador do usuário;
 
-\- tipo de usuário (Professor ou Aluno);
+- tipo de usuário (Professor ou Aluno);
 
-\- data de emissão;
+- data de emissão;
 
-\- data de expiração.
+- data de expiração.
 
 
 
@@ -218,11 +140,11 @@ Essas informações são assinadas digitalmente, impedindo alterações por terc
 
 
 
-\---
+---
 
 
 
-\# Estrutura do JWT
+# Estrutura do JWT
 
 
 
@@ -233,28 +155,16 @@ Um token JWT é composto por três partes:
 ```
 
 HEADER
-
-
-
 .
-
-
-
 PAYLOAD
-
-
-
 .
-
-
-
 SIGNATURE
 
 ```
 
 
 
-\### Header
+### Header
 
 
 
@@ -270,9 +180,9 @@ Exemplo:
 
 {
 
-&#x20;   "alg": "HS256",
+"alg": "HS256",
 
-&#x20;   "typ": "JWT"
+"typ": "JWT"
 
 }
 
@@ -280,11 +190,11 @@ Exemplo:
 
 
 
-\---
+---
 
 
 
-\### Payload
+### Payload
 
 
 
@@ -300,9 +210,9 @@ Exemplo ilustrativo:
 
 {
 
-&#x20;   "id": 15,
+"id": 15,
 
-&#x20;   "tipo": "professor"
+"tipo": "professor"
 
 }
 
@@ -310,11 +220,11 @@ Exemplo ilustrativo:
 
 
 
-\---
+---
 
 
 
-\### Signature
+### Signature
 
 
 
@@ -326,11 +236,11 @@ Caso qualquer informação do token seja alterada, sua assinatura torna-se invá
 
 
 
-\---
+---
 
 
 
-\# Cookies HTTP Only
+# Cookies HTTP Only
 
 
 
@@ -338,7 +248,7 @@ Após o login, o JWT não é retornado para ser armazenado manualmente pelo clie
 
 
 
-Em vez disso, o servidor cria um \*\*cookie HTTP Only\*\* contendo o token.
+Em vez disso, o servidor cria um **cookie HTTP Only** contendo o token.
 
 
 
@@ -346,17 +256,17 @@ Essa abordagem apresenta diversas vantagens de segurança.
 
 
 
-\## Benefícios
+## Benefícios
 
 
 
-\- impede acesso ao token via JavaScript;
+- impede acesso ao token via JavaScript;
 
-\- reduz riscos de ataques XSS;
+- reduz riscos de ataques XSS;
 
-\- envio automático em cada requisição;
+- envio automático em cada requisição;
 
-\- simplifica o gerenciamento da sessão.
+- simplifica o gerenciamento da sessão.
 
 
 
@@ -364,11 +274,11 @@ O navegador envia automaticamente esse cookie para todas as requisições destin
 
 
 
-\---
+---
 
 
 
-\# Processo de Login
+# Processo de Login
 
 
 
@@ -379,77 +289,23 @@ O login ocorre em etapas.
 ```
 
 Usuário
-
-
-
 ↓
-
-
-
 Email e senha
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Busca usuário
-
-
-
 ↓
-
-
-
 bcrypt.compare()
-
-
-
 ↓
-
-
-
 Senha válida
-
-
-
 ↓
-
-
-
 JWT
-
-
-
 ↓
-
-
-
 Cookie HTTP Only
-
-
-
 ↓
-
-
-
 Resposta 200
 
 ```
@@ -460,11 +316,11 @@ Caso as credenciais estejam incorretas, o sistema retorna erro de autenticação
 
 
 
-\---
+---
 
 
 
-\# Processo de Logout
+# Processo de Logout
 
 
 
@@ -479,29 +335,11 @@ Fluxo:
 ```
 
 Usuário
-
-
-
 ↓
-
-
-
 POST /logout
-
-
-
 ↓
-
-
-
 Servidor remove cookie
-
-
-
 ↓
-
-
-
 Sessão encerrada
 
 ```
@@ -512,11 +350,11 @@ Após a remoção do cookie, novas requisições protegidas deixam de ser autent
 
 
 
-\---
+---
 
 
 
-\# Middleware autenticar
+# Middleware autenticar
 
 
 
@@ -532,11 +370,11 @@ middlewares/autenticar.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
-O middleware \*\*autenticar\*\* verifica se a requisição possui um JWT válido.
+O middleware **autenticar** verifica se a requisição possui um JWT válido.
 
 
 
@@ -547,101 +385,29 @@ Seu funcionamento ocorre na seguinte sequência:
 ```
 
 Requisição
-
-
-
 ↓
-
-
-
 Ler Cookie
-
-
-
 ↓
-
-
-
 Token encontrado?
-
-
-
 ↓
-
-
-
 Não
-
-
-
 ↓
-
-
-
 401 Unauthorized
-
-
-
 ↓
-
-
-
 Sim
-
-
-
 ↓
-
-
-
 Validar assinatura
-
-
-
 ↓
-
-
-
 Token válido?
-
-
-
 ↓
-
-
-
 Não
-
-
-
 ↓
-
-
-
 401 Unauthorized
-
-
-
 ↓
-
-
-
 Sim
-
-
-
 ↓
-
-
-
 Adicionar usuário em req.user
-
-
-
 ↓
-
-
-
 Próximo middleware
 
 ```
@@ -668,11 +434,11 @@ Essas informações são utilizadas pelos Controllers e pelos demais middlewares
 
 
 
-\---
+---
 
 
 
-\# Middleware autorizar
+# Middleware autorizar
 
 
 
@@ -688,11 +454,11 @@ middlewares/autorizar.js
 
 
 
-\## Responsabilidade
+## Responsabilidade
 
 
 
-O middleware \*\*autorizar\*\* verifica se o usuário autenticado possui permissão para acessar determinado recurso.
+O middleware **autorizar** verifica se o usuário autenticado possui permissão para acessar determinado recurso.
 
 
 
@@ -719,61 +485,19 @@ Fluxo:
 ```
 
 Usuário autenticado
-
-
-
 ↓
-
-
-
 Perfil obtido do JWT
-
-
-
 ↓
-
-
-
 Comparar perfil
-
-
-
 ↓
-
-
-
 Possui permissão?
-
-
-
 ↓
-
-
-
 Sim
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Não
-
-
-
 ↓
-
-
-
 403 Forbidden
 
 ```
@@ -784,11 +508,11 @@ Esse mecanismo garante que apenas usuários autorizados executem determinadas op
 
 
 
-\---
+---
 
 
 
-\# Controle de Permissões
+# Controle de Permissões
 
 
 
@@ -796,7 +520,7 @@ O sistema diferencia permissões entre os dois perfis de usuário.
 
 
 
-\## Professor
+## Professor
 
 
 
@@ -804,23 +528,23 @@ Pode acessar funcionalidades administrativas, como:
 
 
 
-\- cadastro de projetos;
+- cadastro de projetos;
 
-\- atualização de projetos;
+- atualização de projetos;
 
-\- gerenciamento de atividades;
+- gerenciamento de atividades;
 
-\- consulta de alunos;
+- consulta de alunos;
 
-\- administração geral do sistema.
-
-
-
-\---
+- administração geral do sistema.
 
 
 
-\## Aluno
+---
+
+
+
+## Aluno
 
 
 
@@ -828,23 +552,23 @@ Pode acessar funcionalidades relacionadas à sua participação nos projetos, co
 
 
 
-\- visualizar perfil;
+- visualizar perfil;
 
-\- atualizar cadastro;
+- atualizar cadastro;
 
-\- inscrever-se em projetos;
+- inscrever-se em projetos;
 
-\- registrar presença;
+- registrar presença;
 
-\- consultar horas de extensão.
-
-
-
-\---
+- consultar horas de extensão.
 
 
 
-\# Fluxo de uma Requisição Protegida
+---
+
+
+
+# Fluxo de uma Requisição Protegida
 
 
 
@@ -855,77 +579,23 @@ Uma requisição protegida percorre as seguintes etapas.
 ```
 
 Cliente
-
-
-
 ↓
-
-
-
 Cookie JWT
-
-
-
 ↓
-
-
-
 Express Router
-
-
-
 ↓
-
-
-
 autenticar
-
-
-
 ↓
-
-
-
 autorizar
-
-
-
 ↓
-
-
-
 Controller
-
-
-
 ↓
-
-
-
 Service
-
-
-
 ↓
-
-
-
 Repository
-
-
-
 ↓
-
-
-
 Banco de Dados
-
-
-
 ↓
-
-
-
 Resposta
 
 ```
@@ -936,35 +606,27 @@ Caso alguma etapa falhe, a requisição é interrompida e um erro apropriado é 
 
 
 
-\---
+---
 
 
 
-\# Códigos de Resposta
+# Códigos de Resposta
 
 
 
 | Código | Situação |
-
-|---------|----------|
-
+|---|---|
 |200|Autenticação realizada com sucesso|
-
 |400|Dados inválidos|
-
 |401|Usuário não autenticado ou token inválido|
-
 |403|Usuário sem permissão|
-
 |500|Erro interno do servidor|
 
-
-
-\---
+---
 
 
 
-\# Boas Práticas Adotadas
+# Boas Práticas Adotadas
 
 
 
@@ -972,25 +634,25 @@ O sistema segue algumas práticas para aumentar a segurança da autenticação:
 
 
 
-\- utilização de senhas criptografadas com bcrypt;
+- utilização de senhas criptografadas com bcrypt;
 
-\- armazenamento do JWT em cookies HTTP Only;
+- armazenamento do JWT em cookies HTTP Only;
 
-\- validação do token em todas as rotas protegidas;
+- validação do token em todas as rotas protegidas;
 
-\- separação entre autenticação e autorização;
+- separação entre autenticação e autorização;
 
-\- controle de permissões por perfil de usuário;
+- controle de permissões por perfil de usuário;
 
-\- utilização de middlewares para centralizar as verificações de segurança.
-
-
-
-\---
+- utilização de middlewares para centralizar as verificações de segurança.
 
 
 
-\# Considerações Finais
+---
+
+
+
+# Considerações Finais
 
 
 
