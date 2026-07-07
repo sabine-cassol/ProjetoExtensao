@@ -1,12 +1,12 @@
-\# Banco de Dados
+# Banco de Dados
 
 
 
-\## 1. Visão Geral
+## 1. Visão Geral
 
 
 
-O Sistema de Extensão Universitária utiliza um banco de dados relacional \*\*MySQL\*\*, acessado por meio do ORM \*\*Sequelize\*\*. O banco foi modelado para representar professores, alunos, projetos de extensão, atividades, inscrições e presenças, preservando a integridade dos dados através de relacionamentos entre as tabelas.
+O Sistema de Extensão Universitária utiliza um banco de dados relacional **MySQL**, acessado por meio do ORM **Sequelize**. O banco foi modelado para representar professores, alunos, projetos de extensão, atividades, inscrições e presenças, preservando a integridade dos dados através de relacionamentos entre as tabelas.
 
 
 
@@ -14,11 +14,11 @@ Cada entidade do sistema representa um conceito do domínio da aplicação e pos
 
 
 
-\---
+---
 
 
 
-\# 2. Modelo Conceitual
+# 2. Modelo Conceitual
 
 
 
@@ -26,47 +26,33 @@ A estrutura geral do banco pode ser representada da seguinte forma:
 
 
 
-```text
+```
 
 Professor
-
-&#x20;   │
-
-&#x20;   │ 1:N
-
-&#x20;   ▼
-
+    │
+    │ 1:N
+    ▼
 Projeto
-
-&#x20;   │
-
-&#x20;   ├──────────────┐
-
-&#x20;   │              │
-
-&#x20;   │1:N           │N:N
-
-&#x20;   ▼              ▼
-
-Atividade      Aluno
-
-&#x20;   │              │
-
-&#x20;   │1:N           │
-
-&#x20;   ▼              │
-
-&#x20;Presença ◄────────┘
+    │
+    ├──────────────┐
+    │              │
+    │1:N           │N:N
+    ▼              ▼
+Atividade        Aluno
+    │              │
+    │1:N           │
+    ▼              │
+Presença ◄─────────┘
 
 ```
 
 
 
-\---
+---
 
 
 
-\# 3. Entidade Professor
+# 3. Entidade Professor
 
 
 
@@ -74,40 +60,31 @@ Representa os professores responsáveis pelos projetos de extensão.
 
 
 
-\## Finalidade
+## Finalidade
 
 
 
-\* autenticação do professor;
+* autenticação do professor;
 
-\* gerenciamento dos projetos;
+* gerenciamento dos projetos;
 
-\* gerenciamento das atividades.
+* gerenciamento das atividades.
 
 
 
-\## Atributos
+## Atributos
 
 
 
 | Campo     | Tipo    | Descrição                       |
-
-| --------- | ------- | ------------------------------- |
-
+|---|---|---|
 | id        | Integer | Identificador único             |
-
 | nome      | String  | Nome completo                   |
-
 | email     | String  | Email institucional             |
-
 | senha     | String  | Senha criptografada com bcrypt  |
-
 | ativo     | Boolean | Indica se o cadastro está ativo |
-
 | createdAt | Date    | Data de criação                 |
-
 | updatedAt | Date    | Última atualização              |
-
 
 
 \## Relacionamentos
