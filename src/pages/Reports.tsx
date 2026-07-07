@@ -1,68 +1,70 @@
+import { Check, X } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
 
 function Reports() {
+
+    const { role } = useAuth();
     return (
         <>
             <main className="flex-1">
                 <h1 className="text-3xl font-bold overflow-hidden">Relatórios de presença</h1>
                 <section className='mt-4 w-full'>
-                    <div className="block md:hidden space-y-4">
-                        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 font-segoe text-sm text-zinc-800 dark:text-zinc-200 ">
-                            <div className="flex justify-between items-start mb-2">
-                                <div>
-                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Nome completo</span>
-                                    <span className="font-medium text-base">Ana Oliveira</span>
-                                </div>
-                                <div className="text-right">
-                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Data</span>
-                                    <span className="text-zinc-600 dark:text-zinc-400 font-mono font-semibold">01/02/2025</span>
+                    <div className="block space-y-4">
+ 
+                        <div className="w-full rounded-xl border border-gray-400 p-4 sm:p-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between font-body text-slate-700">
+                            <div className="flex items-center gap-3 min-w-0 lg:w-48 lg:shrink-0">
+                                {/* <div className="w-10 h-10 rounded-full bg-[#C9A227]/15 text-[#C9A227] flex items-center justify-center font-display font-semibold text-sm shrink-0">
+                                    AO
+                                </div> */}
+                                <div className="min-w-0">
+                                    <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Nome completo</p>
+                                    <p className="text-sm font-semibold truncate">Ana Oliveira</p>
                                 </div>
                             </div>
 
-                            <div className="pt-2 border-zinc-100 dark:border-zinc-800/50">
-                                <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Projeto</span>
-                                <span className="font-medium">InovaEdu</span>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 lg:flex lg:items-center lg:gap-8 lg:flex-1 min-w-0">
+                                <div className="min-w-0">
+                                    <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Projeto</p>
+                                    <p className="text-sm font-semibold truncate">InovaEdu</p>
+                                </div>
+
+                                <div className="min-w-0">
+                                    <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Data</p>
+                                    <p className="text-sm font-semibold truncate">01/02/2025</p>
+                                </div>
+
+                                <div className="flex gap-4 col-span-2 sm:col-span-1 min-w-0">
+                                    <div className="min-w-0 flex-1 sm:flex-none">
+                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Entrada</p>
+                                        <p className="text-sm font-semibold truncate">13:30</p>
+                                    </div>
+                                    <div className="min-w-0 flex-1 sm:flex-none">
+                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Saída</p>
+                                        <p className="text-sm font-semibold truncate">14:30</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-2 mt-3 p-2">
-                                <div>
-                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Entrada</span>
-                                    <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold">13:30</span>
-                                </div>
-                                <div className="text-right">
-                                    <span className="text-xs font-semibold text-[rgba(44,44,44,.50)] dark:text-zinc-500 block uppercase">Saída</span>
-                                    <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold">14:30</span>
-                                </div>
-                            </div>
+                            {role === 'teacher' && (<div className="flex items-center gap-2 w-full lg:w-auto lg:shrink-0 justify-end mt-2 lg:mt-0">
+                                <button title="Recusar presença" className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-red-400 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 border border-red-200/60">
+                                    <X size={18} strokeWidth={2.5} />
+                                </button>
+
+                                <button title="Aceitar presença" className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.95] transition shrink-0 shadow-sm shadow-emerald-600/10">
+                                    <Check size={18} strokeWidth={2.5} />
+                                </button>
+                            </div>)}
+
+                            {role === 'student' && (<div className="min-w-0 w-full lg:w-auto lg:shrink-0 flex flex-col justify-end items-end mt-2 lg:mt-0">
+                                <p className="hidden lg:block text-[12px] uppercase font-bold tracking-wider text-slate-400 mb-1 text-right w-full">
+                                    Status
+                                </p>
+
+                                <span className="w-full lg:w-auto text-center rounded-full text-xs font-semibold uppercase tracking-wide whitespace-nowrap">
+                                    Em espera
+                                </span>
+                            </div>)}
                         </div>
-                    </div>
-
-                    <div className="hidden md:block w-full overflow-x-auto border border-zinc-200 dark:border-zinc-800">
-                        <table className="min-w-full divide-y border border-zinc-200 border-collapse text-align-center divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
-                            <thead className="border-bottom border-zinc-200">
-                                <tr>
-                                    <th className="px-4 py-3 text-left font-semibold text-[rgba(44,44,44,.50)] font-segoe">Nome completo</th>
-                                    <th className="px-4 py-3 text-left font-semibold text-[rgba(44,44,44,.50)] font-segoe">Projeto</th>
-                                    <th className="px-4 py-3 text-left font-semibold text-[rgba(44,44,44,.50)] font-segoe">Data</th>
-                                    <th className="px-4 py-3 text-right font-semibold text-[rgba(44,44,44,.50)] font-segoe">Entrada</th>
-                                    <th className="px-4 py-3 text-right font-semibold text-[rgba(44,44,44,.50)] font-segoe">Saída</th>
-                                </tr>
-                            </thead>
-
-                            <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
-                                <tr className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors font-segoe">
-                                    <td className="px-4 py-3 font-segoe">Ana Oliveira</td>
-                                    <td className="px-4 py-3 font-segoe">InovaEdu</td>
-                                    <td className="px-4 py-3 font-segoe">01/02/2025</td>
-                                    <td className="px-4 py-3 text-right font-segoe">13:30</td>
-                                    <td className="px-4 py-3 text-right font-segoe">14:30</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colSpan={5}> &nbsp;</td>
-                                </tr>
-                            </tfoot>
-                        </table>
                     </div>
                 </section>
             </main>
