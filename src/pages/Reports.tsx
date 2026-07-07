@@ -7,9 +7,19 @@ function Reports() {
 
     const { role } = useAuth();
     const [paginaAtual, setPaginaAtual] = useState(1);
+    const [listaPresences, setListaPresences] = useState(PRESENCES);
+
+    const handleUpdateStatus = (id: string, novoStatus: 'em Análise' | 'Aprovado' | 'Recusado') => {
+        setListaPresences((prev) =>
+            prev.map((presenca) =>
+                presenca.id === id ? { ...presenca, status: novoStatus } : presenca
+            )
+        );
+    };
+
 
     const PRESENCAS_POR_PAGINA = 15;
-    const totalDePaginas = Math.ceil(PRESENCES.length / PRESENCAS_POR_PAGINA);
+    const totalDePaginas = Math.ceil(listaPresences.length / PRESENCAS_POR_PAGINA);
     const indiceFinal = paginaAtual * PRESENCAS_POR_PAGINA;
     const indiceInicial = indiceFinal - PRESENCAS_POR_PAGINA;
     const presencasExibidas = PRESENCES.slice(indiceInicial, indiceFinal);
@@ -56,11 +66,11 @@ function Reports() {
                             </div>
 
                             {role === 'teacher' && (<div className="flex items-center gap-2 w-full lg:w-auto lg:shrink-0 justify-end mt-2 lg:mt-0">
-                                <button title="Recusar presença" className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-red-400 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 border border-red-200/60">
+                                <button title="Recusar presença" onClick={() => handleUpdateStatus(presenca.id, 'Recusado')} className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-red-400 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 border border-red-200/60">
                                     <X size={18} strokeWidth={2.5} />
                                 </button>
 
-                                <button title="Aceitar presença" className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.95] transition shrink-0 shadow-sm shadow-emerald-600/10">
+                                <button title="Aceitar presença" onClick={() => handleUpdateStatus(presenca.id, 'Aprovado')} className="flex-1 lg:flex-none cursor-pointer h-10 w-10 min-w-11 flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.95] transition shrink-0 shadow-sm shadow-emerald-600/10">
                                     <Check size={18} strokeWidth={2.5} />
                                 </button>
                             </div>)}
@@ -87,8 +97,8 @@ function Reports() {
                                         return (
                                             <button key={numeroPagina} onClick={() => setPaginaAtual(numeroPagina)}
                                                 className={`w-9 h-9 text-sm font-semibold rounded-md ${isAtiva
-                                                        ? 'bg-cyan-400 text-white'
-                                                        : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
+                                                    ? 'bg-cyan-400 text-white'
+                                                    : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
                                                     }`}>
                                                 {numeroPagina}
                                             </button>

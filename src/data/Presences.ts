@@ -5,7 +5,7 @@ export interface Presence {
     data: string;
     entrada: string;
     saida: string;
-    status: string;
+    status: 'em Análise' | 'Aprovado' | 'Recusado';
 }
 
 export const PRESENCES: Presence[] = [
@@ -16,7 +16,7 @@ export const PRESENCES: Presence[] = [
         data: '01/02/2025',
         entrada: "10:30",
         saida: "11:30",
-        status: "Análise",
+        status: "em Análise",
     },
     {
         id: '2',
@@ -25,6 +25,6 @@ export const PRESENCES: Presence[] = [
         data: '08/02/2025',
         entrada: "10:30",
         saida: "11:30",
-        status: "Análise",
+        status: "em Análise",
     }
 ]
