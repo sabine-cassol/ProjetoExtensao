@@ -19,7 +19,6 @@ export default function Presença() {
     const cargaHoraria = Number(projetoAtual?.cargaHoraria);
 
     const timerRef = useRef<number | null>(null);
-    const startTimeRef = useRef<number>(0);
     const TEMPO_MINIMO = 10 * 60;
     const saidaBtnBlock = estaTrabalhando && segundos < TEMPO_MINIMO;
 
@@ -28,10 +27,46 @@ export default function Presença() {
         : 4 * 3600;
 
     useEffect(() => {
-        if (estaTrabalhando) {
-            startTimeRef.current = Date.now() - segundos * 1000;
+        if (!projetoId) return;
+
+        const timestampEntrada = localStorage.getItem(`@Ponto:entrada_time_${projetoId}`);
+        const horaEntradaString = localStorage.getItem(`@Ponto:entrada_hora_${projetoId}`);
+        const pontoFinalizadoString = localStorage.getItem(`@Ponto:registro_finalizado_${projetoId}`);
+
+        if (pontoFinalizadoString) {
+            // Se já bateu a saída e atualizou a página, carrega o último registro visual
+            setRegistro(JSON.parse(pontoFinalizadoString));
+        } else if (timestampEntrada && horaEntradaString) {
+            // Se há um ponto ativo rodando no localStorage
+            const inicio = Number(timestampEntrada);
+            const agora = Date.now();
+            const diferencaSegundos = Math.floor((agora - inicio) / 1000);
+
+            if (diferencaSegundos >= TEMPO_MAXIMO) {
+                // Caso tenha estourado o tempo máximo enquanto estava fora da página
+                setSegundos(TEMPO_MAXIMO);
+                setRegistro({ entrada: horaEntradaString, saida: obterHoraAtual() });
+                setEstaTrabalhando(false);
+                localStorage.removeItem(`@Ponto:entrada_time_${projetoId}`);
+                localStorage.removeItem(`@Ponto:entrada_hora_${projetoId}`);
+            } else {
+                // Restaura o cronômetro atualizado com o tempo perdido
+                setSegundos(diferencaSegundos);
+                setRegistro({ entrada: horaEntradaString, saida: null });
+                setEstaTrabalhando(true);
+            }
+        }
+    }, [projetoId, TEMPO_MAXIMO]);
+
+    useEffect(() => {
+        if (estaTrabalhando && projetoId) {
+            const timestampEntrada = localStorage.getItem(`@Ponto:entrada_time_${projetoId}`);
+            if (!timestampEntrada) return;
+
+            const inicio = Number(timestampEntrada);
+
             timerRef.current = window.setInterval(() => {
-                const segundosPassados = Math.floor((Date.now() - startTimeRef.current) / 1000);
+                const segundosPassados = Math.floor((Date.now() - inicio) / 1000);
 
                 if (segundosPassados >= TEMPO_MAXIMO) {
                     setSegundos(TEMPO_MAXIMO);
@@ -47,7 +82,7 @@ export default function Presença() {
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [estaTrabalhando, TEMPO_MAXIMO]);
+    }, [estaTrabalhando, TEMPO_MAXIMO, projetoId]);
 
     const formatarCronometro = (totalSegundos: number): string => {
         const hrs = Math.floor(totalSegundos / 3600).toString().padStart(2, '0');
@@ -70,16 +105,30 @@ export default function Presença() {
     };
 
     const finalizarPontoForçado = () => {
+        if (!projetoId) return;
         const horaAtual = obterHoraAtual();
-        setRegistro((prev) => ({ ...prev, saida: horaAtual }));
+        const novoRegistro = { ...registro, saida: horaAtual };
+
+        setRegistro(novoRegistro);
         setEstaTrabalhando(false);
+
+        localStorage.setItem(`@Ponto:registro_finalizado_${projetoId}`, JSON.stringify(novoRegistro));
+        localStorage.removeItem(`@Ponto:entrada_time_${projetoId}`);
+        localStorage.removeItem(`@Ponto:entrada_hora_${projetoId}`);
+
         alert(`Tempo máximo do encontro atingido (${formatarCronometro(TEMPO_MAXIMO)}). Ponto encerrado automaticamente.`);
     };
 
     const alternarPonto = () => {
+        if (!projetoId) return;
         const horaAtual = obterHoraAtual();
 
         if (!estaTrabalhando) {
+            const agoraTimestamp = Date.now().toString();
+            localStorage.setItem(`@Ponto:entrada_time_${projetoId}`, agoraTimestamp);
+            localStorage.setItem(`@Ponto:entrada_hora_${projetoId}`, horaAtual);
+            localStorage.removeItem(`@Ponto:registro_finalizado_${projetoId}`);
+
             setRegistro({ entrada: horaAtual, saida: null });
             setSegundos(0);
             setEstaTrabalhando(true);
@@ -88,8 +137,14 @@ export default function Presença() {
                 alert(`Você precisa trabalhar pelo menos 10 minutos antes de registrar a saída. Tempo atual: ${formatarCronometro(segundos)}`);
                 return;
             }
-            setRegistro((prev) => ({ ...prev, saida: horaAtual }));
+
+            const novoRegistro = { ...registro, saida: horaAtual };
+            setRegistro(novoRegistro);
             setEstaTrabalhando(false);
+
+            localStorage.setItem(`@Ponto:registro_finalizado_${projetoId}`, JSON.stringify(novoRegistro));
+            localStorage.removeItem(`@Ponto:entrada_time_${projetoId}`);
+            localStorage.removeItem(`@Ponto:entrada_hora_${projetoId}`);
         }
     };
 
@@ -126,8 +181,8 @@ export default function Presença() {
                     className={`w-full rounded-xl py-4 text-base font-bold text-white transition-all duration-200 
         ${estaTrabalhando
                             ? saidaBtnBlock
-                                ? 'bg-gray-300 cursor-pointer shadow-none' 
-                                : 'bg-rose-500 hover:bg-rose-600 hover:translate-y-px active:translate-y-0.75 cursor-pointer ' 
+                                ? 'bg-gray-300 cursor-pointer shadow-none'
+                                : 'bg-rose-500 hover:bg-rose-600 hover:translate-y-px active:translate-y-0.75 cursor-pointer '
                             : 'bg-(--lightCyan) hover:bg-(--cyanHover) hover:translate-y-px active:translate-y-0.75 cursor-pointer '
                         }`}
                 >

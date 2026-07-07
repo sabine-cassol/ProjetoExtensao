@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             ra: foundUser.RA
           };
 
-          // 2. SALVAR NO LOCALSTORAGE: Guarda a sessão do usuário como string JSON
+  
           localStorage.setItem('@SeuApp:user', JSON.stringify(loggedInUser));
 
           setUser(loggedInUser);
@@ -72,6 +72,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem('@SeuApp:user');
+    Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith('@Ponto:')) {
+      localStorage.removeItem(key);
+    }
+  });
     setUser(null);
     setErroAuth(null);
   };
