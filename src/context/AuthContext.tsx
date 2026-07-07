@@ -6,6 +6,7 @@ interface User {
   id: string;
   login: string;
   role: UserRole;
+  ra: string;
 }
 
 interface AuthContextData {
@@ -21,8 +22,8 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 
 const MOCK_USERS = [
-  { id: '1', login: 'professor@escola.com', password: '123', role: 'teacher' as UserRole },
-  { id: '2', login: 'aluno@escola.com', password: '123', role: 'student' as UserRole }
+  { id: '1', login: 'professor@escola.com', password: '123', role: 'teacher' as UserRole, ra: '9876543-2' },
+  { id: '2', login: 'aluno@escola.com', password: '123', role: 'student' as UserRole, ra: '1234567-8'}
 ];
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -57,7 +58,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser({
             id: foundUser.id,
             login: foundUser.login,
-            role: foundUser.role
+            role: foundUser.role,
+            ra: foundUser.ra
           });
           setLoading(false);
           resolve(true); 

@@ -1,16 +1,15 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
+import { useAuth } from "../context/AuthContext";
 
-interface User {
-    Nome: string,
-    RA: string
+interface UserProfileData {
+    nome: string;
+    ra: string;
 }
+
 function Profile() {
-    const aluno_1: User = {
-        Nome: 'Eduardo',
-        RA: '1234567-8',
-    }
+    const { user, loading } = useAuth();
 
     const [isEditing, setIsEditing] = useState(false);
     const [password, setPassword] = useState('');
@@ -19,7 +18,19 @@ function Profile() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
-    const [formData, setFormData] = useState<User>(aluno_1);
+    const [formData, setFormData] = useState<UserProfileData>({
+        nome: '',
+        ra: ''
+    });
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                nome: user.login,
+                ra: user.ra
+            });
+        }
+    }, [user]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -35,33 +46,46 @@ function Profile() {
     };
 
     const handleCancel = () => {
-        setFormData(aluno_1);
+        // Se cancelar, volta para o que está salvo no contexto do usuário
+        if (user) {
+            setFormData({ nome: user.login, ra: user.ra });
+        }
         setIsEditing(false);
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Impede a página de recarregar
-        setError('');       // Reseta erros anteriores
-        setSuccess(false);  // Reseta estado de sucesso
+        e.preventDefault();
+        setError('');
+        setSuccess(false);
 
         if (password !== confirmPassword) {
             setError('As senhas não coincidem. Verifique e tente novamente.');
+            toast.error('As senhas não coincidem.');
             return;
         }
 
         if (password.length < 6) {
             setError('A senha deve conter no mínimo 6 caracteres.');
+            toast.error('A senha é muito curta.');
             return;
         }
 
-        console.log('Enviando para o banco de dados...', { novaSenha: password });
+        console.log('Enviando para o banco de dados...', { id: user?.id, novaSenha: password });
 
         setSuccess(true);
-        toast.success("Senha alterada com sucesso")
+        toast.success("Senha alterada com sucesso");
 
         setPassword('');
         setConfirmPassword('');
     };
+
+    if (loading) {
+        return <div className="flex-1 flex justify-center items-center">Carregando perfil...</div>;
+    }
+
+    if (!user) {
+        return <div className="flex-1 flex justify-center items-center">Você precisa estar logado para ver esta página.</div>;
+    }
     return (
         <section className='flex-1 flex text-center justify-center items-center'>
 
@@ -84,7 +108,7 @@ function Profile() {
                                     id="Nome"
                                     name="Nome"
                                     type="text"
-                                    value={formData.Nome}
+                                    value={formData.nome}
                                     onChange={handleChange}
                                     readOnly={!isEditing}
                                     className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-medium rounded-md p-2 focus:outline-none transition-all
@@ -103,7 +127,7 @@ function Profile() {
                                     id="RA"
                                     name="RA"
                                     type="text"
-                                    value={formData.RA}
+                                    value={formData.ra}
                                     onChange={handleChange}
                                     readOnly={!isEditing}
                                     className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-medium rounded-md p-2 focus:outline-none transition-all
