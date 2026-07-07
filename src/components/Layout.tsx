@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { SidebarProvider } from "./ui/sidebar";
+import { SidebarProvider,SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -10,7 +10,7 @@ function Layout() {
   const { role } = useAuth();
 
   return (
-    <SidebarProvider defaultOpen={role === 'student' || role === 'teacher'}>
+    <SidebarProvider>
       <div className="flex flex-col w-full min-h-dvh bg-zinc-50/50">
         <Header />
 
@@ -19,6 +19,7 @@ function Layout() {
 
 
           <main className="flex-1 overflow-hidden p-4">
+    
             <Outlet />
           </main>
           <Toaster

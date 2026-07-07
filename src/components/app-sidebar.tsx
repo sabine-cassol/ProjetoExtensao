@@ -1,4 +1,4 @@
-import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3, CircleUser } from "lucide-react"
+import { Home, Newspaper, FolderKanban, Mail, Activity, BarChart3, CircleUser, LogOut } from "lucide-react"
 import { useSidebar, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
@@ -44,9 +44,9 @@ const items = [
 ]
 
 export function AppSidebar() {
-  const { role } = useAuth();
+  const { role, logout } = useAuth();
 
-  const { setOpenMobile, isMobile } = useSidebar();
+  const { setOpenMobile, isMobile, setOpen } = useSidebar();
 
   const filteredItems = items.filter(item => {
     if (item.roles && !item.roles.includes(role)) {
@@ -89,6 +89,23 @@ export function AppSidebar() {
                 <CircleUser className="size-4" />
                 <span>Meu Perfil</span>
               </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => {
+                if (isMobile) {
+                  setOpenMobile(false);
+                } else {
+                  setOpen(false);
+                }
+
+                logout();
+              }}
+              className="text-red-400 hover:text-red-300 hover:bg-red-950/40 cursor-pointer"
+            >
+              <LogOut className="size-4" />
+              <span>Sair da conta</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
