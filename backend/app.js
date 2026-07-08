@@ -35,7 +35,7 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/Projext_front/index.html"));
 });
 
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     console.log("Tabelas sincronizadas!!");
   }).catch(err => {
