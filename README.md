@@ -1,60 +1,363 @@
-# Descrição Resumida do Sistema
-O Sistema tem como objetivo facilitar o gerenciamento e a divulgação das atividades de extensão universitárias e suas dependências como controle de horas.  
-A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, alunos registrem presença e acompanhem suas horas, e professores administrem atividades, gerem relatórios e façam o upload de fotos dos eventos e de notícias.
+# Backend - Sistema de Gerenciamento de Projetos de Extensão Universitária
 
-## 👤 Tipos de usuários
-* Visitantes (interessados nas atividades)
-* Alunos (participantes)
-* Professores (coordenadores dos projetos e administradores)
+<p align="center">
 
-## 🎯 Objetivos
-* Divulgação dos projetos de extensão dos cursos;
-* Controle de presença e horas de alunos participantes (check-in/check-out);
-* Emissão de relatórios e ficha de frequência;
-* Upload de fotos das atividades.
+![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5.x-000000?style=for-the-badge&logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Autenticação-black?style=for-the-badge&logo=jsonwebtokens)
 
-## ⚙ Funcionalidades
-* CRUD de notícias
-* Sistema de ponto/chamada 
-
-###  Como professor:
-* Cadastrar ativadades:
-* Gerar relatórios de alunos participantes;
-* Assinatura online de fichas de frequencia.
-
-### Como Aluno
-* Marcação de presença por meio de um sistema de check-in/check-out (como sistemas de ponto em empresas);
-* Controle de horas e presenças;
-* Upload de fotos das atividades.
-
-### Como visitante
-* Visualizar os projetos disponíveis;
-* Inscrição nos projetos;
-* Visualizar horarios dos projetos inscritos.
-
-## 📱Tecnologias previstas
-* FrontEnd -> React.js
-* BackEnd -> Node.js
-* Banco de dados -> MySQL
-
-## Requisitos
-
-| ID |	Requisito |	Tipo | Prioridade | Usuário |
-| --|----------|-----|-----------|--------| 
-| RF01 | Cadastro e autenticação de professores e alunos	| Funcional |	Alta | Professor, Aluno |
-| RF02 | CRUD de atividades de extensão |	Funcional	| Alta | Professor |
-| RF03 | Visualização e inscrição em projetos |	Funcional |	Alta | Visitante, Aluno |
-| RF04 | Sistema de presença via check-in/check-out |	Funcional |	Alta | Aluno |
-| RF05 | Controle e acompanhamento de horas por atividade |	Funcional |	Alta | Aluno, Professor|
-| RF06 | CRUD de notícias	| Funcional |	Média	| Professor |
-| RF07 | Geração de relatórios e ficha de frequência |	Funcional |	Média	| Professor |
-| RF08 | Assinatura online de ficha de frequência	| Funcional	| Média	| Professor |
-| RF09 | Upload de fotos das atividades	| Funcional	| Baixa	| Professor, Aluno |
-| RNF01 |	Autenticação via JWT com proteção de rotas |	Não funcional |	Alta | Sistema |
-| RNF02 |	Senhas armazenadas com hash bcrypt	| Não funcional |	Alta | Sistema |
-| RNF03 |	API REST com Node.js e banco de dados MySQL	| Não funcional |	Alta | Sistema |
+</p>
 
 ---
+
+# Sobre
+
+Este repositório contém o backend do Sistema de Gerenciamento de Projetos de Extensão Universitária.
+
+A aplicação foi desenvolvida utilizando Node.js, Express e Sequelize, seguindo uma arquitetura em camadas para garantir organização, manutenção simplificada e separação de responsabilidades.
+
+A API é responsável por gerenciar professores, alunos, projetos de extensão, atividades, inscrições e registros de presença, além de controlar autenticação, autorização e cálculo da carga horária extensionista dos alunos.
+
+---
+
+# Objetivos do Backend
+
+- Disponibilizar uma API REST para o sistema;
+- Centralizar as regras de negócio da aplicação;
+- Gerenciar autenticação e autorização dos usuários;
+- Persistir informações no banco de dados;
+- Garantir integridade e segurança dos dados;
+- Fornecer endpoints para integração com o frontend.
+
+---
+
+# Tecnologias Utilizadas
+
+## Backend
+
+- Node.js
+- Express.js
+- Sequelize ORM
+- MySQL
+
+## Segurança
+
+- JWT (JSON Web Token)
+- bcrypt
+- Cookies HTTP Only
+
+## Ferramentas
+
+- Docker
+- Docker Compose
+- Postman
+- Git
+- GitHub
+
+---
+
+# Arquitetura
+
+O backend segue o padrão de arquitetura em camadas.
+
+```text
+Cliente
+
+↓
+
+Routes
+
+↓
+
+Controllers
+
+↓
+
+Services
+
+↓
+
+Repositories
+
+↓
+
+Models
+
+↓
+
+MySQL
+```
+
+## Responsabilidades
+
+### Routes
+
+Responsáveis pelo mapeamento dos endpoints da API.
+
+### Controllers
+
+Recebem as requisições HTTP e retornam as respostas adequadas.
+
+### Services
+
+Implementam as regras de negócio da aplicação.
+
+### Repositories
+
+Realizam a comunicação com o banco de dados.
+
+### Models
+
+Representam as entidades do sistema e seus relacionamentos.
+
+---
+
+# Estrutura do Projeto
+
+```text
+src/
+
+├── config/
+├── controllers/
+├── middlewares/
+├── models/
+├── repositories/
+├── routes/
+├── services/
+├── utils/
+│
+├── app.js
+└── server.js
+```
+
+---
+
+# Principais Funcionalidades
+
+## Professores
+
+- Cadastro
+- Login
+- Logout
+- Atualização de perfil
+- Gerenciamento de projetos
+- Gerenciamento de atividades
+
+## Alunos
+
+- Cadastro
+- Login
+- Logout
+- Atualização de perfil
+- Inscrição em projetos
+
+## Projetos
+
+- Cadastro
+- Atualização
+- Ativação
+- Desativação
+- Consulta
+
+## Atividades
+
+- Cadastro
+- Atualização
+- Ativação
+- Desativação
+- Consulta
+
+## Presenças
+
+- Check-in
+- Check-out
+- Consulta de horas extensionistas
+
+---
+
+# Banco de Dados
+
+O sistema utiliza MySQL como banco de dados relacional.
+
+Principais entidades:
+
+- Professor
+- Aluno
+- Projeto
+- Atividade
+- Presença
+- Inscrição
+
+Relacionamentos:
+
+```text
+Professor
+      │
+      │ 1:N
+      ▼
+Projeto
+      │
+      │ 1:N
+      ▼
+Atividade
+      │
+      │ 1:N
+      ▼
+Presença
+      ▲
+      │
+Aluno
+      │
+      └──────────────┐
+                     │
+                Inscrição
+                     │
+                     ▼
+                  Projeto
+```
+
+---
+
+# Autenticação
+
+O sistema utiliza autenticação baseada em JWT.
+
+Fluxo:
+
+```text
+Login
+
+↓
+
+Validação das Credenciais
+
+↓
+
+Geração do JWT
+
+↓
+
+Cookie HTTP Only
+
+↓
+
+Middleware autenticar
+
+↓
+
+Middleware autorizar
+
+↓
+
+Acesso ao Recurso
+```
+
+Os tokens são armazenados em cookies HTTP Only para aumentar a segurança da aplicação.
+
+---
+
+# API REST
+
+A API disponibiliza recursos para gerenciamento de:
+
+```text
+/professores
+
+/alunos
+
+/projetos
+
+/atividades
+
+/inscricoes
+
+/presencas
+```
+
+A documentação detalhada dos endpoints encontra-se na pasta:
+
+```text
+docs/api
+```
+
+---
+
+# Executando o Projeto
+
+## Pré-requisitos
+
+- Node.js 22+
+- Docker
+- Docker Compose
+
+---
+
+## Clonar o Repositório
+
+```bash
+git clone https://github.com/sabine-cassol/ProjetoExtensao.git
+```
+
+```bash
+cd ProjetoExtensao
+```
+
+---
+
+## Instalar Dependências
+
+```bash
+npm install
+```
+
+---
+
+## Configurar Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto.
+
+Exemplo:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=projeto_extensao
+DB_USER=root
+DB_PASSWORD=senha
+
+JWT_SECRET=chave_secreta
+JWT_EXPIRES_IN=1d
+```
+
+---
+
+## Executar Localmente
+
+```bash
+npm run dev
+```
+
+ou
+
+```bash
+node server.js
+```
+
+---
+
+## Executar com Docker
+
+```bash
+docker compose up --build
+```
+
+O Docker Compose inicializará automaticamente os serviços necessários para execução da aplicação.
+
+---
+
+# Documentação
 
 ## Roadmap de desenvolvimento
 
@@ -86,7 +389,7 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 - [x] Atividade sempre vinculada a um `projetoId`
 - [x] Listagem de atividades por projeto
 
-### Inscrições
+### Inscrições (alunos)
 
 - [x] Rota para aluno se inscrever em um projeto
 - [x] Rota para professor visualizar alunos inscritos
@@ -105,6 +408,15 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 - [x] Atualizar `horasExtensao` no model Aluno
 - [x] Rota para aluno consultar histórico de horas por projeto
 
+### Visitante
+
+- [ ] Model — Visitante (identificado por número de telefone, sem senha)
+- [ ] Rota de cadastro — visitante informa nome e telefone
+- [ ] Rota de acesso — visitante informa telefone para acessar seus dados (sem senha)
+- [ ] Rota de inscrição em projeto — vincula `visitanteId` a um `projetoId`
+- [ ] Rota pública para listar projetos disponíveis (sem autenticação)
+- [ ] Rota autenticada para visitante ver seus projetos inscritos e horários das atividades
+
 ### Notícias
 
 - [ ] Repository, Service e Controller de Notícia
@@ -122,35 +434,76 @@ A plataforma permitirá que visitantes conheçam e se inscrevam nos projetos, al
 - [ ] Integração com serviço externo (S3 ou Cloudinary)
 - [ ] Rota de upload vinculada a um projeto ou atividade
 
+### Infraestrutura
+
+- [x] Dockerização do backend e do banco de dados
+- [x] Documentação de setup para novos colaboradores
+
 ---
 
-## Tipos de usuários
+Toda a documentação técnica está disponível na pasta `docs`.
 
-| Tipo | Permissões |
-|---|---|
-| Visitante | Visualizar projetos e atividades |
-| Aluno | Inscrição em projetos, check-in/check-out, histórico de horas |
-| Professor | CRUD de projetos e atividades, relatórios, notícias |
+## Arquitetura
 
+- ARQUITETURA.md
+- BANCO_DE_DADOS.md
+- REGRAS_NEGOCIO.md
 
+## Autenticação
 
-## Integrantes
+- AUTENTICACAO.md
 
-| Analista de Requisitos  | UI/UX |
-| -------|------|
-| 1      | 1 Eduardo H.   |
-| 2      | 2    |
-| 3      | 3    |
+## Módulos
 
+- PROFESSOR.md
+- ALUNO.md
+- PROJETO.md
+- ATIVIDADE.md
+- PRESENCA.md
+- INSCRICAO.md
 
-| Frontend  | Backend |
-| -------|------|
-| 1 Eduardo H.     | 1 Ramon Albini|
-| 2      | 2    |
-| 3      | 3    |
+## API
 
-| Testes  | Documentação |
-| -------|------|
-| 1 Felipe Guimarães     | 1 Matheus da Silva |
-| 2      | 2    |
-| 3      | 3    |
+- API.md
+- PROFESSORES_API.md
+- ALUNOS_API.md
+- PROJETOS_API.md
+- ATIVIDADES_API.md
+- INSCRICOES_API.md
+- PRESENCAS_API.md
+
+---
+
+# Boas Práticas Utilizadas
+
+- Arquitetura em camadas
+- Separação de responsabilidades
+- REST API
+- Repository Pattern
+- Service Layer Pattern
+- Middleware de autenticação
+- Middleware de autorização
+- Exclusão lógica de registros
+- Documentação técnica modular
+
+---
+
+# Equipe
+
+Projeto desenvolvido para a disciplina de Engenharia de Software.
+
+**Backend**
+
+- Ramon Albini Vieira
+
+**Projeto Acadêmico**
+
+- Sabine Cassol
+- Ramon Albini Vieira
+- Eduardo Henrique
+
+---
+
+# Licença
+
+Projeto desenvolvido exclusivamente para fins acadêmicos e educacionais.
