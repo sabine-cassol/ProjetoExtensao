@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import logo1 from '../assets/IMG_20251114_003344.png'
 import extension from '../assets/Extension.svg'
-import { Eye, EyeOff, XCircle} from 'lucide-react';
+import { Eye, EyeOff, XCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 
 
@@ -43,7 +43,6 @@ function Login() {
         } finally {
             setLoading(false);
         }
-
     };
 
     const handleRegisterSubmit = (e: React.FormEvent) => {
