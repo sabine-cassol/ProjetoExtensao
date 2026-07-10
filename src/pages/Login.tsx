@@ -6,6 +6,7 @@ import logo1 from '../assets/IMG_20251114_003344.png'
 import extension from '../assets/Extension.svg'
 import { Eye, EyeOff, XCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
+import { GraduationCap, Microscope } from 'lucide-react';
 
 
 function Login() {
@@ -15,7 +16,9 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeScreen, setActiveScreen] = useState<'login' | 'register'>('login');
+    const [activeScreen, setActiveScreen] = useState<'selectRole' | 'login' | 'register'>('selectRole');
+
+    const [userRole, setUserRole] = useState<'aluno' | 'professor' | null>(null);
     const navigate = useNavigate();
 
     const [regName, setRegName] = useState('');
@@ -27,12 +30,16 @@ function Login() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!userRole) {
+            console.error("Nenhum perfil (aluno/professor) foi selecionado.");
+            return;
+        }
 
         if (!login || !password) return;
         setLoading(true);
 
         try {
-            const sucesso = await loginAction(login, password);
+            const sucesso = await loginAction(login, password, userRole);
 
             if (sucesso) {
                 console.log('Redirecionar usuário para a Dashboard...');
@@ -57,7 +64,6 @@ function Login() {
         setLoading(true);
         setActiveScreen('login')
         setLoading(false)
-        // lógica de envio para o banco de dados aqui
     };
     return (
         <>
@@ -87,6 +93,38 @@ function Login() {
                     </div>
 
                     <div className={`flex w-full max-w-100 flex-col items-center overflow-hidden ${activeScreen === 'login' ? 'gap-10' : 'gap-4'}`}>
+                        {activeScreen === 'selectRole' && (
+                            <div className="flex flex-col items-center gap-6 w-full">
+                                <div className="flex flex-col items-center gap-5 ">
+                                    <img src={logo1} alt="logo1" className="size-18" />
+                                    <h1 className="font-bold text-3xl text-(#005387cc) text-center">Como deseja acessar?</h1>
+                                    <p className="text-zinc-500 text-sm">Selecione o seu perfil para continuar</p>
+                                </div>
+
+                                <div className="flex flex-row gap-4 w-full justify-center mb-12">
+                                    <button
+                                        onClick={() => {
+                                            setUserRole('aluno'); // Salva o perfil
+                                            setActiveScreen('login'); // Vai para o login
+                                        }}
+                                        className="flex flex-col items-center justify-center p-6 w-full sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10  hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1">
+                                        <GraduationCap size={36} className='mb-2'></GraduationCap>
+                                        Sou Aluno
+                                    </button>
+
+                                    <button
+                                        onClick={() => {
+                                            setUserRole('professor');
+                                            setActiveScreen('login');
+                                        }}
+                                        className="flex flex-col items-center justify-center p-6 w-full sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10 hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1">
+                                        <Microscope size={36} className='mb-2'></Microscope>
+                                        Sou Professor
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                         {activeScreen === 'login' && (
                             <>
                                 <div className="flex flex-col items-center gap-5 ">

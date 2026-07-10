@@ -46,7 +46,6 @@ function Profile() {
     };
 
     const handleCancel = () => {
-        // Se cancelar, volta para o que está salvo no contexto do usuário
         if (user) {
             setFormData({ nome: user.login, ra: user.ra });
         }

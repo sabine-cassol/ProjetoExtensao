@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { USERS } from '../data/Users.ts'
-import { logintest } from '../services/Login.ts';
+import { loginStudent, loginTeacher } from '../services/Login.ts';
 
 export type UserRole = 'guest' | 'student' | 'teacher';
 
@@ -16,7 +16,7 @@ interface AuthContextData {
   loading: boolean;
   erroAuth: string | null;
   role: UserRole;
-  loginAction: (loginField: string, passwordField: string) => Promise<boolean>;
+  loginAction: (loginField: string, passwordField: string, selectedRole: 'aluno' | 'professor') => Promise<boolean>;
   logout: () => void;
 }
 
@@ -73,18 +73,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // };
 
   //login com a api
-  const loginAction = async (loginField: string, passwordField: string): Promise<boolean> => {
+  const loginAction = async (loginField: string, passwordField: string, selectedRole: 'aluno' | 'professor'): Promise<boolean> => {
     setLoading(true);
     setErroAuth(null);
 
     try {
-      const resultadoApi = await logintest.logar({
+      const serviçoLogin = selectedRole === 'professor' ? loginTeacher : loginStudent;
+
+      const resultadoApi = await serviçoLogin.logar({
         email: loginField,
         senha: passwordField
       });
 
-      // 1. Mapeia o 'tipo' da API para o 'role' do Front-end
-      let roleDefinido: UserRole = 'guest'; // valor padrão caso não encontre
+      let roleDefinido: UserRole = 'guest';
 
       if (resultadoApi.tipo === 'aluno') {
         roleDefinido = 'student';
@@ -92,22 +93,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         roleDefinido = 'teacher';
       }
 
-      // 2. Como os dados do aluno estão dentro de resultadoApi.aluno, pegamos de lá
-      const dadosUsuario = resultadoApi.aluno;
+      const dadosUsuario = resultadoApi.aluno || resultadoApi.professor;
 
       if (!dadosUsuario) {
         throw new Error('Dados do usuário não foram encontrados na resposta.');
       }
 
-      // 3. Monta o objeto User do Front-end perfeitamente
       const loggedInUser: User = {
         id: String(dadosUsuario.id),
-        login: dadosUsuario.email, // Ou dadosUsuario.nome, dependendo do que você usa como login
+        login: dadosUsuario.email,
         role: roleDefinido,
-        ra: dadosUsuario.ra ?? ''
+        ra: 'ra' in dadosUsuario ? (dadosUsuario.ra as string) : ''
       };
 
-      // 4. Salva no localStorage e no estado
       localStorage.setItem('@SeuApp:user', JSON.stringify(loggedInUser));
       setUser(loggedInUser);
 
@@ -117,8 +115,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Erro no loginAction:", error);
       setErroAuth(error.message || 'Falha ao conectar com o servidor.');
       return false;
+    } finally {
+      setLoading(false);
     }
   };
+
   const logout = () => {
     localStorage.removeItem('@SeuApp:user');
     Object.keys(localStorage).forEach((key) => {

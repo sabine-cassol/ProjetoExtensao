@@ -14,14 +14,14 @@ export interface AuthResponse {
         ra: string;
         curso: string;
         periodo: string;
-        horasextensao: number;
-        ativo: boolean;
-        createdat: string;
-        updatedat: string;
+    };
+    professor?: {
+        id: number | string;
+        nome: string;
+        email: string;
     };
 }
-
-export const logintest = {
+export const loginStudent = {
     logar: async (dadoslogin: login): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/alunos/login`, {
             method: 'POST',
@@ -40,7 +40,29 @@ export const logintest = {
                 dados?.mensagem || `Erro na API: ${response.status}`
             );
         }
+        return dados;
+    }
+};
 
+export const loginTeacher = {
+    logar: async (dadoslogin: login): Promise<AuthResponse> => {
+        const response = await fetch(`${API_URL}/professores/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include', 
+            body: JSON.stringify(dadoslogin),
+        });
+
+        const dados = await response.json().catch(() => null);
+
+        if (!response.ok) {
+            console.error("❌ Detalhes do erro vindos da API:", dados);
+            throw new Error(
+                dados?.mensagem || `Erro na API: ${response.status}`
+            );
+        }
         return dados;
     }
 };
