@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { USERS } from '../data/Users.ts'
-import { loginStudent, loginTeacher } from '../services/Login.ts';
+import { loginStudent, loginTeacher, type AuthResponse } from '../services/Login.ts';
 
 export type UserRole = 'guest' | 'student' | 'teacher';
 
@@ -26,17 +26,74 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [erroAuth, setErroAuth] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const url = import.meta.env.VITE_API_URL_PROXY || '/api';
 
   const role: UserRole = user ? (user.role as UserRole) : 'guest';
+
   useEffect(() => {
-    const storedUser = localStorage.getItem('@SeuApp:user');
+    const verificarSessao = async () => {
+      try {
+        const usuarioLocal = localStorage.getItem('@SeuApp:user');
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+        if (!usuarioLocal) {
+          console.log("ℹ️ Nenhum usuário encontrado no localStorage.");
+          setLoading(false);
+          return;
+        }
 
-    setLoading(false);
-  }, []);
+        const usuarioLogado: User = JSON.parse(usuarioLocal);
+        const rotaMe = usuarioLogado.role === 'teacher' ? '/professores/me' : '/alunos/me';
+
+        console.log(`📡 Tentando restaurar sessão na rota: ${url}${rotaMe}`);
+
+        const response = await fetch(`${url}${rotaMe}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          console.warn(`⚠️ API rejeitou o /me. Status: ${response.status} - ${response.statusText}`);
+          localStorage.removeItem('@SeuApp:user');
+          setUser(null);
+          return; 
+        }
+
+        const dadosUsuario = await response.json();
+        let dadosInternos = null;
+
+        if (dadosUsuario.aluno || dadosUsuario.professor) {
+          dadosInternos = usuarioLogado.role === 'teacher' ? dadosUsuario.professor : dadosUsuario.aluno;
+        } else {
+          dadosInternos = dadosUsuario;
+        }
+
+        if (!dadosInternos || !dadosInternos.id) {
+          throw new Error("Formato de dados inválido ou ID ausente na resposta do /me");
+        }
+
+        const usuarioAtualizado: User = {
+          id: String(dadosInternos.id),
+          login: dadosInternos.email || dadosInternos.login,
+          role: usuarioLogado.role,
+          ra: 'ra' in dadosInternos ? String(dadosInternos.ra) : ''
+        };
+
+        setUser(usuarioAtualizado);
+        localStorage.setItem('@SeuApp:user', JSON.stringify(usuarioAtualizado));
+      } catch (error) {
+        console.error("❌ Erro fatal ao restaurar sessão:", error);
+        localStorage.removeItem('@SeuApp:user');
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verificarSessao();
+  }, [url]);
+
+
 
   // login sem api
   // const loginAction = async (loginField: string, passwordField: string): Promise<boolean> => {
@@ -73,37 +130,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // };
 
   //login com a api
-  const loginAction = async (loginField: string, passwordField: string, selectedRole: 'aluno' | 'professor'): Promise<boolean> => {
+  const loginAction = async (
+    loginField: string,
+    passwordField: string,
+    selectedRole: 'aluno' | 'professor'
+  ): Promise<boolean> => {
     setLoading(true);
     setErroAuth(null);
 
     try {
       const serviçoLogin = selectedRole === 'professor' ? loginTeacher : loginStudent;
 
-      const resultadoApi = await serviçoLogin.logar({
+      // 1. resultadoApi agora está corretamente tipado como AuthResponse
+      const resultadoApi: AuthResponse = await serviçoLogin.logar({
         email: loginField,
         senha: passwordField
       });
 
-      let roleDefinido: UserRole = 'guest';
-
-      if (resultadoApi.tipo === 'aluno') {
-        roleDefinido = 'student';
-      } else if (resultadoApi.tipo === 'professor') {
-        roleDefinido = 'teacher';
+      if (!resultadoApi) {
+        throw new Error('Dados do usuário não foram encontrados na resposta da API.');
       }
 
-      const dadosUsuario = resultadoApi.aluno || resultadoApi.professor;
+      const roleDefinido: UserRole = selectedRole === 'aluno' ? 'student' : 'teacher';
 
+      // 2. Buscamos o objeto interno (seja aluno ou professor) baseado na role
+      const dadosUsuario = selectedRole === 'aluno' ? resultadoApi.aluno : resultadoApi.professor;
+
+      // Se o backend não mandou o objeto esperado, barramos aqui
       if (!dadosUsuario) {
-        throw new Error('Dados do usuário não foram encontrados na resposta.');
+        throw new Error(`Dados do ${selectedRole} não vieram na resposta do servidor.`);
       }
 
+      // 3. Monta o usuário global mapeando os campos sem erros de tipagem
       const loggedInUser: User = {
         id: String(dadosUsuario.id),
         login: dadosUsuario.email,
         role: roleDefinido,
-        ra: 'ra' in dadosUsuario ? (dadosUsuario.ra as string) : ''
+        // Se for aluno, lê o 'ra'. Se for professor, deixa vazio '', já que não precisa de matrícula
+        ra: 'ra' in dadosUsuario ? String(dadosUsuario.ra) : ''
       };
 
       localStorage.setItem('@SeuApp:user', JSON.stringify(loggedInUser));
@@ -119,7 +183,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-
   const logout = () => {
     localStorage.removeItem('@SeuApp:user');
     Object.keys(localStorage).forEach((key) => {
