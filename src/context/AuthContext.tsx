@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const usuarioLocal = localStorage.getItem('@SeuApp:user');
 
         if (!usuarioLocal) {
-          console.log("ℹ️ Nenhum usuário encontrado no localStorage.");
           setLoading(false);
           return;
         }
@@ -44,7 +43,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const usuarioLogado: User = JSON.parse(usuarioLocal);
         const rotaMe = usuarioLogado.role === 'teacher' ? '/professores/me' : '/alunos/me';
 
-        console.log(`📡 Tentando restaurar sessão na rota: ${url}${rotaMe}`);
 
         const response = await fetch(`${url}${rotaMe}`, {
           method: 'GET',
@@ -53,7 +51,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
 
         if (!response.ok) {
-          console.warn(`⚠️ API rejeitou o /me. Status: ${response.status} - ${response.statusText}`);
           localStorage.removeItem('@SeuApp:user');
           setUser(null);
           return; 
