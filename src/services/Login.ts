@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL_PROXY || '/api';
 
 export interface login {
     email: string;
@@ -25,10 +25,10 @@ export const loginStudent = {
     logar: async (dadoslogin: login): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/alunos/login`, {
             method: 'POST',
+            credentials: 'include', 
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include', 
             body: JSON.stringify(dadoslogin),
         });
 
@@ -48,10 +48,10 @@ export const loginTeacher = {
     logar: async (dadoslogin: login): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/professores/login`, {
             method: 'POST',
+            credentials: 'include', 
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include', 
             body: JSON.stringify(dadoslogin),
         });
 
