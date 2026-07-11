@@ -3,7 +3,7 @@ import { SidebarProvider} from "./ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 import { useAuth } from "@/context/AuthContext";
 
 function Layout() {

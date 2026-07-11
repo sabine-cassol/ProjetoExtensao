@@ -8,6 +8,7 @@ import { Eye, EyeOff, XCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { GraduationCap, Microscope } from 'lucide-react';
 import { createUser } from '@/services/postUser';
+import { Toaster } from "@/components/ui/sonner";
 import { toast } from 'sonner';
 
 
@@ -93,6 +94,22 @@ function Login() {
     return (
         <>
             <section className="flex h-screen w-full items-center justify-center p-4 overflow-hidden">
+                <Toaster
+                    className='z-999'
+                    position="bottom-right"
+                    toastOptions={{
+                        classNames: {
+                            toast: 'bg-white border border-slate-100 shadow-sm',
+                            title: 'text-slate-950 font-semibold',
+                            description: '!text-slate-500 font-normal',
+
+                            success: 'bg-white border-green-100 group success',
+                            error: 'bg-white border-red-100 group error',
+
+                            icon: 'group-[.success]:text-green-500 group-[.error]:text-red-500',
+                        },
+                    }}
+                />
                 <section className="relative grid size-full max-w-400 place-items-center justify-center gap-10 overflow-hidden rounded-lg border border-neutral-300 p-4 shadow-sm lg:h-fit lg:grid-cols-2">
                     <Link to="/" className="inline-flex cursor-pointer justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-500 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 absolute items-center top-5 right-5 hover:translate-y-px active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] ">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-left text-primary" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
@@ -126,15 +143,16 @@ function Login() {
                                     <p className="text-zinc-500 text-sm">Selecione o seu perfil para continuar</p>
                                 </div>
 
-                                <div className="flex flex-row gap-4 w-full justify-center mb-12">
+                                <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mb-12 px-4">
                                     <button
                                         onClick={() => {
                                             setUserRole('aluno');
                                             setActiveScreen('login');
                                         }}
-                                        className="flex flex-col items-center justify-center p-6 w-full sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10  hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1">
-                                        <GraduationCap size={36} className='mb-2'></GraduationCap>
-                                        Sou Aluno
+                                        className="flex flex-col items-center justify-center p-6 w-full max-w-xs sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10 hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1"
+                                    >
+                                        <GraduationCap size={36} className='mb-2 shrink-0'></GraduationCap>
+                                        <span>Sou Aluno</span>
                                     </button>
 
                                     <button
@@ -142,12 +160,13 @@ function Login() {
                                             setUserRole('professor');
                                             setActiveScreen('login');
                                         }}
-                                        className="flex flex-col items-center justify-center p-6 w-full sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10 hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1">
-                                        <Microscope size={36} className='mb-2'></Microscope>
-                                        Sou Professor
+                                        className="flex flex-col items-center justify-center p-6 w-full max-w-xs sm:w-44 h-32 border border-zinc-300 rounded-xl font-bold text-lg text-zinc-900 bg-input/10 hover:border-(--lightCyan) transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-1"
+                                    >
+                                        <Microscope size={36} className='mb-2 shrink-0'></Microscope>
+                                        <span>Sou Professor</span>
                                     </button>
                                 </div>
-                                <button onClick={() => setActiveScreen('register')} className="font-bold text-blue-600 hover:underline cursor-pointer -mt-8">
+                                <button onClick={() => setActiveScreen('register')} className="font-bold text-cyan-500 hover:underline cursor-pointer -mt-8">
                                     Não tem uma conta? Crie uma agora
                                 </button>
                             </div>
@@ -187,7 +206,7 @@ function Login() {
                                             <button onClick={() => setActiveScreen('selectRole')} className="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-400 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[0px_4px_0px_0px_rgba(0,0,0,0.4)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
                                                 Voltar
                                             </button>
-                                            <button type="submit" className="inline-flex min-w-0 w-1/3 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[1px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-primary bg-(--lightCyan) text-primary-foreground hover:bg-(--cyanHover) h-9 px-4 py-2 has-[&gt;svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
+                                            <button type="submit" className="inline-flex min-w-0 w-fit cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[1px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-primary bg-(--lightCyan) text-primary-foreground hover:bg-(--cyanHover) h-9 px-4 py-2 has-[&gt;svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
                                                 {loading ? (
                                                     <>
                                                         <Spinner></Spinner>
@@ -209,7 +228,10 @@ function Login() {
                         {(activeScreen === 'register' || activeScreen === 'register1') && (
                             <>
                                 <div className="flex flex-col items-center gap-3">
-                                    <h1 className="font-bold text-2xl text-(#005387cc)">Criar sua conta</h1>
+                                    <div className='text-center'>
+                                        <h1 className="font-bold text-2xl text-(#005387cc)">Criar sua conta</h1>
+                                        <p className="text-[#9198a1] text-xs"> Por aqui só será possível criar usuários do tipo aluno</p>
+                                    </div>
                                     {erroRegister && (
                                         <p className="mt-2 text-red-600 font-bold text-xs bg-red-50 px-3 py-1.5 rounded border border-red-200">{erroRegister}</p>
                                     )}
