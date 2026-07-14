@@ -186,6 +186,7 @@ function Profile() {
                                         }`}
                                 />
                             </div>)}
+                            
                             {role === 'student' && (<div>
                                 <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
                                 <input id="curso" name="curso" type="text" value={formData.curso} onChange={handleChange} readOnly={!isEditing} className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
