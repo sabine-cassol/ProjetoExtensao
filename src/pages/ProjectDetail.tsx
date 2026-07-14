@@ -8,7 +8,9 @@ import { Pencil, Trash } from 'lucide-react'
 import Error from '../components/Error'
 import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
-
+import { useProjetoId } from '@/services/getProjetosId'
+import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
+ 
 
 function ProjectDetail() {
     const { projetoId } = useParams<{ projetoId: string }>();
@@ -17,8 +19,9 @@ function ProjectDetail() {
     const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+    const {data: projeto, isLoading, error} = useProjetoId(projetoId!)
 
-    const projeto = listaProjects.find(p => p.id == projetoId);
+    // const projeto = listaProjects.find(p => p.id == projetoId);
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -55,6 +58,10 @@ function ProjectDetail() {
         navigate("/Projetos");
     }
 
+
+    if(isLoading){
+        return <ProjectDetailSkeleton/>
+    }
     if (!projeto) {
         return (
             <Error tipo="Projeto"></Error>
