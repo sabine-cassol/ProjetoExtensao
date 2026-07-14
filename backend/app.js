@@ -9,6 +9,8 @@ import atividadeRoutes from "./routes/atividadeRoutes.js";
 import presencaRoutes from "./routes/presencaRoutes.js";
 import inscricaoProjetoRoutes from "./routes/inscricaoProjetoRoutes.js";
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +18,10 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors({
+  origin: true, // IP e porta do PC do frontend
+  credentials: true // necessário pois vocês usam cookies!
+}));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -26,6 +32,7 @@ app.use("/projetos", projetoRoutes);
 app.use("/atividades", atividadeRoutes);
 app.use("/presencas", presencaRoutes);
 app.use("/inscricoes", inscricaoProjetoRoutes);
+
 
 // Servir os arquivos estáticos do React (dist)
 app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));
