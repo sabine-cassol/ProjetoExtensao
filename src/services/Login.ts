@@ -6,7 +6,7 @@ export interface login {
 }
 
 export interface AuthResponse {
-    tipo: string; 
+    tipo: string;
     aluno?: {
         id: number | string;
         nome: string;
@@ -25,7 +25,7 @@ export const loginStudent = {
     logar: async (dadoslogin: login): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/alunos/login`, {
             method: 'POST',
-            credentials: 'include', 
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -48,7 +48,7 @@ export const loginTeacher = {
     logar: async (dadoslogin: login): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/professores/login`, {
             method: 'POST',
-            credentials: 'include', 
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

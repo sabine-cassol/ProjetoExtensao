@@ -6,9 +6,12 @@ export type UserRole = 'guest' | 'student' | 'teacher';
 
 interface User {
   id: string;
+  nome: string;
   login: string;
   role: UserRole;
   ra: string;
+  curso?: string;
+  periodo?: string;
 }
 
 interface AuthContextData {
@@ -17,6 +20,7 @@ interface AuthContextData {
   erroAuth: string | null;
   role: UserRole;
   loginAction: (loginField: string, passwordField: string, selectedRole: 'aluno' | 'professor') => Promise<boolean>;
+  update: (newData: Partial<User>) => void;
   logout: () => void;
 }
 
@@ -53,10 +57,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!response.ok) {
           localStorage.removeItem('@SeuApp:user');
           setUser(null);
-          return; 
+          return;
         }
 
         const dadosUsuario = await response.json();
+        console.log(dadosUsuario);
         let dadosInternos = null;
 
         if (dadosUsuario.aluno || dadosUsuario.professor) {
@@ -72,8 +77,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const usuarioAtualizado: User = {
           id: String(dadosInternos.id),
           login: dadosInternos.email || dadosInternos.login,
+          nome: dadosInternos.nome,
           role: usuarioLogado.role,
-          ra: 'ra' in dadosInternos ? String(dadosInternos.ra) : ''
+          ra: 'ra' in dadosInternos ? String(dadosInternos.ra) : '',
+          curso: dadosInternos.curso || undefined,
+          periodo: dadosInternos.periodo || undefined
         };
 
         setUser(usuarioAtualizado);
@@ -138,7 +146,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const serviçoLogin = selectedRole === 'professor' ? loginTeacher : loginStudent;
 
-      // 1. resultadoApi agora está corretamente tipado como AuthResponse
       const resultadoApi: AuthResponse = await serviçoLogin.logar({
         email: loginField,
         senha: passwordField
@@ -150,22 +157,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const roleDefinido: UserRole = selectedRole === 'aluno' ? 'student' : 'teacher';
 
-      // 2. Buscamos o objeto interno (seja aluno ou professor) baseado na role
       const dadosUsuario = selectedRole === 'aluno' ? resultadoApi.aluno : resultadoApi.professor;
 
-      // Se o backend não mandou o objeto esperado, barramos aqui
       if (!dadosUsuario) {
         throw new Error(`Dados do ${selectedRole} não vieram na resposta do servidor.`);
       }
 
-      // 3. Monta o usuário global mapeando os campos sem erros de tipagem
       const loggedInUser: User = {
         id: String(dadosUsuario.id),
+        nome: dadosUsuario.nome,
         login: dadosUsuario.email,
         role: roleDefinido,
-        // Se for aluno, lê o 'ra'. Se for professor, deixa vazio '', já que não precisa de matrícula
-        ra: 'ra' in dadosUsuario ? String(dadosUsuario.ra) : ''
+        ra: 'ra' in dadosUsuario ? String(dadosUsuario.ra) : '',
+        curso: 'curso' in dadosUsuario ? String(dadosUsuario.curso) : undefined,
+        periodo: 'periodo' in dadosUsuario ? String(dadosUsuario.periodo) : undefined,
       };
+
+      console.log(dadosUsuario)
 
       localStorage.setItem('@SeuApp:user', JSON.stringify(loggedInUser));
       setUser(loggedInUser);
@@ -180,6 +188,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
+
+  const update = (newData: Partial<User>) => {
+    setUser((usuarioAtual) => {
+      if (!usuarioAtual) return null;
+
+      const usuarioAtualizado = {
+        ...usuarioAtual,
+        ...newData
+      };
+
+      localStorage.setItem('@SeuApp:user', JSON.stringify(usuarioAtualizado));
+      return usuarioAtualizado;
+    });
+  };
+
   const logout = () => {
     localStorage.removeItem('@SeuApp:user');
     Object.keys(localStorage).forEach((key) => {
@@ -192,7 +215,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, erroAuth, role, loginAction, logout }}>
+    <AuthContext.Provider value={{ user, loading, erroAuth, role, loginAction, update, logout }}>
       {children}
     </AuthContext.Provider>
   );
