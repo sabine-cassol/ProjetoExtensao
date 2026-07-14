@@ -31,9 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [erroAuth, setErroAuth] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const url = import.meta.env.VITE_API_URL_PROXY || '/api';
-
+  
+  
   const role: UserRole = user ? (user.role as UserRole) : 'guest';
-
+  
+  const rotaLogout = role === 'teacher' ? '/professores/logout' : '/alunos/logout';
   useEffect(() => {
     const verificarSessao = async () => {
       try {
@@ -203,13 +205,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem('@SeuApp:user');
     Object.keys(localStorage).forEach((key) => {
       if (key.startsWith('@Ponto:')) {
         localStorage.removeItem(key);
       }
     });
+    try{
+      const response = await fetch(`${url}${rotaLogout}`,{
+        method: 'POST',
+        credentials: 'include'
+      });
+      if(!response.ok){
+        throw new Error('erro ao fazer logout');
+      }
+    } catch(erro){
+      console.error('Falha no logout',erro);
+    }
     setUser(null);
     setErroAuth(null);
   };
