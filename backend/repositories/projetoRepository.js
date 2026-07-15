@@ -10,6 +10,7 @@ export default (Projeto_extensao) => {
             return Projeto_extensao.findByPk(id, {
                 include: {
                     model: Professor,
+                    as: "professor",
                     attributes: ['nome']
                 }
             });
@@ -19,6 +20,7 @@ export default (Projeto_extensao) => {
             return Projeto_extensao.findAll({
                 include: {
                     model: Professor,
+                    as: "professor",        
                     attributes: ['nome']
                 }
             });
@@ -29,6 +31,7 @@ export default (Projeto_extensao) => {
                 where: { professorId },
                 include: {
                     model: Professor,
+                    as: "professor",        
                     attributes: ['nome']
                 }
             });
@@ -38,7 +41,7 @@ export default (Projeto_extensao) => {
             const projeto = await Projeto_extensao.findByPk(id);
             if (!projeto) return null;
             await projeto.update(novoProjeto);
-            return Projeto_extensao.update(novoProjeto);
+            return projeto;
         },
 
         async deletar(id) {

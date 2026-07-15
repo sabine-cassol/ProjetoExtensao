@@ -14,9 +14,9 @@ const controller = projetoController(service);
 
 router.post("/", autenticar, autorizar("professor"), (req, res) => controller.criarProjeto(req, res));
 
-router.get("/todos", autenticar, (req, res) => controller.listarTodos(req, res));
-router.get("/professor/:professorId", autenticar, (req, res) => controller.listarTodosPorProfessor(req, res));
-router.get("/id/:id", autenticar, (req, res) => controller.buscarProjetoPorId(req, res));
+router.get("/todos", (req, res) => controller.listarTodos(req, res));
+router.get("/professor/:professorId",(req, res) => controller.listarTodosPorProfessor(req, res));
+router.get("/id/:id",(req, res) => controller.buscarProjetoPorId(req, res));
 
 router.put("/id/:id", autenticar, autorizar("professor"), (req, res) => controller.atualizarProjeto(req, res));
 router.put("/ativar/:id", autenticar, autorizar("professor"), (req, res) => controller.ativarProjeto(req, res));
