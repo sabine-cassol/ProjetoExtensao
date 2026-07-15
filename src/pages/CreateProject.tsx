@@ -8,6 +8,7 @@ interface NovoProjeto {
     titulo: string;
     tipo: string;
     unidade: string;
+    cargaHoraria: string
     cursosVinculados: string;
     parceiros: string;
     colaboradores: string;
@@ -36,6 +37,7 @@ function ProjectDetail() {
         titulo: '',
         tipo: '',
         unidade: '',
+        cargaHoraria: '',
         cursosVinculados: '',
         parceiros: '',
         colaboradores: '',
@@ -129,6 +131,12 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Unidade</td>
                                         <td className="px-3 py-2 text-justify"><input type="text" value={form.unidade} onChange={(e) => handleChange('unidade', e.target.value)} placeholder="Ex.: Ponta Grossa" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Carga Horária</td>
+                                        <td className="px-3 py-2 text-justify">
+                                            <input type="text" placeholder="Ex.: 40" value={form.cargaHoraria} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>

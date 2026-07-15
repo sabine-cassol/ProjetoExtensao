@@ -207,6 +207,17 @@ function ProjectDetail() {
                                     </tr>
 
                                     <tr>
+                                        <td className="px-3 py-2 font-bold text-zinc-900">Carga horária</td>
+                                        {isEditing && role === 'teacher' ? (
+                                            <td className="px-3 py-2 text-justify">
+                                                <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            </td>
+                                        ) : (
+                                            <td className="px-3 py-2 text-justify ">{projeto.cargaHoraria}</td>
+                                        )}
+                                    </tr>
+
+                                    <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
