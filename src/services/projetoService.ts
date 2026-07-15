@@ -2,6 +2,19 @@ import { type Projeto } from "@/data/ProjectType";
 
 export const projetoService = {
 
+    async listarPorProfessor(professorId: string): Promise<Projeto[]> {
+        const res = await fetch(`/api/projetos/professor/${professorId}`, {
+            credentials: 'include'
+        });
+
+        if (!res.ok) {
+            const erro = await res.json();
+            throw new Error(erro.erro || 'Erro ao buscar projetos do professor');
+        }
+
+        return res.json();
+    },
+
     async atualizar(id: string, dados: Partial<Projeto>): Promise<Projeto> {
         const res = await fetch(`/api/projetos/id/${id}`, {
             method: 'PUT',
