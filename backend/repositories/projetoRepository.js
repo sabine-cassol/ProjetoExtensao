@@ -18,6 +18,7 @@ export default (Projeto_extensao) => {
 
         async listarTodos() {
             return Projeto_extensao.findAll({
+                where: { ativo: true },
                 include: {
                     model: Professor,
                     as: "professor",
@@ -34,7 +35,7 @@ export default (Projeto_extensao) => {
                     as: "professor",
                     attributes: ['nome']
                 }
-            });
+            }); 
         },
 
         async atualizarProjeto(id, novoProjeto) {
