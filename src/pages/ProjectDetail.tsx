@@ -10,7 +10,9 @@ import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
 import { useProjetoId } from '@/services/getProjetosId'
 import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
- 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { projetoService } from '@/services/projetoService';
+
 
 function ProjectDetail() {
     const { projetoId } = useParams<{ projetoId: string }>();
@@ -19,9 +21,28 @@ function ProjectDetail() {
     const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
-    const {data: projeto, isLoading, error} = useProjetoId(projetoId!)
+    const queryClient = useQueryClient();   
+    const { data: projeto, isLoading, error } = useProjetoId(projetoId!)
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
+
+    const atualizarMutation = useMutation({
+        mutationFn: (dados: Partial<Projeto>) =>
+            projetoService.atualizar(projetoId!, dados),
+        onSuccess: (projetoAtualizado) => {
+            // atualiza o cache imediatamente com o dado retornado pela API
+            queryClient.setQueryData(['projeto', projetoId], projetoAtualizado);
+            // garante que a lista de projetos também fique sincronizada
+            queryClient.invalidateQueries({ queryKey: ['projetos'] });
+
+            setIsEditing(false);
+            toast.success("Projeto atualizado com sucesso!");
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao atualizar projeto");
+        }
+    });
+
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -43,13 +64,14 @@ function ProjectDetail() {
     const handleSaveEdit = () => {
         if (!editForm) return;
 
-        setListaProjects(prevLista =>
-            prevLista.map(item => item.id === editForm.id ? editForm : item)
-        );
+        // setListaProjects(prevLista =>
+        //     prevLista.map(item => item.id === editForm.id ? editForm : item)
+        // );
 
-        setIsEditing(false);
+        // setIsEditing(false);
 
-        toast.success("Projeto atualizado com sucesso!");
+        // toast.success("Projeto atualizado com sucesso!");
+        atualizarMutation.mutate(editForm);
     };
 
     const handleDelete = () => {
@@ -59,8 +81,8 @@ function ProjectDetail() {
     }
 
 
-    if(isLoading){
-        return <ProjectDetailSkeleton/>
+    if (isLoading) {
+        return <ProjectDetailSkeleton />
     }
     if (!projeto) {
         return (
@@ -85,7 +107,7 @@ function ProjectDetail() {
                         ) :
                             (<div className='flex gap-3 font-normal text-sm'>
                                 <button onClick={() => setIsEditing(false)} className="flex-1 px-4 py-1.5 text-sm font-medium text-slate-700 bg-white border border-zinc-500 rounded-lg hover:bg-slate-50  hover:text-slate-800 active:bg-slate-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
-                                <button onClick={() => handleSaveEdit()} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> Confirmar </button>
+                                <button onClick={() => handleSaveEdit() } disabled={atualizarMutation.isPending} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> {atualizarMutation.isPending ? 'Salvando...' : 'Confirmar'} </button>
                             </div>)}
                     </section>)}
                     {role === 'student' && (
