@@ -69,7 +69,7 @@ export default (projetoService) => {
 
         async ativarProjeto(req, res) {
             try {
-                const projeto = await projetoService.ativarProjeto(req.params.id, req.usario.id);
+                const projeto = await projetoService.ativarProjeto(req.params.id, req.usuario.id);
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
