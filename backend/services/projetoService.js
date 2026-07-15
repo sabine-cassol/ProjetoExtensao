@@ -35,19 +35,17 @@ export default (projetoRepository) => {
             if (projeto.professorId !== professorLogadoId) {
                 throw new Error("Você não tem permissão para desativar este projeto");
             }
-            projeto.ativo = false;
-            return projetoRepository.atualizarProjeto(id, projeto);
+            return projetoRepository.atualizarProjeto(id, { ativo: false });
         },
-        async ativarProjeto(id) {
-            const projetoAtivado = await projetoRepository.buscarPorId(id);
-            if (!projetoAtivado) {
+        async ativarProjeto(id, professorLogadoId) {
+            const projeto = await projetoRepository.buscarPorId(id);
+            if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
             if (projeto.professorId !== professorLogadoId) {
-                throw new Error("Você não tem permissão para desativar este projeto");
+                throw new Error("Você não tem permissão para ativar este projeto");
             }
-            projetoAtivado.ativo = true;
-            return projetoRepository.atualizarProjeto(id, projetoAtivado);
+            return projetoRepository.atualizarProjeto(id, { ativo: true });
         }
     }
 }
