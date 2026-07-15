@@ -4,7 +4,7 @@ import { PROJECTS } from '@/data/Projects.ts'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
-import { Pencil, Trash } from 'lucide-react'
+import { Pencil, Trash, RotateCcw } from 'lucide-react'
 import Error from '../components/Error'
 import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
@@ -21,7 +21,7 @@ function ProjectDetail() {
     const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
-    const queryClient = useQueryClient();   
+    const queryClient = useQueryClient();
     const { data: projeto, isLoading, error } = useProjetoId(projetoId!)
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
@@ -74,12 +74,40 @@ function ProjectDetail() {
         atualizarMutation.mutate(editForm);
     };
 
-    const handleDelete = () => {
-        confirm("deseja mesmo deletar o projeto?")
-        toast.success("Projeto deletado com sucesso!");
-        navigate("/Projetos");
-    }
+    const deletarMutation = useMutation({
+        mutationFn: () => projetoService.desativar(projetoId!),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['projetos'] });
+            toast.success("Projeto deletado com sucesso!");
+            navigate("/Projetos");
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao deletar projeto");
+        }
+    });
 
+    const handleDelete = () => {
+        const confirmou = confirm("Deseja mesmo deletar o projeto?");
+        if (!confirmou) return;
+
+        deletarMutation.mutate();
+    };
+
+    const ativarMutation = useMutation({
+        mutationFn: () => projetoService.ativar(projetoId!),
+        onSuccess: (projetoAtualizado) => {
+            queryClient.setQueryData(['projeto', projetoId], projetoAtualizado);
+            queryClient.invalidateQueries({ queryKey: ['projetos'] });
+            toast.success("Projeto reativado com sucesso!");
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao reativar projeto");
+        }
+    });
+
+    const handleReactivate = () => {
+        ativarMutation.mutate();
+    };
 
     if (isLoading) {
         return <ProjectDetailSkeleton />
@@ -97,17 +125,34 @@ function ProjectDetail() {
                     {role === 'teacher' && (<section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
                         {!isEditing ? (
                             <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-sm'>
-                                <button onClick={handleStartEditing} className='cursor-pointer border-r border-zinc-300 bg-white rounded-l-sm p-2 hover:bg-slate-50' title='Editar Notícia'>
+                                <button onClick={handleStartEditing} className='cursor-pointer border-r border-zinc-300 bg-white rounded-l-sm p-2 hover:bg-slate-50' title='Editar Projeto'>
                                     <Pencil size={18}></Pencil>
                                 </button>
-                                <button onClick={handleDelete} className='cursor-pointer  rounded-sm p-2 hover:bg-slate-50' title='Deletar Notícia'>
-                                    <Trash size={18}></Trash>
-                                </button>
+                                {projeto.ativo ? (
+                                    <button
+                                        onClick={handleDelete}
+                                        disabled={deletarMutation.isPending}
+                                        className='cursor-pointer rounded-sm p-2 hover:bg-slate-50'
+                                        title='Deletar Projeto'
+                                    >
+                                        <Trash size={18} />
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleReactivate}
+                                        disabled={ativarMutation.isPending}
+                                        className='cursor-pointer rounded-sm p-2 hover:bg-slate-50'
+                                        title='Reativar Projeto'
+                                    >
+                                        <RotateCcw size={18} />
+                                    </button>
+                                )}
+
                             </div>
                         ) :
                             (<div className='flex gap-3 font-normal text-sm'>
                                 <button onClick={() => setIsEditing(false)} className="flex-1 px-4 py-1.5 text-sm font-medium text-slate-700 bg-white border border-zinc-500 rounded-lg hover:bg-slate-50  hover:text-slate-800 active:bg-slate-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Cancelar</button>
-                                <button onClick={() => handleSaveEdit() } disabled={atualizarMutation.isPending} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> {atualizarMutation.isPending ? 'Salvando...' : 'Confirmar'} </button>
+                                <button onClick={() => handleSaveEdit()} disabled={atualizarMutation.isPending} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> {atualizarMutation.isPending ? 'Salvando...' : 'Confirmar'} </button>
                             </div>)}
                     </section>)}
                     {role === 'student' && (
