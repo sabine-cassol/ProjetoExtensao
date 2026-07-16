@@ -2,7 +2,7 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { NEWS } from '@/data/New.ts'
+// import { NEWS } from '@/data/New.ts'
 import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 // import { type Noticia } from '@/data/New.ts'
@@ -17,7 +17,7 @@ function NewDetail() {
     const { role, user } = useAuth();
     const { pathname } = useLocation();
     const [editForm, setEditForm] = useState<Noticia | undefined>(undefined);
-    const [listaNews, setListaNews] = useState(NEWS);
+    // const [listaNews, setListaNews] = useState(NEWS);
 
     // const noticia = listaNews.find(n => n.id == noticiaId);
     const [isEditing, setIsEditing] = useState(false);

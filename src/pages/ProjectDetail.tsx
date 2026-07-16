@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { PROJECTS } from '@/data/Projects.ts'
+// import { PROJECTS } from '@/data/Projects.ts'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
@@ -18,7 +18,7 @@ function ProjectDetail() {
     const { projetoId } = useParams<{ projetoId: string }>();
     const { role } = useAuth();
     const [editForm, setEditForm] = useState<Projeto | undefined>(undefined);
-    const [listaProjects, setListaProjects] = useState(PROJECTS);
+    // const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();

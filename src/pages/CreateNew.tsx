@@ -214,7 +214,7 @@ function CreateNew() {
                             <div className="flex flex-wrap items-center gap-4 mt-4 text-xs md:text-sm text-neutral-700 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800 pb-4">
                                 <div className="flex items-center gap-1.5">
                                     <User size={16} className="text-zinc-400" />
-                                    <span className='text-neutral-700 font-medium'>Por <span className="text-neutral-700 ">noticia.autor</span></span>
+                                    <span className='text-neutral-700 font-medium'>Por <span className="text-neutral-700">{user?.nome ?? '-'}</span></span>
                                 </div>
                                 <span className="text-zinc-400 dark:text-zinc-700">•</span>
                                 <div className="flex items-center gap-1.5">

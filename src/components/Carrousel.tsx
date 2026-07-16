@@ -1,7 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Navigation, Autoplay, Pagination } from 'swiper/modules';
-import { NEWS } from '@/data/New.ts';
+import { useQuery } from '@tanstack/react-query';
+// import { NEWS } from '@/data/New.ts';
+import { type Noticia } from '@/data/NewType';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -9,6 +11,22 @@ import 'swiper/swiper-bundle.css';
 import 'swiper/css/pagination';
 
 function Carrousel() {
+        const { data: noticias, isLoading, error } = useQuery<Noticia[]>({
+        queryKey: ['noticias'],
+        queryFn: async () => {
+            const res = await fetch('/api/noticias/todas');
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new globalThis.Error(erro.erro || 'Erro ao buscar notícias');
+            }
+            return res.json();
+        }
+    });
+
+    if (isLoading || error || !noticias || noticias.length === 0) {
+        return null; 
+    }
+
     return (
         <>
             <section >
@@ -53,7 +71,7 @@ function Carrousel() {
                                 }}
                                 className="w-full"
                             >
-                                {NEWS.map((noticia) => (
+                                {noticias.map((noticia) => (
                                     <SwiperSlide key={noticia.id} style={{ minWidth: 0 }}>
                                         <Link to={`/Notícias/${noticia.id}`} className="block w-full aspect-video relative group overflow-hidden">
                                             <div className="flex w-full h-full items-center justify-center bg-muted text-foreground border-zinc-400 md:border-r md:last:border-r-0 select-none">
