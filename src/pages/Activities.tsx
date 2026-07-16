@@ -1,12 +1,11 @@
 import { useAuth } from "@/context/AuthContext";
-import { PROJECTS } from "@/data/Projects";
-import { NEWS } from '@/data/New.ts';
+// import { PROJECTS } from "@/data/Projects";
+// import { NEWS } from '@/data/New.ts';
 import { Link } from "react-router-dom";
 import { IdCard, Newspaper, FolderKanban } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query';
-import { projetoService } from '@/services/projetoService';
-
+// import { projetoService } from '@/services/projetoService';
 
 
 function Activities() {
@@ -15,15 +14,8 @@ function Activities() {
     const [paginaAtual, setPaginaAtual] = useState(1);
 
     const NOTICIAS_POR_PAGINA = 15;
-    const totalDePaginas = Math.ceil(NEWS.length / NOTICIAS_POR_PAGINA);
-    const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;
-    const indiceInicial = indiceFinal - NOTICIAS_POR_PAGINA;
-    const noticiasExibidas = NEWS.slice(indiceInicial, indiceFinal);
 
-    // const meusProjetos = PROJECTS;
-    const minhasNoticias = NEWS;
-
-    const { data: meusProjetos, isLoading, error } = useQuery({
+    const { data: meusProjetos, isLoading: isLoadingProjetos, error: errorProjetos } = useQuery({
         queryKey: ['projetos', 'professor', user?.id],
         queryFn: async () => {
             const res = await fetch(`/api/projetos/professor/${user!.id}`, {
@@ -34,12 +26,34 @@ function Activities() {
                 throw new Error(erro.erro || 'Erro ao buscar projetos');
             }
             const dados = await res.json();
-
-            // ordena: ativos primeiro, inativos por último
             return dados.sort((a: any, b: any) => Number(b.ativo) - Number(a.ativo));
         },
         enabled: !!user?.id
     });
+
+
+    const { data: minhasNoticias, isLoading: isLoadingNoticias, error: errorNoticias } = useQuery({
+        queryKey: ['noticias', 'professor', user?.id],
+        queryFn: async () => {
+            const res = await fetch(`/api/noticias/professor/${user!.id}`, {
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new Error(erro.erro || 'Erro ao buscar notícias');
+            }
+            return res.json();
+        },
+        enabled: !!user?.id && role === 'teacher'
+    });
+
+    const totalDePaginas = Math.ceil((minhasNoticias?.length ?? 0) / NOTICIAS_POR_PAGINA);
+    const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;
+    const indiceInicial = indiceFinal - NOTICIAS_POR_PAGINA;
+    const noticiasExibidas = minhasNoticias?.slice(indiceInicial, indiceFinal) ?? [];
+
+    // const meusProjetos = PROJECTS;
+    // const minhasNoticias = NEWS;
 
 
     const handleMudarAba = (aba: "projetos" | "noticias") => {
@@ -47,12 +61,12 @@ function Activities() {
         setPaginaAtual(1);
     };
 
-    if (isLoading) {
-        return <p>Carregando projetos...</p>;
+    if (isLoadingProjetos || (role === 'teacher' && isLoadingNoticias)) {
+        return <p>Carregando...</p>;
     }
 
-    if (error) {
-        return <p>Erro ao carregar projetos</p>;
+    if (errorProjetos || errorNoticias) {
+        return <p>Erro ao carregar dados</p>;
     }
 
 
@@ -68,7 +82,7 @@ function Activities() {
                         : "border-transparent text-zinc-500 hover:text-zinc-700"
                         }`}>
                         <FolderKanban size={18} />
-                        Projetos ({meusProjetos.length})
+                        Projetos ({meusProjetos?.length ?? 0})
                     </button>
 
                     {role === 'teacher' && (
@@ -77,7 +91,7 @@ function Activities() {
                             : "border-transparent text-zinc-500 hover:text-zinc-700"
                             }`}>
                             <Newspaper size={18} />
-                            Notícias ({minhasNoticias.length})
+                            Notícias ({minhasNoticias?.length ?? 0})
                         </button>
                     )}
                 </div>
@@ -116,7 +130,7 @@ function Activities() {
 
 
                 {abaAtiva === "noticias" && (<div className="grid gap-6 mt-4">
-                    {noticiasExibidas.map((noticia) => (
+                    {noticiasExibidas.map((noticia: any) => (
                         <article key={noticia.id} className="bg-white p-6 rounded-lg border border-zinc-200 hover:border-indigo-200 transition-colors flex flex-col justify-between cursor-pointer">
                             <Link to={`/Notícias/${noticia.id}`} className=" flex items-center">
                                 <div className='w-24 h-24 bg-zinc-200 border border-zinc-300 rounded-xl flex items-center cover justify-center mr-4 shrink-0 overflow-hidden'>
