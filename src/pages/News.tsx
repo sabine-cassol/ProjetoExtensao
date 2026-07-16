@@ -2,17 +2,41 @@ import { Link } from 'react-router-dom'
 import { NEWS } from '@/data/New.ts'
 import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
+import { type Noticia } from '@/data/NewType';
+import { useQuery } from '@tanstack/react-query';
 
 function News() {
     const { role } = useAuth();
 
     const [paginaAtual, setPaginaAtual] = useState(1);
 
+    const { data: noticias, isLoading, error } = useQuery<Noticia[]>({
+        queryKey: ['noticias'],
+        queryFn: async () => {
+            const res = await fetch('/api/noticias/todas');
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new Error(erro.erro || 'Erro ao buscar notícias');
+            }
+            return res.json();
+        }
+    });
+
+
     const NOTICIAS_POR_PAGINA = 15;
-    const totalDePaginas = Math.ceil(NEWS.length / NOTICIAS_POR_PAGINA);
+    const totalDePaginas = Math.ceil(noticias?.length ?? 0 / NOTICIAS_POR_PAGINA);
     const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;
     const indiceInicial = indiceFinal - NOTICIAS_POR_PAGINA;
-    const noticiasExibidas = NEWS.slice(indiceInicial, indiceFinal);
+    const noticiasExibidas = noticias?.slice(indiceInicial, indiceFinal) ?? [];
+
+    if (isLoading) {
+        return <p>Carregando notícias...</p>;
+    }
+
+    if (error) {
+        return <p>Erro ao carregar notícias</p>;
+    }
+
 
     return (
         <>
@@ -41,7 +65,7 @@ function News() {
                                         </div>
                                         <div>
                                             <h2 className="text-[1.30rem] font-bold text-cyan-950 mb-2">{noticia.titulo}</h2>
-                                            <span className="text-xs text-zinc-400 font-medium block mb-2">{noticia.data}</span>
+                                            <span className="text-xs text-zinc-400 font-medium block mb-2">{new Date(noticia.createdAt).toLocaleDateString('pt-BR')}</span>
                                             <p className="text-zinc-600 text-sm mb-4 line-clamp-3 md:line-clamp-2 ">{noticia.resumo}</p>
                                         </div>
                                     </Link>
@@ -60,8 +84,8 @@ function News() {
                                         return (
                                             <button key={numeroPagina} onClick={() => setPaginaAtual(numeroPagina)}
                                                 className={`w-9 h-9 text-sm font-semibold rounded-md ${isAtiva
-                                                        ? 'bg-cyan-400 text-white'
-                                                        : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
+                                                    ? 'bg-cyan-400 text-white'
+                                                    : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
                                                     }`}>
                                                 {numeroPagina}
                                             </button>

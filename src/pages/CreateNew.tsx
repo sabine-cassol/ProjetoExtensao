@@ -1,9 +1,34 @@
 import Tiptap from "@/components/TipTap"
 import { Calendar, User, ChevronUp, ChevronDown } from 'lucide-react'
 import { useState } from "react"
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import imageCompression from 'browser-image-compression';
+import { useAuth } from '@/context/AuthContext';
+
+async function converterParaBase64(arquivo: File): Promise<string> {
+    const opcoes = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true
+    };
+
+    const arquivoComprimido = await imageCompression(arquivo, opcoes);
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(arquivoComprimido);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+    });
+}
 
 function CreateNew() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'loading' | 'success'>('idle');
     const [fileName, setFileName] = useState<string>('');
     const [titulo, setTitulo] = useState('');
@@ -11,6 +36,8 @@ function CreateNew() {
     const [conteudo, setConteudo] = useState('');
     const [isExpanded, setIsExpanded] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imageBase64, setImageBase64] = useState<string>('');
+
 
     const longText = conteudo && conteudo.length > 600;
 
@@ -24,53 +51,95 @@ function CreateNew() {
         setImageFile(file);
         setUploadStatus('loading');
 
-        
+
         try {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            const base64 = await converterParaBase64(file);
+            setImageBase64(base64);
             setUploadStatus('success');
         } catch (error) {
             console.error("Erro no upload", error);
+            toast.error("Erro ao processar imagem");
             setUploadStatus('idle');
         }
     };
 
-// upar imagem com compressão 
-//     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const file = event.target.files?.[0];
-//     if (!file) return;
+    const criarMutation = useMutation({
+        mutationFn: async () => {
+            const res = await fetch('/api/noticias', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    titulo,
+                    resumo,
+                    conteudo,
+                    imageUrl: imageBase64
+                })
+            });
 
-//     setFileName(file.name);
-//     setImageFile(file);
-//     setUploadStatus('loading');
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new Error(erro.erro || 'Erro ao criar notícia');
+            }
 
-//     const options = {
-//         maxSizeMB: 50,           // Definimos um limite alto em MB para a lib NÃO forçar a barra na compressão por tamanho
-//         maxWidthOrHeight: 1920,  // Mantém o limite de tamanho dimensional (resolução máxima)
-//         useWebWorker: true,      
-//         fileType: 'image/webp' as const, // Força a conversão para WebP
-//         initialQuality: 1,       // <-- Garante 100% da qualidade original na conversão (sem perdas adicionais)
-//     };
+            return res.json();
+        },
+        onSuccess: (noticiaCriada) => {
+            queryClient.invalidateQueries({ queryKey: ['noticias'] });
+            toast.success("Notícia publicada com sucesso!");
+            navigate(`/Notícias/${noticiaCriada.id}`);
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao publicar notícia");
+        }
+    });
 
-//     try {
-//         // Executa a conversão e o redimensionamento (se a imagem passar de 1920px)
-//         const compressedBlob = await imageCompression(file, options);
+    const handlePublicar = () => {
+        if (!titulo.trim() || !resumo.trim() || !conteudo.trim()) {
+            toast.error("Preencha título, resumo e conteúdo.");
+            return;
+        }
+        criarMutation.mutate();
+    };
 
-//         // Troca a extensão para .webp
-//         const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
-        
-//         const compressedFile = new File([compressedBlob], newFileName, {
-//             type: 'image/webp',
-//         });
 
-//         setFileName(compressedFile.name);
-//         setImageFile(compressedFile); 
+    // upar imagem com compressão 
+    //     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = event.target.files?.[0];
+    //     if (!file) return;
 
-//         setUploadStatus('success');
-//     } catch (error) {
-//         console.error("Erro no processamento da imagem", error);
-//         setUploadStatus('idle');
-//     }
-// };
+    //     setFileName(file.name);
+    //     setImageFile(file);
+    //     setUploadStatus('loading');
+
+    //     const options = {
+    //         maxSizeMB: 50,           // Definimos um limite alto em MB para a lib NÃO forçar a barra na compressão por tamanho
+    //         maxWidthOrHeight: 1920,  // Mantém o limite de tamanho dimensional (resolução máxima)
+    //         useWebWorker: true,      
+    //         fileType: 'image/webp' as const, // Força a conversão para WebP
+    //         initialQuality: 1,       // <-- Garante 100% da qualidade original na conversão (sem perdas adicionais)
+    //     };
+
+    //     try {
+    //         // Executa a conversão e o redimensionamento (se a imagem passar de 1920px)
+    //         const compressedBlob = await imageCompression(file, options);
+
+    //         // Troca a extensão para .webp
+    //         const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+
+    //         const compressedFile = new File([compressedBlob], newFileName, {
+    //             type: 'image/webp',
+    //         });
+
+    //         setFileName(compressedFile.name);
+    //         setImageFile(compressedFile); 
+
+    //         setUploadStatus('success');
+    //     } catch (error) {
+    //         console.error("Erro no processamento da imagem", error);
+    //         setUploadStatus('idle');
+    //     }
+    // };
 
     return (
         <>
@@ -82,9 +151,9 @@ function CreateNew() {
                     </div>
                     <div className="mt-4 flex flex-col gap-2 ">
                         <label htmlFor="input" className="font-semibold">Digite o título da notícia</label>
-                        <input type="text" required max="254" value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <input type="text" required maxLength={254} value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                         <label htmlFor="input" className="font-semibold">Digite o resumo da notícia</label>
-                        <input type="text" required max="254" value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <input type="text" required maxLength={254} value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                     </div>
                     <div>
                         <Tiptap value={conteudo} onChange={setConteudo} />
@@ -164,7 +233,7 @@ function CreateNew() {
 
                             {uploadStatus === 'success' && imageFile && (
                                 <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">
-                                    <img loading='lazy' src={URL.createObjectURL(imageFile)} alt="Preview da notícia" className="w-full h-auto max-h-100 object-cover"/>
+                                    <img loading='lazy' src={URL.createObjectURL(imageFile)} alt="Preview da notícia" className="w-full h-auto max-h-100 object-cover" />
                                 </div>)}
 
                             {longText && (
@@ -190,7 +259,7 @@ function CreateNew() {
                     </div>
 
                     <div className="mt-4 flex justify-center items-center">
-                        <button className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 "> Publicar notícia </button>
+                        <button onClick={handlePublicar} disabled={criarMutation.isPending || uploadStatus === 'loading'} className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 "> {criarMutation.isPending ? 'Publicando...' : 'Publicar notícia'} </button>
                     </div>
                 </section>
             </section>
