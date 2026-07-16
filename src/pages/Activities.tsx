@@ -138,7 +138,7 @@ function Activities() {
                                 </div>
                                 <div>
                                     <h2 className="text-[1.30rem] font-bold text-cyan-950 mb-2">{noticia.titulo}</h2>
-                                    <span className="text-xs text-zinc-400 font-medium block mb-2">{noticia.data}</span>
+                                    <span className="text-xs text-zinc-400 font-medium block mb-2">{new Date(noticia.createdAt).toLocaleDateString('pt-BR')}</span>
                                     <p className="text-zinc-600 text-sm mb-4 line-clamp-3 md:line-clamp-2 ">{noticia.resumo}</p>
                                 </div>
                             </Link>
