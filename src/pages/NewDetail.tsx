@@ -197,12 +197,12 @@ function NewDetail() {
                             </div>
                         )}
 
-                        <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">
+                        <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300">
                             <img
                                 src={noticia.imageUrl}
                                 alt="Imagem da notícia"
                                 loading='lazy'
-                                className="w-full h-auto max-h-100 object-cover"
+                                className="w-full h-auto object-contain"
                             />
                         </div>
 

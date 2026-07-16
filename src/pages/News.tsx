@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 // import { NEWS } from '@/data/New.ts'
 import { useAuth } from '@/context/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { type Noticia } from '@/data/NewType';
 import { useQuery } from '@tanstack/react-query';
 
@@ -24,7 +24,7 @@ function News() {
 
 
     const NOTICIAS_POR_PAGINA = 15;
-    const totalDePaginas = Math.ceil(noticias?.length ?? 0 / NOTICIAS_POR_PAGINA);
+    const totalDePaginas = Math.ceil((noticias?.length ?? 0) / NOTICIAS_POR_PAGINA);
     const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;
     const indiceInicial = indiceFinal - NOTICIAS_POR_PAGINA;
     const noticiasExibidas = noticias?.slice(indiceInicial, indiceFinal) ?? [];
