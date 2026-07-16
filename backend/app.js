@@ -8,6 +8,7 @@ import projetoRoutes from "./routes/projetoRoutes.js";
 import atividadeRoutes from "./routes/atividadeRoutes.js";
 import presencaRoutes from "./routes/presencaRoutes.js";
 import inscricaoProjetoRoutes from "./routes/inscricaoProjetoRoutes.js";
+import noticiaRoutes from "./routes/noticiaRoute.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
@@ -19,11 +20,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors({
-  origin: true, // IP e porta do PC do frontend
-  credentials: true // necessário pois vocês usam cookies!
+  origin: true,
+  credentials: true 
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 app.use("/professores", professorRoutes);
@@ -32,6 +33,7 @@ app.use("/projetos", projetoRoutes);
 app.use("/atividades", atividadeRoutes);
 app.use("/presencas", presencaRoutes);
 app.use("/inscricoes", inscricaoProjetoRoutes);
+app.use("/noticias", noticiaRoutes);
 
 
 // Servir os arquivos estáticos do React (dist)
