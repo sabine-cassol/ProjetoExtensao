@@ -4,12 +4,14 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import logo1 from '../assets/IMG_20251114_003344.png'
 import extension from '../assets/Extension.svg'
-import { Eye, EyeOff, XCircle } from 'lucide-react';
+import { Eye, EyeOff, XCircle, AlertCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { GraduationCap, Microscope } from 'lucide-react';
 import { createUser } from '@/services/postUser';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from 'sonner';
+import { loginSchema, registerSchema } from '@/schemas/authSchemas';
+
 
 
 function Login() {
@@ -30,16 +32,41 @@ function Login() {
     const [regPassword, setRegPassword] = useState('');
     const [regConfirmPassword, setRegConfirmPassword] = useState('');
     const [erroRegister, setErroRegister] = useState('');
+    const [erroLogin, setErroLogin] = useState<string | null>(null);
+    const [errosRegister, setErrosRegister] = useState<Record<string, string>>({});
 
+
+
+    const formatarRA = (valor: string): string => {
+        const apenasNumeros = valor.replace(/\D/g, '').slice(0, 9);
+
+        if (apenasNumeros.length <= 8) {
+            return apenasNumeros;
+        }
+
+        return `${apenasNumeros.slice(0, 8)}-${apenasNumeros.slice(8)}`;
+    };
+
+    const handleRAChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRegRA(formatarRA(e.target.value));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErroLogin(null);
         if (!userRole) {
             console.error("Nenhum perfil (aluno/professor) foi selecionado.");
             return;
         }
 
-        if (!login || !password) return;
+        const validacao = loginSchema.safeParse({ login, password });
+
+        if (!validacao.success) {
+            const primeiroErro = validacao.error.issues[0];
+            setErroLogin(primeiroErro.message);
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -56,17 +83,40 @@ function Login() {
         }
     };
 
+
     const handleRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrosRegister({});
         setErroRegister('');
 
-        if (!regEmail || !regName || !regPassword || !regRA || !regConfirmPassword) return;
-        setLoading(true);
+        const validacao = registerSchema.safeParse({
+            regEmail,
+            regName,
+            regRA,
+            regPassword,
+            regConfirmPassword
+        });
 
-        if (regPassword !== regConfirmPassword) {
-            setErroRegister('As senhas não coincidem!');
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosRegister(erros);
+
+            if (erros.regEmail || erros.regName || erros.regRA) {
+                setActiveScreen('register');
+            } else {
+                setActiveScreen('register1');
+            }
             return;
         }
+
+        setLoading(true);
+
 
         const requestBody = {
             email: regEmail.trim(),
@@ -177,8 +227,10 @@ function Login() {
                                 <div className="flex flex-col items-center gap-5 ">
                                     <img src={logo1} alt="logo1" className="size-18" />
                                     <h1 className="font-bold text-3xl text-(#005387cc)"> Entrar na sua conta</h1>
-                                    {erroAuth && (
-                                        <p className="mt-2 flex min-h-4 items-center font-bold text-destructive text-xs">Ocorreu um erro</p>
+                                    {(erroLogin || erroAuth) && (
+                                        <p className="mt-2 flex min-h-4 items-center font-bold text-destructive text-xs">
+                                            {erroLogin || 'Ocorreu um erro'}
+                                        </p>
                                     )}
                                 </div>
                                 <form onSubmit={handleSubmit} className="w-full space-y-6">
@@ -244,16 +296,42 @@ function Login() {
                                         <>
                                             <div className="flex flex-col">
                                                 <label htmlFor="regEmail" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Email</label>
-                                                <input id="regEmail" required value={regEmail} onChange={(e) => setRegEmail(e.target.value)} type="email" placeholder="digite seu email" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regName"></input>
+                                                <input id="regEmail" required value={regEmail} onChange={(e) => setRegEmail(e.target.value)} type="email" placeholder="digite seu email" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="regEmail"></input>
+                                                {errosRegister.regEmail && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {errosRegister.regEmail}
+                                                        </span>
+                                                    </div>
+                                                </div>)}
+
                                             </div>
                                             <div className="flex flex-col">
                                                 <label htmlFor="regName" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Nome completo</label>
                                                 <input id="regName" required value={regName} onChange={(e) => setRegName(e.target.value)} type="text" placeholder="digite seu nome completo" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regName"></input>
+                                                {errosRegister.regName && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {errosRegister.regName}
+                                                        </span>
+                                                    </div>
+                                                </div>)}
+
                                             </div>
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="regRA" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">RA</label>
-                                                <input id="regRA" required value={regRA} onChange={(e) => setRegRA(e.target.value)} type="text" placeholder="seu nome RA" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regRA"></input>
+                                                <input id="regRA" required value={regRA} onChange={handleRAChange} type="text" maxLength={10} placeholder="seu nome RA" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regRA"></input>
+                                                {errosRegister.regRA && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {errosRegister.regRA}
+                                                        </span>
+                                                    </div>
+                                                </div>)}
                                             </div>
                                             <div className='flex justify-center gap-2 pt-4 p-1 overflow-visible'>
                                                 <button type='button' onClick={() => setActiveScreen('login')} className="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-400 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[0px_4px_0px_0px_rgba(0,0,0,0.4)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
@@ -271,21 +349,37 @@ function Login() {
                                             <div className="flex flex-col">
                                                 <label htmlFor="regPassword" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Escolha uma Senha</label>
                                                 <div className="relative">
-                                                    <input id="regPassword" required value={regPassword} onChange={(e) => setRegPassword(e.target.value)} type={showPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regPassword" />
+                                                    <input id="regPassword" required value={regPassword} onChange={(e) => setRegPassword(e.target.value)} type={showPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="regPassword" />
                                                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-zinc-400 hover:text-zinc-600">
                                                         {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                                                     </button>
                                                 </div>
+                                                {errosRegister.regPassword && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {errosRegister.regPassword}
+                                                        </span>
+                                                    </div>
+                                                </div>)}
                                             </div>
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="regConfirmPassword" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Confirme a Senha</label>
                                                 <div className="relative">
-                                                    <input id="regConfirmPassword" required value={regConfirmPassword} onChange={(e) => setRegConfirmPassword(e.target.value)} type={showConfirmPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regConfirmPassword"></input>
+                                                    <input id="regConfirmPassword" required value={regConfirmPassword} onChange={(e) => setRegConfirmPassword(e.target.value)} type={showConfirmPassword ? "text" : "password"} placeholder="••••••••••" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="regConfirmPassword"></input>
                                                     <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-zinc-400 hover:text-zinc-600">
                                                         {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                                                     </button>
                                                 </div>
+                                                {errosRegister.regConfirmPassword && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {errosRegister.regConfirmPassword}
+                                                        </span>
+                                                    </div>
+                                                </div>)}
                                             </div>
 
                                             <div className="pt-2 flex justify-center gap-2 p-1 overflow-visible">
