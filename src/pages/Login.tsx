@@ -228,9 +228,14 @@ function Login() {
                                     <img src={logo1} alt="logo1" className="size-18" />
                                     <h1 className="font-bold text-3xl text-(#005387cc)"> Entrar na sua conta</h1>
                                     {(erroLogin || erroAuth) && (
-                                        <p className="mt-2 flex min-h-4 items-center font-bold text-destructive text-xs">
-                                            {erroLogin || 'Ocorreu um erro'}
-                                        </p>
+                                        <div className="bg-red-100 border border-red-300 px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit dark:bg-red-950/30 dark:border-red-900/50 transition-colors">
+                                            <div className="flex items-center gap-2 text-red-700 font-medium text-sm dark:text-red-400">
+                                                <AlertCircle size={16} className='shrink-0' />
+                                                <p className="wrap-break-word">
+                                                    {erroLogin || 'Ocorreu um erro'}
+                                                </p>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                                 <form onSubmit={handleSubmit} className="w-full space-y-6">
