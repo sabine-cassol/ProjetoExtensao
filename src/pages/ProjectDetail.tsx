@@ -12,11 +12,13 @@ import { useProjetoId } from '@/services/getProjetosId'
 import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projetoService } from '@/services/projetoService';
+import { type Atividade } from "@/data/AtividadeType";
+import Atividades from '@/components/Atividades.tsx'
 
 
 function ProjectDetail() {
     const { projetoId } = useParams<{ projetoId: string }>();
-    const { role } = useAuth();
+    const { role, user } = useAuth();
     const [editForm, setEditForm] = useState<Projeto | undefined>(undefined);
     // const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
@@ -398,13 +400,12 @@ function ProjectDetail() {
                                 )}
                             </section>
                         ) : null}
-
+                        <Atividades role={role} professorResponsavelId={projeto.professorId} userId={user?.id}/>
                         {role === 'guest' ? (
                             <section>
                                 <button className='mt-5 flex bg-(--darkBlue) text-white p-2 cursor-pointer rounded-sm justify-self-center hover:bg-indigo-900 active:bg-indigo-500'> Quero participar </button>
                             </section>
                         ) : null}
-
 
                     </div>
                 </section>

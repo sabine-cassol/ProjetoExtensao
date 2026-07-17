@@ -23,6 +23,7 @@ export interface Projeto {
     periodoInscricao: string;
     periodoExecucao: string
     ativo: boolean;
+    professorId: number;
     professor: {
         nome: string
     };
