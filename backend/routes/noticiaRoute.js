@@ -14,6 +14,7 @@ const controller = noticiaController(service);
 
 router.get("/todas", (req, res) => controller.listarTodas(req, res));
 router.get("/id/:id", (req, res) => controller.buscarPorId(req, res));
+router.get("/professor/:professorId", autenticar, autorizar("professor"), (req, res) => controller.listarPorProfessor(req, res));
 
 router.post("/", autenticar, autorizar("professor"), (req, res) => controller.criarNoticia(req, res));
 router.put("/id/:id", autenticar, autorizar("professor"), (req, res) => controller.atualizarNoticia(req, res));

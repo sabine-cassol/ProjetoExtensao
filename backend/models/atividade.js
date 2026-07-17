@@ -12,11 +12,11 @@ export default (sequelize) => {
         descricao: {
             type: DataTypes.STRING
         },
-        dataHoraInicio: {
-            type: DataTypes.DATE
+        data: {
+            type: DataTypes.DATEONLY
         },
-        dataHoraFim: {
-            type: DataTypes.DATE
+        cargaHoraria: {
+            type: DataTypes.INTEGER
         },
         projetoId: {
             type: DataTypes.INTEGER,

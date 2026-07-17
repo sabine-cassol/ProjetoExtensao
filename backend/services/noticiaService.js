@@ -20,6 +20,11 @@ export default (noticiaRepository) => {
             return noticiaRepository.listarTodas();
         },
 
+        async listarPorProfessor(professorId) {
+            return noticiaRepository.listarPorProfessor(professorId);
+        },
+
+
         async atualizarNoticia(id, dados, professorLogadoId) {
             const noticia = await noticiaRepository.buscarPorId(id);
             if (!noticia) {

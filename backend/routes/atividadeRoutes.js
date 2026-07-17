@@ -1,6 +1,7 @@
 import express from "express";
-import {Atividade} from "../models/index.js";
+import {Atividade, Projeto_extensao} from "../models/index.js";
 import atividadeRepository from "../repositories/atividadeRepository.js";
+import projetoRepository from "../repositories/projetoRepository.js";
 import atividadeService from "../services/atividadeService.js";
 import atividadeController from "../controllers/atividadeController.js";
 import autenticar from "../middlewares/autenticar.js";
@@ -9,7 +10,8 @@ import autorizar from "../middlewares/autorizar.js";
 const router = express.Router();
 
 const repository = atividadeRepository(Atividade);
-const service = atividadeService(repository);
+const repositoryProjeto = projetoRepository(Projeto_extensao);
+const service = atividadeService(repository, repositoryProjeto);
 const controller = atividadeController(service);
 
 router.post("/", autenticar, autorizar("professor"), (req, res) => controller.criarAtividade(req, res));

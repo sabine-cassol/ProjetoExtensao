@@ -27,6 +27,19 @@ export default (Noticia) => {
             });
         },
 
+        async listarPorProfessor(professorId) {
+            return Noticia.findAll({
+                where: { professorId },
+                include: {
+                    model: Professor,
+                    as: "autor",
+                    attributes: ['nome']
+                },
+                order: [['createdAt', 'DESC']]
+            });
+        },
+
+
         async atualizarNoticia(id, novaNoticia) {
             const noticia = await Noticia.findByPk(id);
             if (!noticia) return null;

@@ -27,6 +27,16 @@ export default (noticiaService) => {
             }
         },
 
+        async listarPorProfessor(req, res) {
+            try {
+                const noticias = await noticiaService.listarPorProfessor(req.params.professorId);
+                res.status(200).json(noticias.map((n) => n.toJSON()));
+            } catch (erro) {
+                res.status(404).json({ erro: erro.message });
+            }
+        },
+
+
         async atualizarNoticia(req, res) {
             try {
                 const noticia = await noticiaService.atualizarNoticia(req.params.id, req.body, req.usuario.id);

@@ -9,6 +9,7 @@ export default (Atividade) => {
             return Atividade.findByPk(id, {
                 include: {
                     model: Projeto_extensao,
+                    as:"projeto",
                     attributes: ['titulo']
                 }
             });
@@ -17,6 +18,7 @@ export default (Atividade) => {
             return Atividade.findAll({
                 include: {
                     model: Projeto_extensao,
+                    as:"projeto",
                     attributes: ['titulo']
                 }
             });
@@ -26,6 +28,7 @@ export default (Atividade) => {
                 where: { projetoId },
                 include: {
                     model: Projeto_extensao,
+                    as:"projeto",
                     attributes: ['titulo']
                 }
             });
