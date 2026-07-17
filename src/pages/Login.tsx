@@ -183,7 +183,7 @@ function Login() {
                                 </div>
                                 <form onSubmit={handleSubmit} className="w-full space-y-6">
                                     <div className="flex w-full flex-col">
-                                        <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Digite seu usuário</label>
+                                        <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Digite seu Email</label>
                                         <div className="relative mb-4">
                                             <input data-slot="input" value={login} onChange={(e) => setLogin(e.target.value)} required className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" id="login" max="254" placeholder="aluno@exemplo.com" type="text" autoComplete="off" name="login"></input>
                                             <div className="absolute inset-y-0 right-0 hidden items-center pr-3 pointer-events-none text-destructive [input:invalid:not(:placeholder-shown)~&]:flex [form:submitted_&]:flex">
@@ -221,7 +221,7 @@ function Login() {
                                     </div>
                                 </form>
 
-                                <button onClick={() => setActiveScreen('register')} className="font-bold text-blue-600 hover:underline cursor-pointer -mt-4">
+                                <button onClick={() => setActiveScreen('register')} className="font-bold text-cyan-500 hover:underline cursor-pointer -mt-4">
                                     Não tem uma conta? Crie uma agora
                                 </button>
 
