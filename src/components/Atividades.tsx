@@ -144,9 +144,18 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const valor = e.target.value.replace(',', '.');
+        setFormData(prev => ({ ...prev, cargaHoraria: valor }));
+
     };
+
+    const handleCargaHorariaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let valor = e.target.value.replace(',', '.');
+        // permite apenas números e um único ponto decimal
+        if (!/^\d*\.?\d*$/.test(valor)) return;
+        setFormData(prev => ({ ...prev, cargaHoraria: valor }));
+    };
+
 
     const handleSalvarAtividade = (e: React.FormEvent) => {
         e.preventDefault();
@@ -225,7 +234,7 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
 
                             <div className="flex items-center gap-3 text-xs text-gray-500">
                                 <div className="flex items-center gap-1">
-                                    <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                    <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleCargaHorariaChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     <span className="text-gray-400">h</span>
                                 </div>
                                 <span className="text-gray-300">•</span>
