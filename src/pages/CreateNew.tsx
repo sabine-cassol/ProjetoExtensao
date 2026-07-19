@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/context/AuthContext';
+import { noticiaSchema } from "@/schemas/authSchemas";
 
 async function converterParaBase64(arquivo: File): Promise<string> {
     const opcoes = {
@@ -37,6 +38,7 @@ function CreateNew() {
     const [isExpanded, setIsExpanded] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageBase64, setImageBase64] = useState<string>('');
+    const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
 
 
     const longText = conteudo && conteudo.length > 600;
@@ -95,10 +97,27 @@ function CreateNew() {
     });
 
     const handlePublicar = () => {
-        if (!titulo.trim() || !resumo.trim() || !conteudo.trim()) {
-            toast.error("Preencha título, resumo e conteúdo.");
+        setErrosNoticia({});
+
+        const validacao = noticiaSchema.safeParse({
+            titulo,
+            resumo,
+            conteudo,
+            imagem: imageBase64
+        });
+
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosNoticia(erros);
             return;
         }
+
         criarMutation.mutate();
     };
 
@@ -152,11 +171,22 @@ function CreateNew() {
                     <div className="mt-4 flex flex-col gap-2 ">
                         <label htmlFor="input" className="font-semibold">Digite o título da notícia</label>
                         <input type="text" required maxLength={254} value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        {errosNoticia.titulo && (
+                            <span className="text-red-600 text-xs">{errosNoticia.titulo}</span>
+                        )}
                         <label htmlFor="input" className="font-semibold">Digite o resumo da notícia</label>
                         <input type="text" required maxLength={254} value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        {errosNoticia.resumo && (
+                            <span className="text-red-600 text-xs">{errosNoticia.resumo}</span>
+                        )}
+
                     </div>
                     <div>
                         <Tiptap value={conteudo} onChange={setConteudo} />
+                        {errosNoticia.conteudo && (
+                            <span className="text-red-600 text-xs mt-1 block">{errosNoticia.conteudo}</span>
+                        )}
+
                     </div>
                     <div className="mt-4 flex flex-col gap-2">
                         <span className="font-semibold text-neutral-700">Envie a imagem referente à notícia</span>
@@ -199,6 +229,9 @@ function CreateNew() {
 
                             <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={uploadStatus === 'loading'} />
                         </label>
+                        {errosNoticia.imagem && (
+                            <span className="text-red-600 text-xs">{errosNoticia.imagem}</span>
+                        )}
                     </div>
                     <div className="mt-4 flex flex-col gap-2">
                         <div>

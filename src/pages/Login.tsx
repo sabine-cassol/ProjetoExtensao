@@ -83,7 +83,6 @@ function Login() {
         }
     };
 
-
     const handleRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErrosRegister({});

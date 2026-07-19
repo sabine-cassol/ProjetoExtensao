@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+function contemTextoReal(html: string): boolean {
+    const textoSemTags = html.replace(/<[^>]*>/g, '').trim();
+    return textoSemTags.length > 0;
+}
+
 export const loginSchema = z.object({
     login: z
         .string()
@@ -49,6 +54,7 @@ export const CURSOS_DISPONIVEIS = [
 ] as const;
 
 
+
 export const profileSchema = z.object({
     nome: z
         .string()
@@ -85,3 +91,24 @@ export const passwordSchema = z
     });
 
 export type PasswordFormData = z.infer<typeof passwordSchema>;
+
+export const noticiaSchema = z.object({
+    titulo: z
+        .string()
+        .min(5, 'Título deve ter pelo menos 5 caracteres')
+        .max(254, 'Título muito longo'),
+    resumo: z
+        .string()
+        .min(10, 'Resumo deve ter pelo menos 10 caracteres')
+        .max(254, 'Resumo muito longo'),
+    conteudo: z
+        .string()
+        .refine(contemTextoReal, {
+            message: 'O conteúdo da notícia não pode ficar vazio'
+        }),
+    imagem: z
+        .string()
+        .min(1, 'Envie uma imagem para a notícia')
+});
+
+export type NoticiaFormData = z.infer<typeof noticiaSchema>;
