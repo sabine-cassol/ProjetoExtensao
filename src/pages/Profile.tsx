@@ -4,6 +4,9 @@ import { toast } from "sonner"
 import { useAuth } from "../context/AuthContext";
 import { EyeOff, Eye } from "lucide-react";
 import { atualizarUsuario } from "@/services/putUser";
+import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
+import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
+import type { input } from "zod";
 
 interface UserProfileData {
     nome: string;
@@ -24,36 +27,58 @@ function Profile() {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+    const [errosPerfil, setErrosPerfil] = useState<Record<string, string>>({});
+    const [errosSenha, setErrosSenha] = useState<Record<string, string>>({});
 
-    const [formData, setFormData] = useState<UserProfileData>({
-        nome: '',
-        login: '',
-        ra: '',
-        curso: '',
-        periodo: ''
+
+    const [formData, setFormData] = useState({
+        nome: user?.nome ?? '',
+        login: user?.login ?? '',
+        ra: user?.ra ?? '',
+        curso: user?.curso ?? '',      
+        periodo: user?.periodo ?? ''
     });
+
 
     useEffect(() => {
         if (user) {
             setFormData({
-                nome: user.nome,
-                login: user.login,
-                ra: user.ra,
-                curso: user.curso || '',
-                periodo: user.periodo || ''
+                nome: user.nome ?? '',
+                login: user.login ?? '',
+                ra: user.ra ?? '',
+                curso: user.curso ?? '',
+                periodo: user.periodo ?? ''
             });
         }
     }, [user]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSave = async () => {
+        setErrosPerfil({});
+
+        const validacao = profileSchema.safeParse({
+            nome: formData.nome,
+            curso: formData.curso,
+            periodo: formData.periodo
+        });
+
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosPerfil(erros);
+            return;
+        }
+
         try {
             const dadosParaAtualizar = {
                 nome: formData.nome,
@@ -65,7 +90,7 @@ function Profile() {
             };
 
 
-            await atualizarUsuario(dadosParaAtualizar);
+            await atualizarUsuario(dadosParaAtualizar,role);
 
             update({
                 nome: formData.nome,
@@ -97,8 +122,22 @@ function Profile() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError('');
-        setSuccess(false);
+        setErrosSenha({});
+
+        const validacao = passwordSchema.safeParse({ password, confirmPassword });
+
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosSenha(erros);
+            return;
+        }
+
 
         if (password !== confirmPassword) {
             setError('As senhas não coincidem. Verifique e tente novamente.');
@@ -157,6 +196,9 @@ function Profile() {
                                             : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
                                         }`}
                                 />
+                                {errosPerfil.nome && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.nome}</span>
+                                )}
                             </div>
 
                             <div>
@@ -189,12 +231,31 @@ function Profile() {
 
                             {role === 'student' && (<div>
                                 <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
-                                <input id="curso" name="curso" type="text" value={formData.curso} onChange={handleChange} readOnly={!isEditing} className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
+                                <select
+                                    id="curso"
+                                    name="curso"
+                                    value={formData.curso}
+                                    onChange={handleChange}
+                                    disabled={!isEditing}
+                                    className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
                                         ${!isEditing
-                                        ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
-                                        : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
-                                    }`} />
-                            </div>)}
+                                            ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
+                                            : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
+                                        }`}
+                                >
+                                    <option value="" disabled={!!formData.curso}>Nenhum curso associado, selecione um curso</option>
+                                    {CURSOS_DISPONIVEIS.map((curso) => (
+                                        <option key={curso} value={curso}>
+                                            {curso}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {errosPerfil.curso && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.curso}</span>
+                                )}
+                            </div>
+                            )}
 
                             {role === 'student' && (<div>
                                 <label htmlFor="periodo" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Período </label>
@@ -203,6 +264,9 @@ function Profile() {
                                         ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
                                         : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
                                     }`} />
+                                {errosPerfil.periodo && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.periodo}</span>
+                                )}
                             </div>)}
                         </div>
                         <div className='flex justify-center gap-3 px-4'>
@@ -242,6 +306,10 @@ function Profile() {
                                             <Eye className="size-5" />
                                         )}
                                     </button>
+                                    {errosSenha.password && (
+                                        <span className="text-red-600 text-xs mt-1 block">{errosSenha.password}</span>
+                                    )}
+
                                 </div>
                                 <div className="mt-2 relative">
                                     <label htmlFor="password2" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2">Confirme a senha nova</label>
@@ -258,6 +326,10 @@ function Profile() {
                                             <Eye className="size-5" />
                                         )}
                                     </button>
+                                    {errosSenha.confirmPassword && (
+                                        <span className="text-red-600 text-xs mt-1 block">{errosSenha.confirmPassword}</span>
+                                    )}
+
                                 </div>
                                 <div className='flex justify-center mt-4'>
                                     <button type='submit' className="px-4 py-2 bg-[#0d6efd] text-white hover:bg-[#0d39fd] rounded-md font-semibold cursor-pointer transition-all">

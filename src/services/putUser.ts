@@ -1,15 +1,17 @@
 const API_URL = import.meta.env.VITE_API_URL_PROXY || '/api';
 
 export interface Usuario {
-    nome?: string,
-    email?: string,
-    curso?:string,
-    periodo?:string
+  nome?: string,
+  email?: string,
+  curso?: string,
+  periodo?: string
 }
 
-export async function atualizarUsuario(dados: Usuario): Promise<Usuario> {
+export async function atualizarUsuario(dados: Usuario, role: string): Promise<Usuario> {
+  
+  const rotaMe = role === 'teacher' ? '/professores/atualizar' : '/alunos/atualizar';
   try {
-    const response = await fetch(`${API_URL}/alunos/atualizar`, {
+    const response = await fetch(`${API_URL}${rotaMe}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -17,6 +19,7 @@ export async function atualizarUsuario(dados: Usuario): Promise<Usuario> {
       credentials: 'include',
       body: JSON.stringify(dados),
     });
+
 
     if (!response.ok) {
       const dadosErro = await response.json();
@@ -30,6 +33,6 @@ export async function atualizarUsuario(dados: Usuario): Promise<Usuario> {
   } catch (error) {
     console.error('Erro na requisição PUT:', error);
 
-    throw error; 
+    throw error;
   }
 }

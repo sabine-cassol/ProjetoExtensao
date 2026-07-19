@@ -39,3 +39,49 @@ export const registerSchema = z
     });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+
+export const CURSOS_DISPONIVEIS = [
+    'Engenharia de Software',
+    'Análise e desenvolvimento de sistemas',
+    'Engenharia Civil',
+    'Administração',
+    'Psicologia',
+] as const;
+
+
+export const profileSchema = z.object({
+    nome: z
+        .string()
+        .min(3, 'Nome deve ter pelo menos 3 caracteres')
+        .max(254, 'Nome muito longo')
+        .regex(/^[A-Za-zÀ-ÿ\s]+$/, 'Nome não pode conter números ou símbolos'),
+    curso: z
+        .string()
+        .min(1, 'Curso é obrigatório')
+        .optional()
+        .or(z.literal('')),
+    periodo: z
+        .string()
+        .min(1, 'Período é obrigatório')
+        .refine((val) => Number(val) >= 1 && Number(val) <= 10, {
+            message: 'Período deve ser entre 1 e 10'
+        })
+});
+
+export type ProfileFormData = z.infer<typeof profileSchema>;
+
+export const passwordSchema = z
+    .object({
+        password: z
+            .string()
+            .min(8, 'Senha deve ter pelo menos 8 caracteres'),
+        confirmPassword: z
+            .string()
+            .min(1, 'Confirme a nova senha')
+    })
+    .refine((dados) => dados.password === dados.confirmPassword, {
+        message: 'As senhas não coincidem',
+        path: ['confirmPassword']
+    });
+
+export type PasswordFormData = z.infer<typeof passwordSchema>;
