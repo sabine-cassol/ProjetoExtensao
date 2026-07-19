@@ -10,6 +10,7 @@ import Error from '../components/Error.tsx'
 import { toast } from "sonner"
 import { type Noticia } from '@/data/NewType.ts'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { noticiaSchema } from "@/schemas/authSchemas";
 
 
 function NewDetail() {
@@ -23,6 +24,7 @@ function NewDetail() {
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
 
 
     useEffect(() => {
@@ -110,7 +112,28 @@ function NewDetail() {
     };
 
     const handleSaveEdit = () => {
+        setErrosNoticia({});
         if (!editForm) return;
+
+        const validacao = noticiaSchema.safeParse({
+            titulo: editForm.titulo,
+            resumo: editForm.resumo,
+            conteudo: editForm.conteudo,
+            imagem: editForm.imageUrl
+        });
+
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosNoticia(erros);
+            return;
+        }
+
         atualizarMutation.mutate(editForm);
     };
 
@@ -161,7 +184,13 @@ function NewDetail() {
                     <article className={`bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 shadow-xs ${role === 'teacher' ? 'rounded-b-xl' : 'rounded-xl'}`}>
 
                         {isEditing ? (
-                            <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border text-3xl md:text-4xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <>
+                                <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border text-3xl md:text-4xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosNoticia.titulo && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.titulo}</span>
+                                )}
+                            </>
+
                         ) : (
                             <h1 className="text-3xl md:text-4xl font-bold leading-relaxed text-zinc-900 dark:text-white font-segoe">
                                 {noticia.titulo}
@@ -172,7 +201,7 @@ function NewDetail() {
                         <div className="flex flex-wrap items-center gap-4 mt-4 text-xs md:text-sm text-neutral-700 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800 pb-4">
                             <div className="flex items-center gap-1.5">
                                 <User size={16} className="text-zinc-400" />
-                                <span className='text-neutral-700 font-medium'>Por <span className="text-neutral-700 ">{noticia.autor.nome}</span></span>
+                                <span className='text-neutral-700 font-medium'>Por <span className="text-neutral-700 ">{noticia.autor.nome ?? 'autor desconhecido'}</span></span>
                             </div>
                             <span className="text-zinc-400 dark:text-zinc-700">•</span>
                             <div className="flex items-center gap-1.5">
@@ -182,7 +211,12 @@ function NewDetail() {
                         </div>
 
                         {isEditing ? (
-                            <input type="text" value={editForm?.resumo || ''} onChange={(e) => handleChange('resumo', e.target.value)} className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 border w-full  border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <>
+                                <input type="text" value={editForm?.resumo || ''} onChange={(e) => handleChange('resumo', e.target.value)} className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 border w-full  border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosNoticia.resumo && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.resumo}</span>
+                                )}
+                            </>
                         ) : (
                             <p className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 ">
                                 {noticia.resumo}
@@ -190,7 +224,12 @@ function NewDetail() {
                         )}
 
                         {isEditing ? (
-                            <textarea value={editForm?.conteudo || ''} onChange={(e) => handleChange('conteudo', e.target.value)} className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8 border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <>
+                                <textarea value={editForm?.conteudo || ''} onChange={(e) => handleChange('conteudo', e.target.value)} className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8 border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosNoticia.conteudo && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.conteudo}</span>
+                                )}
+                            </>
                         ) : (
                             <div className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8">
                                 {noticia.conteudo}
