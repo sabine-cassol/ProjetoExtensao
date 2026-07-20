@@ -12,8 +12,8 @@ import { useProjetoId } from '@/services/getProjetosId'
 import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projetoService } from '@/services/projetoService';
-import { type Atividade } from "@/data/AtividadeType";
-import Atividades from '@/components/Atividades.tsx'
+import Atividades from '@/components/Atividades.tsx';
+import { projetoSchema } from '@/schemas/authSchemas'
 
 
 function ProjectDetail() {
@@ -24,6 +24,8 @@ function ProjectDetail() {
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
+
     const { data: projeto, isLoading, error } = useProjetoId(projetoId!)
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
@@ -64,15 +66,32 @@ function ProjectDetail() {
     };
 
     const handleSaveEdit = () => {
+        setErrosProjeto({})
         if (!editForm) return;
+        const validacao = projetoSchema.safeParse(editForm);
 
+        if (!validacao.success) {
+            const errosFormatados: Record<string, string> = {};
+
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0];
+
+                if (campo !== undefined) {
+                    errosFormatados[String(campo)] = issue.message;
+                }
+            });
+
+
+            setErrosProjeto(errosFormatados);
+            return;
+        }
         // setListaProjects(prevLista =>
         //     prevLista.map(item => item.id === editForm.id ? editForm : item)
         // );
 
-        // setIsEditing(false);
+        setIsEditing(false);
 
-        // toast.success("Projeto atualizado com sucesso!");
+        toast.success("Projeto atualizado com sucesso!");
         atualizarMutation.mutate(editForm);
     };
 
@@ -144,8 +163,7 @@ function ProjectDetail() {
                                         onClick={handleReactivate}
                                         disabled={ativarMutation.isPending}
                                         className='cursor-pointer rounded-sm p-2 hover:bg-slate-50'
-                                        title='Reativar Projeto'
-                                    >
+                                        title='Reativar Projeto'>
                                         <RotateCcw size={18} />
                                     </button>
                                 )}
@@ -168,7 +186,12 @@ function ProjectDetail() {
 
                         <section>
                             {isEditing && role === 'teacher' ? (
-                                <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                <>
+                                    <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                    {errosProjeto.titulo && (
+                                        <span className="text-red-600 text-xs mt-1 block">{errosProjeto.titulo}</span>
+                                    )}
+                                </>
                             ) : (
                                 <h1 className='text-2xl font-bold'> {projeto.titulo}</h1>
                             )
@@ -191,6 +214,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.tipo || ''} onChange={(e) => handleChange('tipo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.tipo && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.tipo}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.tipo}</td>
@@ -202,6 +228,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.unidade || ''} onChange={(e) => handleChange('unidade', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.unidade && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.unidade}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.unidade}</td>
@@ -213,6 +242,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.cargaHoraria && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.cargaHoraria}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.cargaHoraria}</td>
@@ -224,6 +256,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.cursosVinculados || ''} onChange={(e) => handleChange('cursosVinculados', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.cursosVinculados && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.cursosVinculados}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.cursosVinculados}</td>
@@ -235,6 +270,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.parceiros || ''} onChange={(e) => handleChange('parceiros', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.parceiros && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.parceiros}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.parceiros}</td>
@@ -246,6 +284,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.colaboradores || ''} onChange={(e) => handleChange('colaboradores', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.colaboradores && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.colaboradores}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.colaboradores}</td>
@@ -257,6 +298,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.comunidadeParticipante || ''} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.comunidadeParticipante && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.comunidadeParticipante}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.comunidadeParticipante}</td>
@@ -268,6 +312,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.semestre || ''} onChange={(e) => handleChange('semestre', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.semestre && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.semestre}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.semestre}</td>
@@ -279,6 +326,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.vagas || ''} onChange={(e) => handleChange('vagas', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.vagas && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.vagas}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.vagas}</td>
@@ -291,6 +341,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ods || ''} onChange={(e) => handleChange('ods', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.ods && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.ods}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.ods}</td>
@@ -303,6 +356,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ciclo || ''} onChange={(e) => handleChange('ciclo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.ciclo && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.ciclo}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.ciclo}</td>
@@ -314,6 +370,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.competencia || ''} onChange={(e) => handleChange('competencia', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.competencia && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.competencia}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.competencia}</td>
@@ -326,6 +385,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.eixo || ''} onChange={(e) => handleChange('eixo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                {errosProjeto.eixo && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.eixo}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.eixo}</td>
@@ -341,6 +403,9 @@ function ProjectDetail() {
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
                                                     <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 </div>
+                                                {errosProjeto.periodoInscricao && (
+                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.periodoInscricao}</span>
+                                                )}
                                             </td>
                                         ) : (
                                             <td className="px-3 py-2 text-justify ">{projeto.periodoInscricao}</td>
@@ -356,10 +421,13 @@ function ProjectDetail() {
                                                     <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
                                                     <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                    {errosProjeto.periodoExecucao && (
+                                                        <span className="text-red-600 text-xs mt-1 block">{errosProjeto.periodoExecucao}</span>
+                                                    )}
                                                 </div>
                                             </td>
                                         ) : (
-                                            <td className="px-3 py-2 text-justify ">{projeto.periodoInscricao}</td>
+                                            <td className="px-3 py-2 text-justify ">{projeto.periodoExecucao}</td>
                                         )}
                                     </tr>
                                 </tbody>
@@ -371,7 +439,12 @@ function ProjectDetail() {
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Justificativa de Relevância</span>
 
                                 {isEditing && role === 'teacher' ? (
-                                    <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                    <>
+                                        <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        {errosProjeto.justificativa && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.justificativa}</span>
+                                        )}
+                                    </>
                                 ) : (
                                     <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.justificativa}</p>
                                 )}
@@ -383,7 +456,12 @@ function ProjectDetail() {
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Pretensão da atividade</span>
 
                                 {isEditing && role === 'teacher' ? (
-                                    <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                    <>
+                                        <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        {errosProjeto.pretensao && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.pretensao}</span>
+                                        )}
+                                    </>
                                 ) : (
                                     <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.pretensao}</p>
                                 )}
@@ -394,13 +472,18 @@ function ProjectDetail() {
                             <section className="mt-3">
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitos Técnicos</span>
                                 {isEditing && role === 'teacher' ? (
-                                    <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                    <>
+                                        <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        {errosProjeto.requisitos && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.requisitos}</span>
+                                        )}
+                                    </>
                                 ) : (
                                     <p className='leading-5 text-justify indent-8 font-segoe text-sm text-[#626262]'>{projeto.requisitos}</p>
                                 )}
                             </section>
                         ) : null}
-                        <Atividades role={role} professorResponsavelId={projeto.professorId} userId={user?.id}/>
+                        <Atividades role={role} professorResponsavelId={projeto.professorId} userId={user?.id} />
                         {role === 'guest' ? (
                             <section>
                                 <button className='mt-5 flex bg-(--darkBlue) text-white p-2 cursor-pointer rounded-sm justify-self-center hover:bg-indigo-900 active:bg-indigo-500'> Quero participar </button>

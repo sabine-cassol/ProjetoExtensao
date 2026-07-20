@@ -135,3 +135,61 @@ export const atividadeSchema = z.object({
 });
 
 export type AtividadeFormData = z.infer<typeof atividadeSchema>;
+
+
+const detalheSchema = z
+    .string()
+    .min(3, "Esse campo deve conter pelo menos 3 caracteres")
+    .max(128, "Texto muito longo");
+
+const paragrafoSchema = z
+    .string()
+    .min(3, 'Esse campo deve conter pelo menos 3 caracteres')
+    .max(512, 'Texto muito longo');
+
+export const projetoSchema = z.object({
+    titulo: z
+        .string()
+        .min(3, 'Título deve ter pelo menos 3 caracteres')
+        .max(254, 'Título muito longo'),
+    cargaHoraria: z.coerce
+        .number({
+            message: "A carga horária deve ser um número"
+        })
+        .positive("A carga horária deve ser maior que zero")
+        .max(1000, "Carga horária muito alta"),
+    vagas: z.coerce
+        .number({
+            message: "O número de vagas deve ser um número"
+        })
+        .int("O número de vagas deve ser um número inteiro")
+        .min(1, "Deve haver pelo menos 1 vaga")
+        .max(10000, "Número de vagas excede o limite"),
+    semestre: z
+        .string()
+        .min(1, "Informe ao menos um semestre")
+        .transform((val) =>
+            val
+                .split(",")
+                .map((item) => Number(item.trim()))
+                .filter((num) => !isNaN(num) && num > 0)
+        )
+        .refine((arr) => arr.length > 0, {
+            message: "Digite semestres válidos separados por vírgula (ex: 1, 2, 3)",
+        }),
+    tipo: detalheSchema,
+    unidade: detalheSchema,
+    cursosVinculados: detalheSchema,
+    parceiros: detalheSchema,
+    colaboradores: detalheSchema,
+    comunidadeParticipante: detalheSchema,
+    ods: detalheSchema,
+    ciclo: detalheSchema,
+    competencia: detalheSchema,
+    eixo: detalheSchema,
+    justificativa: paragrafoSchema,
+    pretensao: paragrafoSchema,
+    requisitos: paragrafoSchema
+})
+
+export type ProjetoFormData = z.infer<typeof projetoSchema>;

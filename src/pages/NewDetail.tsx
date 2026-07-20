@@ -26,7 +26,6 @@ function NewDetail() {
     const queryClient = useQueryClient();
     const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
 
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
