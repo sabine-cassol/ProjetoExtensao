@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 // import { NEWS } from '@/data/New.ts'
-import { Calendar, ArrowLeft, User, Pencil, Trash } from 'lucide-react'
+import { Calendar, ArrowLeft, User, Pencil, Trash, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 // import { type Noticia } from '@/data/New.ts'
 import Error from '../components/Error.tsx'
@@ -186,7 +186,14 @@ function NewDetail() {
                             <>
                                 <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border text-3xl md:text-4xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosNoticia.titulo && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.titulo}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosNoticia.titulo}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </>
 
@@ -213,7 +220,14 @@ function NewDetail() {
                             <>
                                 <input type="text" value={editForm?.resumo || ''} onChange={(e) => handleChange('resumo', e.target.value)} className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 border w-full  border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosNoticia.resumo && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.resumo}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosNoticia.resumo}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </>
                         ) : (
@@ -226,7 +240,14 @@ function NewDetail() {
                             <>
                                 <textarea value={editForm?.conteudo || ''} onChange={(e) => handleChange('conteudo', e.target.value)} className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8 border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosNoticia.conteudo && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosNoticia.conteudo}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosNoticia.conteudo}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </>
                         ) : (

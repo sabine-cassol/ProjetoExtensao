@@ -7,6 +7,7 @@ import { atualizarUsuario } from "@/services/putUser";
 import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
 import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
 import type { input } from "zod";
+import { AlertCircle } from "lucide-react";
 
 interface UserProfileData {
     nome: string;
@@ -35,7 +36,7 @@ function Profile() {
         nome: user?.nome ?? '',
         login: user?.login ?? '',
         ra: user?.ra ?? '',
-        curso: user?.curso ?? '',      
+        curso: user?.curso ?? '',
         periodo: user?.periodo ?? ''
     });
 
@@ -51,7 +52,6 @@ function Profile() {
             });
         }
     }, [user]);
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -90,7 +90,7 @@ function Profile() {
             };
 
 
-            await atualizarUsuario(dadosParaAtualizar,role);
+            await atualizarUsuario(dadosParaAtualizar, role);
 
             update({
                 nome: formData.nome,
@@ -197,7 +197,14 @@ function Profile() {
                                         }`}
                                 />
                                 {errosPerfil.nome && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.nome}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosPerfil.nome}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
 
@@ -252,7 +259,14 @@ function Profile() {
                                 </select>
 
                                 {errosPerfil.curso && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.curso}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosPerfil.curso}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                             )}
@@ -265,7 +279,14 @@ function Profile() {
                                         : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
                                     }`} />
                                 {errosPerfil.periodo && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosPerfil.periodo}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosPerfil.periodo}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </div>)}
                         </div>
@@ -307,7 +328,14 @@ function Profile() {
                                         )}
                                     </button>
                                     {errosSenha.password && (
-                                        <span className="text-red-600 text-xs mt-1 block">{errosSenha.password}</span>
+                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                            <div className='flex flex-row gap-1 items-center'>
+                                                <AlertCircle className="size-3.5 shrink-0" />
+                                                <span className="text-xs font-medium tracking-wide">
+                                                    {errosSenha.password}
+                                                </span>
+                                            </div>
+                                        </div>
                                     )}
 
                                 </div>
@@ -327,7 +355,14 @@ function Profile() {
                                         )}
                                     </button>
                                     {errosSenha.confirmPassword && (
-                                        <span className="text-red-600 text-xs mt-1 block">{errosSenha.confirmPassword}</span>
+                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                            <div className='flex flex-row gap-1 items-center'>
+                                                <AlertCircle className="size-3.5 shrink-0" />
+                                                <span className="text-xs font-medium tracking-wide">
+                                                    {errosSenha.confirmPassword}
+                                                </span>
+                                            </div>
+                                        </div>
                                     )}
 
                                 </div>

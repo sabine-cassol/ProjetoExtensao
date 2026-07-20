@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
-import { Pencil, Trash, RotateCcw } from 'lucide-react'
+import { Pencil, Trash, RotateCcw, AlertCircle } from 'lucide-react'
 import Error from '../components/Error'
 import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
@@ -189,7 +189,14 @@ function ProjectDetail() {
                                 <>
                                     <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     {errosProjeto.titulo && (
-                                        <span className="text-red-600 text-xs mt-1 block">{errosProjeto.titulo}</span>
+                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                            <div className='flex flex-row gap-1 items-center'>
+                                                <AlertCircle className="size-3.5 shrink-0" />
+                                                <span className="text-xs font-medium tracking-wide">
+                                                    {errosProjeto.titulo}
+                                                </span>
+                                            </div>
+                                        </div>
                                     )}
                                 </>
                             ) : (
@@ -215,7 +222,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.tipo || ''} onChange={(e) => handleChange('tipo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.tipo && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.tipo}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.tipo}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -229,7 +243,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.unidade || ''} onChange={(e) => handleChange('unidade', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.unidade && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.unidade}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.unidade}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -243,7 +264,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.cargaHoraria && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.cargaHoraria}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.cargaHoraria}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -257,7 +285,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.cursosVinculados || ''} onChange={(e) => handleChange('cursosVinculados', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.cursosVinculados && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.cursosVinculados}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.cursosVinculados}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -271,7 +306,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.parceiros || ''} onChange={(e) => handleChange('parceiros', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.parceiros && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.parceiros}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.parceiros}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -285,7 +327,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.colaboradores || ''} onChange={(e) => handleChange('colaboradores', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.colaboradores && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.colaboradores}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.colaboradores}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -299,7 +348,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.comunidadeParticipante || ''} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.comunidadeParticipante && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.comunidadeParticipante}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.comunidadeParticipante}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -313,7 +369,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.semestre || ''} onChange={(e) => handleChange('semestre', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.semestre && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.semestre}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.semestre}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -327,7 +390,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.vagas || ''} onChange={(e) => handleChange('vagas', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.vagas && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.vagas}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.vagas}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -342,7 +412,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ods || ''} onChange={(e) => handleChange('ods', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ods && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.ods}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.ods}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -357,7 +434,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ciclo || ''} onChange={(e) => handleChange('ciclo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ciclo && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.ciclo}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.ciclo}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -371,7 +455,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.competencia || ''} onChange={(e) => handleChange('competencia', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.competencia && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.competencia}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.competencia}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -386,7 +477,14 @@ function ProjectDetail() {
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.eixo || ''} onChange={(e) => handleChange('eixo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.eixo && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.eixo}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.eixo}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -404,7 +502,14 @@ function ProjectDetail() {
                                                     <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 </div>
                                                 {errosProjeto.periodoInscricao && (
-                                                    <span className="text-red-600 text-xs mt-1 block">{errosProjeto.periodoInscricao}</span>
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.periodoInscricao}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </td>
                                         ) : (
@@ -422,7 +527,14 @@ function ProjectDetail() {
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
                                                     <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                     {errosProjeto.periodoExecucao && (
-                                                        <span className="text-red-600 text-xs mt-1 block">{errosProjeto.periodoExecucao}</span>
+                                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                            <div className='flex flex-row gap-1 items-center'>
+                                                                <AlertCircle className="size-3.5 shrink-0" />
+                                                                <span className="text-xs font-medium tracking-wide">
+                                                                    {errosProjeto.periodoExecucao}
+                                                                </span>
+                                                            </div>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </td>
@@ -442,7 +554,14 @@ function ProjectDetail() {
                                     <>
                                         <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.justificativa && (
-                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.justificativa}</span>
+                                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                <div className='flex flex-row gap-1 items-center'>
+                                                    <AlertCircle className="size-3.5 shrink-0" />
+                                                    <span className="text-xs font-medium tracking-wide">
+                                                        {errosProjeto.justificativa}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         )}
                                     </>
                                 ) : (
@@ -459,7 +578,14 @@ function ProjectDetail() {
                                     <>
                                         <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.pretensao && (
-                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.pretensao}</span>
+                                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                <div className='flex flex-row gap-1 items-center'>
+                                                    <AlertCircle className="size-3.5 shrink-0" />
+                                                    <span className="text-xs font-medium tracking-wide">
+                                                        {errosProjeto.pretensao}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         )}
                                     </>
                                 ) : (
@@ -475,7 +601,14 @@ function ProjectDetail() {
                                     <>
                                         <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.requisitos && (
-                                            <span className="text-red-600 text-xs mt-1 block">{errosProjeto.requisitos}</span>
+                                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                <div className='flex flex-row gap-1 items-center'>
+                                                    <AlertCircle className="size-3.5 shrink-0" />
+                                                    <span className="text-xs font-medium tracking-wide">
+                                                        {errosProjeto.requisitos}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         )}
                                     </>
                                 ) : (

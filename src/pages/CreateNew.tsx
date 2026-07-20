@@ -1,5 +1,5 @@
 import Tiptap from "@/components/TipTap"
-import { Calendar, User, ChevronUp, ChevronDown } from 'lucide-react'
+import { Calendar, User, ChevronUp, ChevronDown, AlertCircle } from 'lucide-react'
 import { useState } from "react"
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -172,19 +172,40 @@ function CreateNew() {
                         <label htmlFor="input" className="font-semibold">Digite o título da notícia</label>
                         <input type="text" required maxLength={254} value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                         {errosNoticia.titulo && (
-                            <span className="text-red-600 text-xs">{errosNoticia.titulo}</span>
+                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                <div className='flex flex-row gap-1 items-center'>
+                                    <AlertCircle className="size-3.5 shrink-0" />
+                                    <span className="text-xs font-medium tracking-wide">
+                                        {errosNoticia.titulo}
+                                    </span>
+                                </div>
+                            </div>
                         )}
                         <label htmlFor="input" className="font-semibold">Digite o resumo da notícia</label>
                         <input type="text" required maxLength={254} value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                         {errosNoticia.resumo && (
-                            <span className="text-red-600 text-xs">{errosNoticia.resumo}</span>
+                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                <div className='flex flex-row gap-1 items-center'>
+                                    <AlertCircle className="size-3.5 shrink-0" />
+                                    <span className="text-xs font-medium tracking-wide">
+                                        {errosNoticia.resumo}
+                                    </span>
+                                </div>
+                            </div>
                         )}
 
                     </div>
                     <div>
                         <Tiptap value={conteudo} onChange={setConteudo} />
                         {errosNoticia.conteudo && (
-                            <span className="text-red-600 text-xs mt-1 block">{errosNoticia.conteudo}</span>
+                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                <div className='flex flex-row gap-1 items-center'>
+                                    <AlertCircle className="size-3.5 shrink-0" />
+                                    <span className="text-xs font-medium tracking-wide">
+                                        {errosNoticia.conteudo}
+                                    </span>
+                                </div>
+                            </div>
                         )}
 
                     </div>
@@ -230,7 +251,14 @@ function CreateNew() {
                             <input id="image-upload" type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={uploadStatus === 'loading'} />
                         </label>
                         {errosNoticia.imagem && (
-                            <span className="text-red-600 text-xs">{errosNoticia.imagem}</span>
+                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                <div className='flex flex-row gap-1 items-center'>
+                                    <AlertCircle className="size-3.5 shrink-0" />
+                                    <span className="text-xs font-medium tracking-wide">
+                                        {errosNoticia.imagem}
+                                    </span>
+                                </div>
+                            </div>
                         )}
                     </div>
                     <div className="mt-4 flex flex-col gap-2">

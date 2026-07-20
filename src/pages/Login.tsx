@@ -301,14 +301,16 @@ function Login() {
                                             <div className="flex flex-col">
                                                 <label htmlFor="regEmail" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Email</label>
                                                 <input id="regEmail" required value={regEmail} onChange={(e) => setRegEmail(e.target.value)} type="email" placeholder="digite seu email" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="regEmail"></input>
-                                                {errosRegister.regEmail && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                {errosRegister.regEmail && (
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
                                                         <AlertCircle className="size-3.5 shrink-0" />
                                                         <span className="text-xs font-medium tracking-wide">
                                                             {errosRegister.regEmail}
                                                         </span>
                                                     </div>
-                                                </div>)}
+                                                </div>
+                                            )}
 
                                             </div>
                                             <div className="flex flex-col">

@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { type Atividade } from '@/data/AtividadeType';
 import { Pencil, Trash, RotateCcw } from 'lucide-react';
 import { atividadeSchema } from '@/schemas/authSchemas';
+import { AlertCircle } from 'lucide-react';
 
 interface AtividadePayload {
     titulo: string;
@@ -272,7 +273,14 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                             <div>
                                 <input type="text" name="titulo" placeholder="Título da atividade" required value={formData.titulo} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 font-bold focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosAtividade.titulo && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.titulo}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosAtividade.titulo}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
 
@@ -281,13 +289,27 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                                     <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleCargaHorariaChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     <span className="text-gray-400">h</span>
                                     {errosAtividade.cargaHoraria && (
-                                        <span className="text-red-600 text-xs mt-1 block">{errosAtividade.cargaHoraria}</span>
+                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                            <div className='flex flex-row gap-1 items-center'>
+                                                <AlertCircle className="size-3.5 shrink-0" />
+                                                <span className="text-xs font-medium tracking-wide">
+                                                    {errosAtividade.cargaHoraria}
+                                                </span>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                                 <span className="text-gray-300">•</span>
                                 <input type="date" name="data" required value={formData.data} onChange={handleInputChange} className="border text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosAtividade.data && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.data}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosAtividade.data}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
 
                             </div>
@@ -295,7 +317,14 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                             <div>
                                 <textarea name="descricao" placeholder="Descrição detalhada da atividade aqui..." required value={formData.descricao} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosAtividade.descricao && (
-                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.descricao}</span>
+                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                        <div className='flex flex-row gap-1 items-center'>
+                                            <AlertCircle className="size-3.5 shrink-0" />
+                                            <span className="text-xs font-medium tracking-wide">
+                                                {errosAtividade.descricao}
+                                            </span>
+                                        </div>
+                                    </div>
                                 )}
 
                             </div>
