@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from '../context/AuthContext';
 
-
 function Header() {
  
     const { toggleSidebar } = useSidebar();

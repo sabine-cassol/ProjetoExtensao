@@ -174,16 +174,10 @@ function ProjectDetail() {
                                 <button onClick={() => handleSaveEdit()} disabled={atualizarMutation.isPending} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> {atualizarMutation.isPending ? 'Salvando...' : 'Confirmar'} </button>
                             </div>)}
                     </section>)}
-                    {inscrito ? (
+                    {role === 'student' && (
                         <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
                             <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
                                 <Link to={`/Projetos/${projetoId}/Presença`} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'> Registrar presença </Link>
-                            </div>
-                        </section>
-                    ) : (
-                        <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
-                            <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
-                                <button className='p-2 bg-(--subTitle) cursor-pointer text-white font-semibold hover:bg-blue-800'> Inscrever-se </button>
                             </div>
                         </section>
                     )}
@@ -214,7 +208,7 @@ function ProjectDetail() {
                         {role === 'student' ? (
                             <section className="mt-3">
                                 <span className='font-bold text-xs font-segoe text-[#626262]'>Status</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>{inscrito ? "Inscrito" : "Não inscrito"}</p>
+                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>Inscrito/Não inscrito</p>
                             </section>
                         ) : null}
 
@@ -502,9 +496,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                                 </div>
                                                 {errosProjeto.periodoInscricao && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
@@ -528,9 +522,9 @@ function ProjectDetail() {
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                                     {errosProjeto.periodoExecucao && (
                                                         <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                             <div className='flex flex-row gap-1 items-center'>

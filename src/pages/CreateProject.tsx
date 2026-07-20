@@ -364,9 +364,9 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Período de Inscrição</td>
                                         <td className="px-3 py-2 text-justify"><div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                             <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                         </div>
                                             {errosProjeto.periodoInscricao && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
@@ -384,9 +384,9 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Período de Execução</td>
                                         <td className="px-3 py-2 text-justify"><div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                             <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                                         </div>
                                             {errosProjeto.periodoExecucao && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
