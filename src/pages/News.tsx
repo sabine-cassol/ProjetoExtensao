@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 // import { NEWS } from '@/data/New.ts'
 import { useAuth } from '@/context/AuthContext';
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
 import { type Noticia } from '@/data/NewType';
 import { useQuery } from '@tanstack/react-query';
+import { useNoticias } from '@/services/noticiaService';
 
 function News() {
     const { role } = useAuth();

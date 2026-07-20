@@ -1,6 +1,43 @@
 import { type Projeto } from "@/data/ProjectType";
 
+export interface NovoProjeto {
+  titulo: string;
+  tipo: string;
+  unidade: string;
+  cargaHoraria: string;
+  cursosVinculados: string;
+  parceiros: string;
+  colaboradores: string;
+  comunidadeParticipante: string;
+  semestre: string;
+  vagas: string;
+  ods: string;
+  ciclo: string;
+  competencia: string;
+  eixo: string;
+  periodoInscricao: string;
+  periodoExecucao: string;
+  justificativa: string;
+  pretensao: string;
+  requisitos: string;
+}
+
 export const projetoService = {
+    async criar(dados: NovoProjeto): Promise<Projeto> {
+        const res = await fetch(`api/projetos`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!res.ok) {
+            const erro = await res.json().catch(() => null);
+            throw new Error(erro?.erro || 'Erro ao criar projeto');
+        }
+
+        return res.json();
+    },
 
     async listarPorProfessor(professorId: string): Promise<Projeto[]> {
         const res = await fetch(`/api/projetos/professor/${professorId}`, {
@@ -33,7 +70,7 @@ export const projetoService = {
     async desativar(id: string): Promise<Projeto> {
         const res = await fetch(`/api/projetos/desativar/${id}`, {
             method: 'DELETE',
-            credentials: 'include' // rota protegida (professor)
+            credentials: 'include'
         });
 
         if (!res.ok) {

@@ -14,6 +14,7 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { projetoService } from '@/services/projetoService';
 import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
+import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesService'
 
 
 function ProjectDetail() {
@@ -26,7 +27,11 @@ function ProjectDetail() {
     const queryClient = useQueryClient();
     const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
 
-    const { data: projeto, isLoading } = useProjetoId(projetoId!)
+    const { data: projeto, isLoading } = useProjetoId(projetoId!);
+    const { data: minhasInscricoes } = useMinhasInscricoes(user?.id, role);
+
+    const inscreverMutation = useInscreverProjeto(projetoId!, user?.id);
+    const jaInscrito = minhasInscricoes?.some((inscricao: any) => String(inscricao.projetoId) === String(projetoId));
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
 
@@ -124,49 +129,16 @@ function ProjectDetail() {
         }
     });
 
-    const { data: minhasInscricoes } = useQuery({
-        queryKey: ['inscricoes', 'minhas', user?.id],
-        queryFn: async () => {
-            const res = await fetch('/api/inscricoes/alunos/me/inscricoes', {
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao buscar inscrições');
-            }
-            return res.json();
-        },
-        enabled: role === 'student' && !!user?.id
-    });
-
-    const jaInscrito = minhasInscricoes?.some((inscricao: any) => inscricao.projetoId === Number(projetoId));
-
-    const inscreverMutation = useMutation({
-        mutationFn: async () => {
-            const res = await fetch(`/api/inscricoes/projetos/${projetoId}/inscricoes`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.error || erro.erro || 'Erro ao se inscrever');
-            }
-            return res.json();
-        },
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['inscricoes', 'minhas', user?.id] });
-            queryClient.invalidateQueries({ queryKey: ['projeto', 'alunos', projetoId] });
-            toast.success("Inscrição realizada com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao se inscrever no projeto");
-        }
-    });
 
     const handleInscrever = () => {
-        inscreverMutation.mutate();
+        inscreverMutation.mutate(undefined, {
+            onSuccess: () => {
+                toast.success("Inscrição realizada com sucesso!");
+            },
+            onError: (erro: Error) => {
+                toast.error(erro.message || "Erro ao se inscrever no projeto");
+            }
+        });
     };
 
     const handleReactivate = () => {
