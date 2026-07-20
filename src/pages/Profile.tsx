@@ -6,8 +6,8 @@ import { EyeOff, Eye } from "lucide-react";
 import { atualizarUsuario } from "@/services/putUser";
 import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
 import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
-import type { input } from "zod";
 import { AlertCircle } from "lucide-react";
+import { useUpdateUser } from '../services/userService';
 
 interface UserProfileData {
     nome: string;
@@ -19,6 +19,8 @@ interface UserProfileData {
 
 function Profile() {
     const { user, loading, update, role } = useAuth();
+
+    const updateMutation = useUpdateUser();
 
     const [isEditing, setIsEditing] = useState(false);
     const [password, setPassword] = useState('');
@@ -70,41 +72,45 @@ function Profile() {
         if (!validacao.success) {
             const erros: Record<string, string> = {};
             validacao.error.issues.forEach((issue) => {
-                const campo = issue.path[0] as string;
-                if (!erros[campo]) {
-                    erros[campo] = issue.message;
+                const campo = issue.path[0];
+                if (campo !== undefined) {
+                    erros[String(campo)] = issue.message;
                 }
             });
             setErrosPerfil(erros);
             return;
         }
 
-        try {
-            const dadosParaAtualizar = {
-                nome: formData.nome,
-                email: formData.login,
-                ...(role === 'student' && {
-                    curso: formData.curso,
-                    periodo: formData.periodo
-                })
-            };
-
-
-            await atualizarUsuario(dadosParaAtualizar, role);
-
-            update({
-                nome: formData.nome,
+        const dadosParaAtualizar = {
+            nome: formData.nome,
+            email: formData.login,
+            ...(role === 'student' && {
                 curso: formData.curso,
                 periodo: formData.periodo
-            });
+            })
+        };
 
-            setIsEditing(false);
-            toast.success("Dados atualizados com sucesso!");
+        // Dispara a mutation usando React Query
+        updateMutation.mutate(
+            { dados: dadosParaAtualizar, role },
+            {
+                onSuccess: () => {
+                    // Atualiza o contexto do Auth local
+                    update({
+                        nome: formData.nome,
+                        curso: formData.curso,
+                        periodo: formData.periodo
+                    });
 
-        } catch (err) {
-            console.error("Falha ao salvar usuário:", err);
-            toast.error("Não foi possível atualizar os dados. Tente novamente.");
-        }
+                    setIsEditing(false);
+                    toast.success("Dados atualizados com sucesso!");
+                },
+                onError: (err: Error) => {
+                    console.error("Falha ao salvar usuário:", err);
+                    toast.error("Não foi possível atualizar os dados. Tente novamente.");
+                }
+            }
+        );
     };
 
     const handleCancel = () => {

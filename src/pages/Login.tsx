@@ -11,7 +11,7 @@ import { createUser } from '@/services/postUser';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from 'sonner';
 import { loginSchema, registerSchema } from '@/schemas/authSchemas';
-
+import { useCreateUser } from '../services/userService';
 
 
 function Login() {
@@ -34,6 +34,7 @@ function Login() {
     const [erroRegister, setErroRegister] = useState('');
     const [erroLogin, setErroLogin] = useState<string | null>(null);
     const [errosRegister, setErrosRegister] = useState<Record<string, string>>({});
+    const createUserMutation = useCreateUser();
 
 
 
@@ -83,7 +84,7 @@ function Login() {
         }
     };
 
-    const handleRegisterSubmit = async (e: React.FormEvent) => {
+    const handleRegisterSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setErrosRegister({});
         setErroRegister('');
@@ -99,9 +100,9 @@ function Login() {
         if (!validacao.success) {
             const erros: Record<string, string> = {};
             validacao.error.issues.forEach((issue) => {
-                const campo = issue.path[0] as string;
-                if (!erros[campo]) {
-                    erros[campo] = issue.message;
+                const campo = issue.path[0];
+                if (campo !== undefined) {
+                    erros[String(campo)] = issue.message;
                 }
             });
             setErrosRegister(erros);
@@ -114,9 +115,6 @@ function Login() {
             return;
         }
 
-        setLoading(true);
-
-
         const requestBody = {
             email: regEmail.trim(),
             nome: regName.trim(),
@@ -126,19 +124,17 @@ function Login() {
             periodo: '',
         };
 
-        try {
-            const sucesso = await createUser.create(requestBody);
-            if (sucesso) {
+        createUserMutation.mutate(requestBody, {
+            onSuccess: () => {
                 toast.success("Aluno cadastrado com sucesso!");
                 console.log("Aluno cadastrado com sucesso");
-                setActiveScreen('login')
+                setActiveScreen('login');
+            },
+            onError: (error: Error) => {
+                console.error(error);
+                toast.error(error.message || "Houve um erro ao criar o aluno");
             }
-        } catch (error) {
-            console.error(error);
-            toast.error("Houve um erro ao criar o aluno");
-        } finally {
-            setLoading(false);
-        }
+        });
     };
     return (
         <>
@@ -303,14 +299,14 @@ function Login() {
                                                 <input id="regEmail" required value={regEmail} onChange={(e) => setRegEmail(e.target.value)} type="email" placeholder="digite seu email" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="regEmail"></input>
                                                 {errosRegister.regEmail && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
-                                                    <div className='flex flex-row gap-1 items-center'>
-                                                        <AlertCircle className="size-3.5 shrink-0" />
-                                                        <span className="text-xs font-medium tracking-wide">
-                                                            {errosRegister.regEmail}
-                                                        </span>
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosRegister.regEmail}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
 
                                             </div>
                                             <div className="flex flex-col">

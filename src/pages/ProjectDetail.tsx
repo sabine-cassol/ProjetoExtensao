@@ -34,9 +34,7 @@ function ProjectDetail() {
         mutationFn: (dados: Partial<Projeto>) =>
             projetoService.atualizar(projetoId!, dados),
         onSuccess: (projetoAtualizado) => {
-            // atualiza o cache imediatamente com o dado retornado pela API
             queryClient.setQueryData(['projeto', projetoId], projetoAtualizado);
-            // garante que a lista de projetos também fique sincronizada
             queryClient.invalidateQueries({ queryKey: ['projetos'] });
 
             setIsEditing(false);
