@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { type Atividade } from '@/data/AtividadeType';
 import { Pencil, Trash, RotateCcw } from 'lucide-react';
-
+import { atividadeSchema } from '@/schemas/authSchemas';
 
 interface AtividadePayload {
     titulo: string;
@@ -34,6 +34,7 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
         data: '',
         cargaHoraria: ''
     });
+    const [errosAtividade, setErrosAtividade] = useState<Record<string, string>>({});
 
 
     const { data: atividades, isLoading, error } = useQuery<Atividade[]>({
@@ -144,10 +145,10 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const valor = e.target.value.replace(',', '.');
-        setFormData(prev => ({ ...prev, cargaHoraria: valor }));
-
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
+
 
     const handleCargaHorariaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let valor = e.target.value.replace(',', '.');
@@ -163,6 +164,25 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
             toast.error("ID do projeto não encontrado.");
             return;
         }
+
+        // const validacao = atividadeSchema.safeParse({
+        //     titulo: formData.titulo,
+        //     descricao: formData.descricao,
+        //     data: formData.data,
+        //     cargaHoraria: formData.cargaHoraria
+        // });
+
+        // if (!validacao.success) {
+        //     const erros: Record<string, string> = {};
+        //     validacao.error.issues.forEach((issue) => {
+        //         const campo = issue.path[0] as string;
+        //         if (!erros[campo]) {
+        //             erros[campo] = issue.message;
+        //         }
+        //     });
+        //     setErrosAtividade(erros);
+        //     return;
+        // }
 
         const payload: AtividadePayload = {
             titulo: formData.titulo,
@@ -187,6 +207,27 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
 
     const handleSalvarEdicao = (e: React.FormEvent, id: number) => {
         e.preventDefault();
+        setErrosAtividade({});
+
+        const validacao = atividadeSchema.safeParse({
+            titulo: formData.titulo,
+            descricao: formData.descricao,
+            data: formData.data,
+            cargaHoraria: formData.cargaHoraria
+        });
+
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosAtividade(erros);
+            return;
+        }
+
         atualizarMutation.mutate({
             id,
             dados: {
@@ -230,19 +271,33 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                         <form onSubmit={(e) => handleSalvarEdicao(e, atividade.id)} className="min-w-full text-sm border border-gray-200 p-4 shadow-sm space-y-3 mt-2">
                             <div>
                                 <input type="text" name="titulo" placeholder="Título da atividade" required value={formData.titulo} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 font-bold focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosAtividade.titulo && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.titulo}</span>
+                                )}
                             </div>
 
                             <div className="flex items-center gap-3 text-xs text-gray-500">
                                 <div className="flex items-center gap-1">
                                     <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleCargaHorariaChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     <span className="text-gray-400">h</span>
+                                    {errosAtividade.cargaHoraria && (
+                                        <span className="text-red-600 text-xs mt-1 block">{errosAtividade.cargaHoraria}</span>
+                                    )}
                                 </div>
                                 <span className="text-gray-300">•</span>
                                 <input type="date" name="data" required value={formData.data} onChange={handleInputChange} className="border text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosAtividade.data && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.data}</span>
+                                )}
+
                             </div>
 
                             <div>
                                 <textarea name="descricao" placeholder="Descrição detalhada da atividade aqui..." required value={formData.descricao} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                {errosAtividade.descricao && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.descricao}</span>
+                                )}
+
                             </div>
 
                             <div className="flex justify-end gap-3 pt-2 text-xs font-semibold">
@@ -284,7 +339,7 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                                 {!atividade.ativo && (
                                     <>
                                         <span className="text-gray-300">•</span>
-                                        <span className="text-red-500 font-semibold">Inativa    </span>
+                                        <span className="text-red-500 font-semibold">Inativa</span>
                                     </>
                                 )}
                             </div>

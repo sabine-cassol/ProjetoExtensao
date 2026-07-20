@@ -54,7 +54,6 @@ export const CURSOS_DISPONIVEIS = [
 ] as const;
 
 
-
 export const profileSchema = z.object({
     nome: z
         .string()
@@ -112,3 +111,27 @@ export const noticiaSchema = z.object({
 });
 
 export type NoticiaFormData = z.infer<typeof noticiaSchema>;
+
+export const atividadeSchema = z.object({
+    titulo: z
+        .string()
+        .min(3, 'Título deve ter pelo menos 3 caracteres')
+        .max(254, 'Título muito longo'),
+    descricao: z
+        .string()
+        .min(10, 'Descrição deve ter pelo menos 10 caracteres'),
+    data: z
+        .string()
+        .min(1, 'Data é obrigatória'),
+    cargaHoraria: z
+        .string()
+        .min(1, 'Carga horária é obrigatória')
+        .refine((val) => {
+            const numero = Number(val.replace(',', '.'));
+            return !isNaN(numero) && numero > 0;
+        }, {
+            message: 'Carga horária deve ser um número maior que zero'
+        })
+});
+
+export type AtividadeFormData = z.infer<typeof atividadeSchema>;
