@@ -7,7 +7,6 @@ import extension from '../assets/Extension.svg'
 import { Eye, EyeOff, XCircle, AlertCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { GraduationCap, Microscope } from 'lucide-react';
-import { createUser } from '@/services/postUser';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from 'sonner';
 import { loginSchema, registerSchema } from '@/schemas/authSchemas';

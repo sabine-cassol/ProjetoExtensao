@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { useAuth } from "../context/AuthContext";
 import { EyeOff, Eye } from "lucide-react";
-import { atualizarUsuario } from "@/services/putUser";
 import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
 import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
 import { AlertCircle } from "lucide-react";
