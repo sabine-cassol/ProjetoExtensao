@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
 import { useProjetoId } from '@/services/getProjetosId'
 import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { projetoService } from '@/services/projetoService';
 import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
@@ -25,9 +25,8 @@ function ProjectDetail() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
-    const inscrito: boolean = false
 
-    const { data: projeto, isLoading, error } = useProjetoId(projetoId!)
+    const { data: projeto, isLoading } = useProjetoId(projetoId!)
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
 
@@ -125,6 +124,51 @@ function ProjectDetail() {
         }
     });
 
+    const { data: minhasInscricoes } = useQuery({
+        queryKey: ['inscricoes', 'minhas', user?.id],
+        queryFn: async () => {
+            const res = await fetch('/api/inscricoes/alunos/me/inscricoes', {
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new globalThis.Error(erro.erro || 'Erro ao buscar inscrições');
+            }
+            return res.json();
+        },
+        enabled: role === 'student' && !!user?.id
+    });
+
+    const jaInscrito = minhasInscricoes?.some((inscricao: any) => inscricao.projetoId === Number(projetoId));
+
+    const inscreverMutation = useMutation({
+        mutationFn: async () => {
+            const res = await fetch(`/api/inscricoes/projetos/${projetoId}/inscricoes`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new globalThis.Error(erro.error || erro.erro || 'Erro ao se inscrever');
+            }
+            return res.json();
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['inscricoes', 'minhas', user?.id] });
+            queryClient.invalidateQueries({ queryKey: ['projeto', 'alunos', projetoId] });
+            toast.success("Inscrição realizada com sucesso!");
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao se inscrever no projeto");
+        }
+    });
+
+    const handleInscrever = () => {
+        inscreverMutation.mutate();
+    };
+
     const handleReactivate = () => {
         ativarMutation.mutate();
     };
@@ -177,10 +221,22 @@ function ProjectDetail() {
                     {role === 'student' && (
                         <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
                             <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
-                                <Link to={`/Projetos/${projetoId}/Presença`} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'> Registrar presença </Link>
+                                {jaInscrito ? (
+                                    <Link to={`/Projetos/${projetoId}/Presença`} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'>
+                                        Registrar presença
+                                    </Link>
+                                ) : (
+                                    <button
+                                        onClick={handleInscrever}
+                                        disabled={inscreverMutation.isPending}
+                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'>
+                                        {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
+                                    </button>
+                                )}
                             </div>
                         </section>
                     )}
+
                     <div className='bg-white border border-zinc-300 p-4'>
 
                         <section>
@@ -205,12 +261,14 @@ function ProjectDetail() {
                             <div className='bg-zinc-300 min-w-3xs h-0.5 mt-2'></div>
                         </section>
 
-                        {role === 'student' ? (
+                        {role === 'student' && (
                             <section className="mt-3">
                                 <span className='font-bold text-xs font-segoe text-[#626262]'>Status</span>
-                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>Inscrito/Não inscrito</p>
+                                <p className='leading-5 text-justify indent-8 font-segoe text-xs text-[#626262]'>
+                                    {jaInscrito ? 'Inscrito' : 'Não inscrito'}
+                                </p>
                             </section>
-                        ) : null}
+                        )}
 
                         <div className="mt-4 overflow-x-auto">
                             <table className="min-w-full border-collapse font-segoe text-sm text-[#626262] border border-gray-300">

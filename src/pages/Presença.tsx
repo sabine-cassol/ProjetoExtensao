@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { PROJECTS } from '@/data/Projects';
+// import { PROJECTS } from '@/data/Projects';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 interface RegistroPonto {
     entrada: string | null;
@@ -14,7 +15,20 @@ export default function Presença() {
     const params = useParams();
     const projetoId = params?.projetoId;
 
-    const projetoAtual = PROJECTS.find((p) => p.id === projetoId);
+    // const projetoAtual = PROJECTS.find((p) => p.id === projetoId);
+
+    const { data: projetoAtual, isLoading, error } = useQuery({
+        queryKey: ['projeto', projetoId],
+        queryFn: async () => {
+            const res = await fetch(`/api/projetos/id/${projetoId}`);
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new globalThis.Error(erro.erro || 'Erro ao buscar projeto');
+            }
+            return res.json();
+        },
+        enabled: !!projetoId
+    });
     const numEncontros = Number(projetoAtual?.numEncontros);
     const cargaHoraria = Number(projetoAtual?.cargaHoraria);
 
