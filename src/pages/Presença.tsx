@@ -3,16 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { type Atividade } from '@/data/AtividadeType';
 
-interface Atividade {
-    id: number;
-    titulo: string;
-    descricao: string;
-    data: string;
-    cargaHoraria: number;
-    projetoId: number;
-    ativo: boolean;
-}
 
 interface Presenca {
     id: number;
@@ -133,10 +125,12 @@ export default function Presença() {
             );
         });
     };
-
     const checkinMutation = useMutation({
         mutationFn: async () => {
-            const localizacaoCheckIn = await obterLocalizacao();
+            const localizacaoCheckIn = atividadeHoje?.exigeLocalizacao
+                ? await obterLocalizacao()
+                : null;
+
             const res = await fetch('/api/presencas/checkin', {
                 method: 'POST',
                 credentials: 'include',
@@ -163,14 +157,13 @@ export default function Presença() {
 
     const checkoutMutation = useMutation({
         mutationFn: async () => {
-            const localizacaoCheckOut = await obterLocalizacao();
             const res = await fetch('/api/presencas/checkout', {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     atividadeId: atividadeHoje!.id,
-                    localizacaoCheckOut
+                    localizacaoCheckOut: null  
                 })
             });
             if (!res.ok) {
@@ -187,8 +180,6 @@ export default function Presença() {
             toast.error(erro.message || "Erro ao registrar saída");
         }
     });
-
-
 
     const formatarCronometro = (totalSegundos: number): string => {
         const hrs = Math.floor(totalSegundos / 3600).toString().padStart(2, '0');
@@ -259,6 +250,12 @@ export default function Presença() {
                         {obterDataPorExtenso()}
                     </p>
                     <p className="text-sm font-medium text-slate-600">{atividadeHoje.titulo}</p>
+                    <p className="text-xs text-slate-400">
+                        {atividadeHoje.exigeLocalizacao
+                            ? "Este encontro exige compartilhamento de localização"
+                            : "Este encontro não exige localização"}
+                    </p>
+
                     <p className="text-xs text-slate-400 ">
                         Min: 10m | Máx por encontro: {formatarCronometro(TEMPO_MAXIMO)}
                     </p>

@@ -3,7 +3,11 @@ export interface Atividade {
     titulo: string;
     descricao: string;
     data: string;
-    cargaHoraria: string;
+    cargaHoraria: number;
+    exigeLocalizacao: boolean;
     projetoId: number;
     ativo: boolean;
+    projeto: {
+        titulo: string;
+    };
 }

@@ -14,6 +14,7 @@ interface AtividadePayload {
     descricao: string;
     data: string;
     cargaHoraria: number;
+    exigeLocalizacao: boolean;
     projetoId: number;
 }
 
@@ -35,10 +36,14 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
         titulo: '',
         descricao: '',
         data: '',
-        cargaHoraria: ''
+        cargaHoraria: '',
+        exigeLocalizacao: true
     });
     const [errosAtividade, setErrosAtividade] = useState<Record<string, string>>({});
 
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({ ...prev, exigeLocalizacao: e.target.checked }));
+    };
 
     const { data: atividades, isLoading, error } = useQuery<Atividade[]>({
         queryKey: ['atividades', 'projeto', projetoId],
@@ -73,9 +78,10 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['atividades', 'projeto', projetoId] });
             toast.success("Atividade criada com sucesso!");
-            setFormData({ titulo: '', descricao: '', data: '', cargaHoraria: '' });
+            setFormData({ titulo: '', descricao: '', data: '', cargaHoraria: '', exigeLocalizacao: true });
             setIsCriando(false);
         },
+
         onError: (erro: Error) => {
             toast.error(erro.message || "Erro ao criar atividade");
         }
@@ -191,7 +197,8 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
             titulo: formData.titulo,
             descricao: formData.descricao,
             data: formData.data,
-            cargaHoraria: Number(formData.cargaHoraria),
+            cargaHoraria: Number(formData.cargaHoraria.replace(',', '.')),
+            exigeLocalizacao: formData.exigeLocalizacao,
             projetoId: Number(projetoId)
         };
 
@@ -204,7 +211,8 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
             titulo: atividade.titulo,
             descricao: atividade.descricao,
             data: atividade.data,
-            cargaHoraria: String(atividade.cargaHoraria)
+            cargaHoraria: String(atividade.cargaHoraria),
+            exigeLocalizacao: atividade.exigeLocalizacao
         });
     };
 
@@ -237,11 +245,11 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                 titulo: formData.titulo,
                 descricao: formData.descricao,
                 data: formData.data,
-                cargaHoraria: Number(formData.cargaHoraria)
+                cargaHoraria: Number(formData.cargaHoraria.replace(',', '.')),
+                exigeLocalizacao: formData.exigeLocalizacao
             }
         });
     };
-
     const handleDesativar = (id: number) => {
         const confirmou = confirm("Deseja mesmo desativar esta atividade?");
         if (!confirmou) return;
@@ -258,6 +266,7 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
 
 
     if (error) {
+        console.log(error)
         return <Erro tipo='Atividade'></Erro>
     }
 
@@ -286,6 +295,20 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                                     </div>
                                 )}
                             </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="exigeLocalizacao"
+                                    checked={formData.exigeLocalizacao}
+                                    onChange={handleCheckboxChange}
+                                    className="cursor-pointer"
+                                />
+                                <label htmlFor="exigeLocalizacao" className="text-xs text-gray-600 cursor-pointer">
+                                    Exigir localização para registrar presença
+                                </label>
+                            </div>
+
 
                             <div className="flex items-center gap-3 text-xs text-gray-500">
                                 <div className="flex items-center gap-1">
@@ -398,6 +421,20 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                         <span className="text-gray-300">•</span>
                         <input type="date" name="data" required value={formData.data} onChange={handleInputChange} className="border text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="exigeLocalizacao"
+                            checked={formData.exigeLocalizacao}
+                            onChange={handleCheckboxChange}
+                            className="cursor-pointer"
+                        />
+                        <label htmlFor="exigeLocalizacao" className="text-xs text-gray-600 cursor-pointer">
+                            Exigir localização para registrar presença
+                        </label>
+                    </div>
+
 
                     <div>
                         <textarea name="descricao" placeholder="Descrição detalhada da atividade aqui..." required value={formData.descricao} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
