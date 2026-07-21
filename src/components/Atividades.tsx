@@ -6,6 +6,7 @@ import { type Atividade } from '@/data/AtividadeType';
 import { Pencil, Trash, RotateCcw } from 'lucide-react';
 import { atividadeSchema } from '@/schemas/authSchemas';
 import { AlertCircle } from 'lucide-react';
+import { AtividadesSkeleton } from './AtividadeSkeleton';
 
 interface AtividadePayload {
     titulo: string;
@@ -251,7 +252,7 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
     }
 
     if (isLoading) {
-        return <p className="mt-6 text-sm text-zinc-500">Carregando atividades...</p>;
+        return <AtividadesSkeleton></AtividadesSkeleton>
     }
 
     if (error) {

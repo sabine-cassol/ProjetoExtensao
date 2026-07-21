@@ -30,7 +30,7 @@ function Carrousel() {
     return (
         <>
             <section >
-                <div className="w-full max-w-7xl overflow-hidden">
+                <div className="w-full max-w-full overflow-hidden">
                     <div className="w-full border border-zinc-400 bg-card mt-2 relative group rounded-md overflow-hidden">
                         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/50 to-transparent z-10 pointer-events-none" />
 

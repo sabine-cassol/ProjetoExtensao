@@ -1,5 +1,6 @@
 import { Check, X } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { AtividadesSkeleton } from '@/components/AtividadeSkeleton';
 
 
 function Debug() {
@@ -103,6 +104,7 @@ function Debug() {
                     </div>
                 </section>
             </section>
+            <AtividadesSkeleton></AtividadesSkeleton>
 
         </>
     )
