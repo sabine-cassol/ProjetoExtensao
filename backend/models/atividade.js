@@ -16,7 +16,7 @@ export default (sequelize) => {
             type: DataTypes.DATEONLY
         },
         cargaHoraria: {
-            type: DataTypes.INTEGER
+            type: DataTypes.FLOAT
         },
         projetoId: {
             type: DataTypes.INTEGER,

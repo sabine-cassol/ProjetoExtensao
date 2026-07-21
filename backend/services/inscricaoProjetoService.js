@@ -3,7 +3,7 @@ export default (inscricaoProjetoRepository) => {
         async criarInscricao(dados) {
             const {alunoId, projetoId} = dados;
             dados.dataCadastro = new Date();
-            const inscricaoExistente = await inscricaoProjetoRepository.buscarIncricao(alunoId, projetoId);
+            const inscricaoExistente = await inscricaoProjetoRepository.buscarInscricao(alunoId, projetoId);
             if (inscricaoExistente) {
                 throw new Error("Aluno já inscrito nesse projeto");
             }

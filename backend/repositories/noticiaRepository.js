@@ -44,7 +44,14 @@ export default (Noticia) => {
             const noticia = await Noticia.findByPk(id);
             if (!noticia) return null;
             await noticia.update(novaNoticia);
-            return noticia;
+
+            return Noticia.findByPk(id, {
+                include: {
+                    model: Professor,
+                    as: "autor",
+                    attributes: ['nome']
+                }
+            });
         },
 
         async deletar(id) {

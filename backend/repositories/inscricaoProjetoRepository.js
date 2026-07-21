@@ -1,4 +1,4 @@
-import {Aluno, Projeto_extensao} from '../models/index.js';
+import { Aluno, Projeto_extensao } from '../models/index.js';
 
 export default (Inscricao_projeto) => {
     return {
@@ -9,11 +9,9 @@ export default (Inscricao_projeto) => {
         async listarAlunosPorProjeto(projetoId) {
             return Inscricao_projeto.findAll({
                 where: { projetoId },
-                include:[ 
-                    {model: Aluno,
-                    attributes: ['nome', 'email', 'matricula', 'curso']},
-                    {model: Projeto_extensao,
-                    attributes: ['titulo']}
+                include: [
+                    { model: Aluno, as: "aluno", attributes: ['nome', 'email', 'ra', 'curso'] },
+                    { model: Projeto_extensao, as: "projeto", attributes: ['titulo'] }
                 ]
             });
         },
@@ -21,16 +19,15 @@ export default (Inscricao_projeto) => {
         async listarInscricoesPorAluno(alunoId) {
             return Inscricao_projeto.findAll({
                 where: { alunoId },
-                include:[ 
-                    {model: Aluno,
-                    attributes: ['nome', 'email', 'matricula', 'curso']},
-                    {model: Projeto_extensao,
-                    attributes: ['titulo']}
+                include: [
+                    { model: Aluno, as: "aluno", attributes: ['nome', 'email', 'ra', 'curso'] },
+                    { model: Projeto_extensao, as: "projeto", attributes: ['titulo'] }
                 ]
             });
         },
-        
-        async buscarInscricao(alunoId, projetoId) {  
+
+
+        async buscarInscricao(alunoId, projetoId) {
             return Inscricao_projeto.findOne({
                 where: { alunoId, projetoId }
             });
