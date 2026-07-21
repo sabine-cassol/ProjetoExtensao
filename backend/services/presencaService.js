@@ -1,4 +1,4 @@
-export default (presencaRepository, atividadeRepository, inscricaoRepository, alunoRepository) => {
+export default (presencaRepository, atividadeRepository, inscricaoRepository, alunoRepository, projetoRepository) => {
     return {
         async registrarCheckIn(alunoId, dados) {
             const atividade = await atividadeRepository.buscarPorId(dados.atividadeId);
@@ -38,7 +38,6 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             }
 
             presenca.dataHoraCheckOut = new Date();
-   
 
             const horasExtensao = Math.floor((presenca.dataHoraCheckOut - presenca.dataHoraCheckIn) / (1000 * 60 * 60));
             const aluno = await alunoRepository.buscarPorId(alunoId);
@@ -65,6 +64,48 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
 
         async listarPresencasPorAluno(alunoId) {
             return presencaRepository.listarTodasPorAluno(alunoId);
+        },
+
+        async listarPorProfessor(professorId) {
+            return presencaRepository.listarPorProfessor(professorId);
+        },
+
+        async aprovarPresenca(id, professorLogadoId) {
+            const presenca = await presencaRepository.buscarPorId(id);
+            if (!presenca) {
+                throw new Error("Presença não encontrada");
+            }
+
+            const atividade = await atividadeRepository.buscarPorId(presenca.atividadeId);
+            if (!atividade) {
+                throw new Error("Atividade não encontrada");
+            }
+
+            const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
+            if (!projeto || projeto.professorId !== professorLogadoId) {
+                throw new Error("Você não tem permissão para gerenciar esta presença");
+            }
+
+            return presencaRepository.atualizarStatus(id, 'aprovado');
+        },
+
+        async recusarPresenca(id, professorLogadoId) {
+            const presenca = await presencaRepository.buscarPorId(id);
+            if (!presenca) {
+                throw new Error("Presença não encontrada");
+            }
+
+            const atividade = await atividadeRepository.buscarPorId(presenca.atividadeId);
+            if (!atividade) {
+                throw new Error("Atividade não encontrada");
+            }
+
+            const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
+            if (!projeto || projeto.professorId !== professorLogadoId) {
+                throw new Error("Você não tem permissão para gerenciar esta presença");
+            }
+
+            return presencaRepository.atualizarStatus(id, 'recusado');
         }
     }
 }
