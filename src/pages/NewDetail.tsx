@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { type Noticia } from '@/data/NewType.ts'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { noticiaSchema } from "@/schemas/authSchemas";
+import { NoticiaDetalhesSkeleton } from '@/components/NewDetailSkeleton.tsx'
 
 
 function NewDetail() {
@@ -143,7 +144,7 @@ function NewDetail() {
     };
 
     if (isLoading) {
-        return <p>Carregando notícia...</p>;
+        return <NoticiaDetalhesSkeleton></NoticiaDetalhesSkeleton>
     }
 
     if (error || !noticia) {

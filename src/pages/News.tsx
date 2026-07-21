@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { type Noticia } from '@/data/NewType';
 import { useQuery } from '@tanstack/react-query';
 import { useNoticias } from '@/services/noticiaService';
+import { NoticiasSkeleton } from '@/components/noticiasSkeleton';
 
 function News() {
     const { role } = useAuth();
@@ -31,7 +32,7 @@ function News() {
     const noticiasExibidas = noticias?.slice(indiceInicial, indiceFinal) ?? [];
 
     if (isLoading) {
-        return <p>Carregando notícias...</p>;
+        return <NoticiasSkeleton></NoticiasSkeleton>
     }
 
     if (error) {

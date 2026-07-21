@@ -6,7 +6,8 @@ import { EyeOff, Eye } from "lucide-react";
 import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
 import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
 import { AlertCircle } from "lucide-react";
-import { useUpdateUser } from '../services/userService';
+import { useUpdateUser } from '../services/userService'; 
+import { PerfilSkeleton } from "@/components/perfilSkeleton";
 
 interface UserProfileData {
     nome: string;
@@ -166,7 +167,7 @@ function Profile() {
     };
 
     if (loading) {
-        return <div className="flex-1 flex justify-center items-center">Carregando perfil...</div>;
+        return <PerfilSkeleton></PerfilSkeleton>
     }
 
     if (!user) {

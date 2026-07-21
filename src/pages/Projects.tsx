@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { IdCard } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext';
 import { useProjetos } from '@/services/getTodosProjetos';
+import { ProjetosSkeleton } from '@/components/ProjectsSkeleton';
 
 function Projects() {
     const { role } = useAuth();
@@ -14,7 +15,7 @@ function Projects() {
     }
 
     if(error){
-        return <p>erro ao carregar</p>
+        return <ProjetosSkeleton></ProjetosSkeleton>
     }
 
     console.log(projetos)
