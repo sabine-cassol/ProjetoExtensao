@@ -6,6 +6,7 @@ import { type Noticia } from '@/data/NewType';
 import { useQuery } from '@tanstack/react-query';
 import { useNoticias } from '@/services/noticiaService';
 import { NoticiasSkeleton } from '@/components/noticiasSkeleton';
+import Erro from '@/components/Error';
 
 function News() {
     const { role } = useAuth();
@@ -36,7 +37,7 @@ function News() {
     }
 
     if (error) {
-        return <p>Erro ao carregar notícias</p>;
+        return <Erro tipo='Notícia' mensagem='Houve um erro ao carregar as notícias'></Erro>
     }
 
 

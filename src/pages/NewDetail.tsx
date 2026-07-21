@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Calendar, ArrowLeft, User, Pencil, Trash, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 // import { type Noticia } from '@/data/New.ts'
-import Error from '../components/Error.tsx'
+import Erro from '../components/Error.tsx'
 import { toast } from "sonner"
 import { type Noticia } from '@/data/NewType.ts'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -150,7 +150,7 @@ function NewDetail() {
     if (error || !noticia) {
         return (
             <div className="flex flex-col items-center justify-center">
-                <Error tipo="Notícia" />
+                <Erro tipo="Notícia" />
             </div>
         );
     }

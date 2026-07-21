@@ -1,8 +1,8 @@
-import Error from '../components/Error.tsx'
+import Erro from '../components/Error.tsx'
 
 function ErrorPage(){
     return(
-        <Error></Error>
+        <Erro></Erro>
     )
 }
 

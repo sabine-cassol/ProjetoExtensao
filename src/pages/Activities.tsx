@@ -6,6 +6,7 @@ import { IdCard, Newspaper, FolderKanban } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query';
 // import { projetoService } from '@/services/projetoService';
+import Erro from "@/components/Error";
 
 
 function Activities() {
@@ -66,7 +67,7 @@ function Activities() {
     }
 
     if (errorProjetos || errorNoticias) {
-        return <p>Erro ao carregar dados</p>;
+        return <Erro tipo="Dados"></Erro>;
     }
 
 

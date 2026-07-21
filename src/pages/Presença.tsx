@@ -237,7 +237,7 @@ export default function Presença() {
                 <div className="w-full max-w-sm rounded-2xl bg-white p-6 border border-zinc-300">
                     <h1 className="text-xl font-bold text-slate-800">Registrar Ponto</h1>
                     <p className="mt-4 text-sm text-slate-500">
-                        Nenhum encontro agendado para hoje ({obterDataPorExtenso()}).
+                        Nenhum encontro agendado para hoje ({obterDataPorExtenso()}). Consulte as atívidades na página do projeto para mais informações
                     </p>
                 </div>
             </section>

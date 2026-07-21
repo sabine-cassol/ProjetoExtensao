@@ -1,22 +1,26 @@
 import { SearchX } from 'lucide-react';
 
 interface ErrorProps {
-    tipo?: 'Página' | 'Notícia' | 'Projeto' | 'Item';
+    tipo?: 'Página' | 'Notícia' | 'Projeto' | 'Item' | 'Atividade' | 'Dados';
     mensagem?: string;
 }
 
-function Error({ tipo = 'Página', mensagem }: ErrorProps) {
+function Erro({ tipo = 'Página', mensagem }: ErrorProps) {
     const mensagensProntas = {
         Página: "A Página que você está tentando acessar não existe no sistema, foi removida permanentemente ou o link está incorreto.",
         Notícia: "A Notícia que você está tentando acessar não existe no sistema, foi removida permanentemente ou o link está incorreto.",
         Projeto: "O Projeto que você está tentando acessar não existe no sistema, foi removido permanentemente ou o link está incorreto.",
-        Item: "O Item que você está tentando acessar não existe no sistema, foi removido permanentemente ou o link está incorreto."
+        Item: "O Item que você está tentando acessar não existe no sistema, foi removido permanentemente ou o link está incorreto.",
+        Atividade: "A Atividade que você está tentando acessar não existe no sistema, foi removida permanentemente ou o link está incorreto.",
+        Dados: "Os dados que você está tentando acessar não existem no sistema, foram removidos permanentemente ou o link está incorreto. "
     };
 
     const mensagemFinal = mensagem || mensagensProntas[tipo];
 
-    const ehFeminino = tipo === 'Página' || tipo === 'Notícia';
+    const ehFeminino = tipo === 'Página' || tipo === 'Notícia' || tipo === 'Atividade' ;
+    const ehPlural = tipo === 'Dados';
     const sufixo = ehFeminino ? 'a' : 'o';
+    const plural = ehPlural ? 's' : null;
     return (
         <>
             <section className='flex-1'>
@@ -29,7 +33,7 @@ function Error({ tipo = 'Página', mensagem }: ErrorProps) {
 
                     <span className="text-5xl font-black text-zinc-800 tracking-tight mb-2 dark:text-zinc-100">404</span>
                     <h1 className="text-2xl font-bold text-slate-800 mb-2 tracking-tight dark:text-zinc-200">
-                        {tipo} não encontrad{sufixo}
+                        {tipo} não encontrad{sufixo}{plural}
                     </h1>
                     <p className="text-slate-500 max-w-sm mb-8 text-sm leading-relaxed dark:text-zinc-400">
                         {mensagemFinal}
@@ -41,4 +45,4 @@ function Error({ tipo = 'Página', mensagem }: ErrorProps) {
     )
 }
 
-export default Error
+export default Erro

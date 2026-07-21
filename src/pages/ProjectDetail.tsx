@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
 import { type Projeto } from '@/data/Projects.ts'
 import { Pencil, Trash, RotateCcw, AlertCircle } from 'lucide-react'
-import Error from '../components/Error'
+import Erro from '../components/Error.tsx'
 import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom'
 import { useProjetoId } from '@/services/getProjetosId'
@@ -150,7 +150,7 @@ function ProjectDetail() {
     }
     if (!projeto) {
         return (
-            <Error tipo="Projeto"></Error>
+            <Erro tipo="Projeto"></Erro>
         )
     }
 

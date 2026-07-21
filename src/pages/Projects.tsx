@@ -5,17 +5,18 @@ import { IdCard } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext';
 import { useProjetos } from '@/services/getTodosProjetos';
 import { ProjetosSkeleton } from '@/components/ProjectsSkeleton';
+import Erro from '@/components/Error';
 
 function Projects() {
     const { role } = useAuth();
     const { data: projetos, isLoading, error } = useProjetos();
 
     if (isLoading) {
-        return <p>carregando projetos</p>
-    }
-
-    if(error){
         return <ProjetosSkeleton></ProjetosSkeleton>
+    }
+    
+    if(error){
+        return <Erro tipo='Projeto' mensagem='Houve um erro ao carregar os projetos'></Erro>
     }
 
     console.log(projetos)

@@ -7,6 +7,7 @@ import { Pencil, Trash, RotateCcw } from 'lucide-react';
 import { atividadeSchema } from '@/schemas/authSchemas';
 import { AlertCircle } from 'lucide-react';
 import { AtividadesSkeleton } from './AtividadeSkeleton';
+import Erro from '@/components/Error';
 
 interface AtividadePayload {
     titulo: string;
@@ -255,8 +256,9 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
         return <AtividadesSkeleton></AtividadesSkeleton>
     }
 
+
     if (error) {
-        return <p className="mt-6 text-sm text-red-500">Erro ao carregar atividades</p>;
+        return <Erro tipo='Atividade'></Erro>
     }
 
     return (
