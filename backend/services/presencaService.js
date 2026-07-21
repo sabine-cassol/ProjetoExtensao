@@ -5,14 +5,28 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             if (atividade === null) {
                 throw new Error("Atividade não encontrada");
             }
+
+            const hoje = new Date().toISOString().split('T')[0];
+            const dataAtividade = new Date(atividade.data).toISOString().split('T')[0]
+
+            if (dataAtividade !== hoje) {
+                throw new Error("check-in só pode ser feito na data da atividade");
+            }
+
             if (await inscricaoRepository.buscarInscricao(alunoId, atividade.projetoId) === null) {
                 throw new Error("Aluno não inscrito no projeto");
             }
             if (await presencaRepository.buscarPresencaSemCheckOut(alunoId, dados.atividadeId) !== null) {
                 throw new Error("Check-in já registrado para esta atividade");
             }
-            dados.alunoId = alunoId;
-            return presencaRepository.criarCheckIn(dados);
+
+            return presencaRepository.criarCheckIn({
+                alunoId,
+                atividadeId: dados.atividadeId,
+                localizacaoCheckIn: dados.localizacaoCheckIn,
+                dataHoraCheckIn: new Date()
+            });
+
         },
         async registrarCheckOut(alunoId, dados) {
             const presenca = await presencaRepository.buscarPresencaSemCheckOut(alunoId, dados.atividadeId);
