@@ -7,10 +7,13 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             }
 
             const hoje = new Date().toISOString().split('T')[0];
-            const dataAtividade = new Date(atividade.data).toISOString().split('T')[0]
-
+            const dataAtividade = new Date(atividade.data).toISOString().split('T')[0];
             if (dataAtividade !== hoje) {
-                throw new Error("check-in só pode ser feito na data da atividade");
+                throw new Error("Check-in só pode ser feito na data da atividade");
+            }
+
+            if (atividade.exigeLocalizacao && !dados.localizacaoCheckIn) {
+                throw new Error("Esta atividade exige localização para o check-in");
             }
 
             if (await inscricaoRepository.buscarInscricao(alunoId, atividade.projetoId) === null) {
@@ -23,18 +26,19 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             return presencaRepository.criarCheckIn({
                 alunoId,
                 atividadeId: dados.atividadeId,
-                localizacaoCheckIn: dados.localizacaoCheckIn,
+                localizacaoCheckIn: atividade.exigeLocalizacao ? dados.localizacaoCheckIn : null,
                 dataHoraCheckIn: new Date()
             });
-
         },
+
         async registrarCheckOut(alunoId, dados) {
             const presenca = await presencaRepository.buscarPresencaSemCheckOut(alunoId, dados.atividadeId);
             if (presenca === null) {
                 throw new Error("Check-in não encontrado");
             }
+
             presenca.dataHoraCheckOut = new Date();
-            presenca.localizacaoCheckOut = dados.localizacaoCheckOut;
+   
 
             const horasExtensao = Math.floor((presenca.dataHoraCheckOut - presenca.dataHoraCheckIn) / (1000 * 60 * 60));
             const aluno = await alunoRepository.buscarPorId(alunoId);
@@ -43,9 +47,10 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
 
             return presencaRepository.atualizarPresenca(presenca.id, {
                 dataHoraCheckOut: presenca.dataHoraCheckOut,
-                localizacaoCheckOut: presenca.localizacaoCheckOut
+                localizacaoCheckOut: null
             });
         },
+
         async getHorasExtensaoPorProjeto(alunoId, projetoId) {
             const presencas = await presencaRepository.listarPresencasPorAlunoEProjeto(alunoId, projetoId);
             let totalHoras = 0;
@@ -57,6 +62,7 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             }
             return totalHoras;
         },
+
         async listarPresencasPorAluno(alunoId) {
             return presencaRepository.listarTodasPorAluno(alunoId);
         }

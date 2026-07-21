@@ -1,4 +1,4 @@
-import { sequelize  } from "../config/dataBase.js";
+import { sequelize } from "../config/dataBase.js";
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
@@ -17,6 +17,10 @@ export default (sequelize) => {
         },
         cargaHoraria: {
             type: DataTypes.FLOAT
+        },
+        exigeLocalizacao: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         },
         projetoId: {
             type: DataTypes.INTEGER,
