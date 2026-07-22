@@ -5,6 +5,9 @@ export interface Atividade {
     data: string;
     cargaHoraria: number;
     exigeLocalizacao: boolean;
+    latitude: number | null;
+    longitude: number | null;
+    raioMetros: number | null;
     projetoId: number;
     ativo: boolean;
     projeto: {

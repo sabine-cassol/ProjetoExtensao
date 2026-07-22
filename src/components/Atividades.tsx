@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { type Atividade } from '@/data/AtividadeType';
 import { Pencil, Trash, RotateCcw } from 'lucide-react';
@@ -17,6 +16,9 @@ interface AtividadePayload {
     data: string;
     cargaHoraria: number;
     exigeLocalizacao: boolean;
+    latitude?: number;
+    longitude?: number;
+    raioMetros?: number;
     projetoId: number;
 }
 
@@ -33,13 +35,21 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
     const ehResponsavel = role === 'teacher' && userId && String(professorResponsavelId) === userId;
 
     const [isCriando, setIsCriando] = useState(false);
+    const handleAbrirCriacao = () => {
+        setEditandoId(null);
+        setErrosAtividade({});
+        setIsCriando(true);
+    };
     const [editandoId, setEditandoId] = useState<number | null>(null);
     const [formData, setFormData] = useState({
         titulo: '',
         descricao: '',
         data: '',
         cargaHoraria: '',
-        exigeLocalizacao: true
+        exigeLocalizacao: true,
+        latitude: '',
+        longitude: '',
+        raioMetros: '100'
     });
     const [errosAtividade, setErrosAtividade] = useState<Record<string, string>>({});
 
@@ -51,7 +61,16 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
 
     const { criarMutation, atualizarMutation, desativarMutation, ativarMutation } = useAtividadesMutations(projetoId, {
         onCriarSucesso: () => {
-            setFormData({ titulo: '', descricao: '', data: '', cargaHoraria: '', exigeLocalizacao: true });
+            setFormData({
+                titulo: '',
+                descricao: '',
+                data: '',
+                cargaHoraria: '',
+                exigeLocalizacao: true,
+                latitude: '',
+                longitude: '',
+                raioMetros: '100'
+            });
             setIsCriando(false);
         },
         onAtualizarSucesso: () => {
@@ -80,7 +99,6 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         setFormData(prev => ({ ...prev, cargaHoraria: valor }));
     };
 
-
     const handleSalvarAtividade = (e: React.FormEvent) => {
         e.preventDefault();
         if (!projetoId) {
@@ -88,24 +106,28 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
             return;
         }
 
-        // const validacao = atividadeSchema.safeParse({
-        //     titulo: formData.titulo,
-        //     descricao: formData.descricao,
-        //     data: formData.data,
-        //     cargaHoraria: formData.cargaHoraria
-        // });
+        const validacao = atividadeSchema.safeParse({
+            titulo: formData.titulo,
+            descricao: formData.descricao,
+            data: formData.data,
+            cargaHoraria: formData.cargaHoraria,
+            exigeLocalizacao: formData.exigeLocalizacao,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
+            raioMetros: formData.raioMetros
+        });
 
-        // if (!validacao.success) {
-        //     const erros: Record<string, string> = {};
-        //     validacao.error.issues.forEach((issue) => {
-        //         const campo = issue.path[0] as string;
-        //         if (!erros[campo]) {
-        //             erros[campo] = issue.message;
-        //         }
-        //     });
-        //     setErrosAtividade(erros);
-        //     return;
-        // }
+        if (!validacao.success) {
+            const erros: Record<string, string> = {};
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as string;
+                if (!erros[campo]) {
+                    erros[campo] = issue.message;
+                }
+            });
+            setErrosAtividade(erros);
+            return;
+        }
 
         const payload: AtividadePayload = {
             titulo: formData.titulo,
@@ -113,6 +135,9 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
             data: formData.data,
             cargaHoraria: Number(formData.cargaHoraria.replace(',', '.')),
             exigeLocalizacao: formData.exigeLocalizacao,
+            latitude: formData.exigeLocalizacao ? Number(formData.latitude) : undefined,
+            longitude: formData.exigeLocalizacao ? Number(formData.longitude) : undefined,
+            raioMetros: formData.exigeLocalizacao ? Number(formData.raioMetros) : undefined,
             projetoId: Number(projetoId)
         };
 
@@ -120,13 +145,18 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
     };
 
     const handleIniciarEdicao = (atividade: Atividade) => {
+        setIsCriando(false);
+        setErrosAtividade({});
         setEditandoId(atividade.id);
         setFormData({
             titulo: atividade.titulo,
             descricao: atividade.descricao,
             data: atividade.data,
             cargaHoraria: String(atividade.cargaHoraria),
-            exigeLocalizacao: atividade.exigeLocalizacao
+            exigeLocalizacao: atividade.exigeLocalizacao,
+            latitude: atividade.latitude ? String(atividade.latitude) : '',
+            longitude: atividade.longitude ? String(atividade.longitude) : '',
+            raioMetros: atividade.raioMetros ? String(atividade.raioMetros) : '100'
         });
     };
 
@@ -169,6 +199,26 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         if (!confirmou) return;
         desativarMutation.mutate(id);
     };
+
+    const preencherLocalizacaoAtual = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocalização não suportada neste navegador");
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (posicao) => {
+                setFormData(prev => ({
+                    ...prev,
+                    latitude: posicao.coords.latitude.toString(),
+                    longitude: posicao.coords.longitude.toString()
+                }));
+                toast.success("Localização preenchida!");
+            },
+            () => {
+                toast.error("Não foi possível obter sua localização");
+            }
+        );
+    }
 
     if (role === 'guest') {
         return null;
@@ -222,6 +272,50 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                                     Exigir localização para registrar presença
                                 </label>
                             </div>
+
+                            {formData.exigeLocalizacao && (
+                                <div className="grid grid-cols-3 gap-2">
+                                    <div>
+                                        <label className="text-xs text-gray-500">Latitude</label>
+                                        <input
+                                            type="text"
+                                            name="latitude"
+                                            placeholder="-23.5505"
+                                            value={formData.latitude}
+                                            onChange={handleInputChange}
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-gray-500">Longitude</label>
+                                        <input
+                                            type="text"
+                                            name="longitude"
+                                            placeholder="-46.6333"
+                                            value={formData.longitude}
+                                            onChange={handleInputChange}
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-gray-500">Raio (m)</label>
+                                        <input
+                                            type="number"
+                                            name="raioMetros"
+                                            placeholder="100"
+                                            value={formData.raioMetros}
+                                            onChange={handleInputChange}
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={preencherLocalizacaoAtual}
+                                        className="text-xs text-blue-600 hover:underline">
+                                        Usar minha localização atual
+                                    </button>
+                                </div>
+                            )}
 
 
                             <div className="flex items-center gap-3 text-xs text-gray-500">
@@ -358,18 +452,73 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                         <input type="date" name="data" required value={formData.data} onChange={handleInputChange} className="border text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 border border-zinc-400 p-2 max-w-80 rounded-sm">
                         <input
                             type="checkbox"
                             id="exigeLocalizacao"
                             checked={formData.exigeLocalizacao}
                             onChange={handleCheckboxChange}
-                            className="cursor-pointer"
-                        />
+                            className="cursor-pointer" />
                         <label htmlFor="exigeLocalizacao" className="text-xs text-gray-600 cursor-pointer">
                             Exigir localização para registrar presença
                         </label>
                     </div>
+                    {formData.exigeLocalizacao && (
+                        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                            <div className='flex flex-col gap-1'>
+                                <label className="text-xs text-gray-700">Latitude</label>
+                                <input
+                                    type="text"
+                                    name="latitude"
+                                    placeholder="-23.5505"
+                                    value={formData.latitude}
+                                    onChange={handleInputChange}
+                                    className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                                />
+                                {errosAtividade.latitude && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.latitude}</span>
+                                )}
+
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label className="text-xs text-gray-700">Longitude</label>
+                                <input
+                                    type="text"
+                                    name="longitude"
+                                    placeholder="-46.6333"
+                                    value={formData.longitude}
+                                    onChange={handleInputChange}
+                                    className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                                />
+                                {errosAtividade.longitude && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.longitude}</span>
+                                )}
+
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label className="text-xs text-gray-700">Raio (m)</label>
+                                <input
+                                    type="number"
+                                    name="raioMetros"
+                                    placeholder="100"
+                                    value={formData.raioMetros}
+                                    onChange={handleInputChange}
+                                    className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                                />
+                                {errosAtividade.raioMetros && (
+                                    <span className="text-red-600 text-xs mt-1 block">{errosAtividade.raioMetros}</span>
+                                )}
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={preencherLocalizacaoAtual}
+                                className="flex text-xs text-blue-600 hover:underline cursor-pointer">
+                                Usar minha localização atual
+                            </button>
+
+                        </div>
+                    )}
 
 
                     <div>
@@ -389,7 +538,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
 
             {ehResponsavel && !isCriando && (
                 <div className="mt-4 flex justify-center items-center">
-                    <button onClick={() => setIsCriando(true)} className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 transition-colors">
+                    <button onClick={handleAbrirCriacao} className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 transition-colors">
                         Cadastrar atividade
                     </button>
                 </div>

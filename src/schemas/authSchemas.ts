@@ -128,27 +128,86 @@ export const noticiaSchema = z.object({
 
 export type NoticiaFormData = z.infer<typeof noticiaSchema>;
 
-export const atividadeSchema = z.object({
-    titulo: z
-        .string()
-        .min(3, 'Título deve ter pelo menos 3 caracteres')
-        .max(254, 'Título muito longo'),
-    descricao: z
-        .string()
-        .min(10, 'Descrição deve ter pelo menos 10 caracteres'),
-    data: z
-        .string()
-        .min(1, 'Data é obrigatória'),
-    cargaHoraria: z
-        .string()
-        .min(1, 'Carga horária é obrigatória')
-        .refine((val) => {
-            const numero = Number(val.replace(',', '.'));
-            return !isNaN(numero) && numero > 0;
-        }, {
-            message: 'Carga horária deve ser um número maior que zero'
-        })
-});
+export const atividadeSchema = z
+    .object({
+        titulo: z
+            .string()
+            .min(3, 'Título deve ter pelo menos 3 caracteres')
+            .max(254, 'Título muito longo'),
+        descricao: z
+            .string()
+            .min(10, 'Descrição deve ter pelo menos 10 caracteres'),
+        data: z
+            .string()
+            .min(1, 'Data é obrigatória'),
+        cargaHoraria: z
+            .string()
+            .min(1, 'Carga horária é obrigatória')
+            .refine((val) => {
+                const numero = Number(val.replace(',', '.'));
+                return !isNaN(numero) && numero > 0;
+            }, {
+                message: 'Carga horária deve ser um número maior que zero'
+            }),
+        exigeLocalizacao: z.boolean(),
+        latitude: z.string().optional(),
+        longitude: z.string().optional(),
+        raioMetros: z.string().optional()
+    })
+    .superRefine((dados, ctx) => {
+        if (!dados.exigeLocalizacao) return;
+
+        if (!dados.latitude || dados.latitude.trim() === '') {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Latitude é obrigatória quando a localização é exigida',
+                path: ['latitude']
+            });
+        } else {
+            const lat = Number(dados.latitude);
+            if (isNaN(lat) || lat < -90 || lat > 90) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Latitude deve ser um número entre -90 e 90',
+                    path: ['latitude']
+                });
+            }
+        }
+
+        if (!dados.longitude || dados.longitude.trim() === '') {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Longitude é obrigatória quando a localização é exigida',
+                path: ['longitude']
+            });
+        } else {
+            const lon = Number(dados.longitude);
+            if (isNaN(lon) || lon < -180 || lon > 180) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Longitude deve ser um número entre -180 e 180',
+                    path: ['longitude']
+                });
+            }
+        }
+
+        if (!dados.raioMetros || dados.raioMetros.trim() === '') {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Raio de tolerância é obrigatório quando a localização é exigida',
+                path: ['raioMetros']
+            });
+        } else {
+            const raio = Number(dados.raioMetros);
+            if (isNaN(raio) || raio <= 0) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Raio deve ser um número maior que zero',
+                    path: ['raioMetros']
+                });
+            }
+        }
+    });
 
 export type AtividadeFormData = z.infer<typeof atividadeSchema>;
 
