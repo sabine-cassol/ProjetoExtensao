@@ -64,14 +64,13 @@ function Carrousel() {
                                 style={{
                                     width: '100%',
                                     overflow: 'hidden',
-                                    // ISSO AQUI VAI DEIXAR AS BOLINHAS SEMPRE VISÍVEIS:
                                     ['--swiper-pagination-color' as any]: '#ffffff', // Cor das bolinhas ativas (Branco)
                                     ['--swiper-pagination-bullet-inactive-color' as any]: '#858b94', // Cor das inativas (Cinza)
                                     ['--swiper-pagination-bullet-inactive-opacity' as any]: '0.6',
                                 }}
                                 className="w-full"
                             >
-                                {noticias.map((noticia) => (
+                                {noticias.slice(0,7).map((noticia) => (
                                     <SwiperSlide key={noticia.id} style={{ minWidth: 0 }}>
                                         <Link to={`/Notícias/${noticia.id}`} className="block w-full aspect-video relative group overflow-hidden">
                                             <div className="flex w-full h-full items-center justify-center bg-muted text-foreground border-zinc-400 md:border-r md:last:border-r-0 select-none">
