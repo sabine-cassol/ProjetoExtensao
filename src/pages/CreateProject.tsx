@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { AlertCircle } from 'lucide-react';
 import { projetoService } from '@/services/projetoService';
+import { useCriarProjeto } from '@/services/projetoService';
 
 interface NovoProjeto {
     titulo: string;
@@ -29,7 +30,6 @@ interface NovoProjeto {
     requisitos: string;
     professorId: string;
 }
-
 
 function ProjectDetail() {
     const { user } = useAuth();

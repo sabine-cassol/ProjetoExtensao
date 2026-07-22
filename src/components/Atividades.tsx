@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { type Atividade } from '@/data/AtividadeType';
 import { Pencil, Trash, RotateCcw } from 'lucide-react';
@@ -8,6 +8,8 @@ import { atividadeSchema } from '@/schemas/authSchemas';
 import { AlertCircle } from 'lucide-react';
 import { AtividadesSkeleton } from './AtividadeSkeleton';
 import Erro from '@/components/Error';
+import { useAtividadesProjeto, useAtividadesMutations } from '@/services/atividadeService';
+import { useMinhasPresencas } from '@/services/presencaService';
 
 interface AtividadePayload {
     titulo: string;
@@ -27,7 +29,6 @@ interface AtividadesComponentProps {
 
 function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: AtividadesComponentProps) {
     const { projetoId } = useParams<{ projetoId: string }>();
-    const queryClient = useQueryClient();
 
     const ehResponsavel = role === 'teacher' && userId && String(professorResponsavelId) === userId;
 
@@ -46,130 +47,21 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         setFormData(prev => ({ ...prev, exigeLocalizacao: e.target.checked }));
     };
 
-    const { data: atividades, isLoading, error } = useQuery<Atividade[]>({
-        queryKey: ['atividades', 'projeto', projetoId],
-        queryFn: async () => {
-            const res = await fetch(`/api/atividades/projeto/${projetoId}`, {
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao buscar atividades');
-            }
-            const dados = await res.json();
-            return dados.sort((a: Atividade, b: Atividade) => Number(b.ativo) - Number(a.ativo));
-        },
-        enabled: !!projetoId
-    });
+    const { data: atividades, isLoading, error } = useAtividadesProjeto(projetoId);
 
-    const criarMutation = useMutation({
-        mutationFn: async (dados: AtividadePayload) => {
-            const res = await fetch('/api/atividades', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao criar atividade');
-            }
-            return res.json();
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['atividades', 'projeto', projetoId] });
-            toast.success("Atividade criada com sucesso!");
+    const { criarMutation, atualizarMutation, desativarMutation, ativarMutation } = useAtividadesMutations(projetoId, {
+        onCriarSucesso: () => {
             setFormData({ titulo: '', descricao: '', data: '', cargaHoraria: '', exigeLocalizacao: true });
             setIsCriando(false);
         },
-
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao criar atividade");
-        }
-    });
-
-    const atualizarMutation = useMutation({
-        mutationFn: async ({ id, dados }: { id: number; dados: Partial<AtividadePayload> }) => {
-            const res = await fetch(`/api/atividades/id/${id}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao atualizar atividade');
-            }
-            return res.json();
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['atividades', 'projeto', projetoId] });
-            toast.success("Atividade atualizada com sucesso!");
+        onAtualizarSucesso: () => {
             setEditandoId(null);
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao atualizar atividade");
         }
     });
 
-    const desativarMutation = useMutation({
-        mutationFn: async (id: number) => {
-            const res = await fetch(`/api/atividades/desativar/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao desativar atividade');
-            }
-            return res.json();
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['atividades', 'projeto', projetoId] });
-            toast.success("Atividade desativada com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao desativar atividade");
-        }
-    });
+    const { data: minhasPresencas } = useMinhasPresencas(role === 'student' && !!alunoInscrito);
 
-    const ativarMutation = useMutation({
-        mutationFn: async (id: number) => {
-            const res = await fetch(`/api/atividades/ativar/${id}`, {
-                method: 'PUT',
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao reativar atividade');
-            }
-            return res.json();
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['atividades', 'projeto', projetoId] });
-            toast.success("Atividade reativada com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao reativar atividade");
-        }
-    });
-
-    const { data: minhasPresencas } = useQuery({
-        queryKey: ['presencas', 'minhas'],
-        queryFn: async () => {
-            const res = await fetch('/api/presencas/me', {
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao buscar presenças');
-            }
-            return res.json();
-        },
-        enabled: role === 'student' && !!alunoInscrito
-    });
-
-    function statusDaAtividade(atividadeId: number): 'pendente' | 'aprovado' | 'recusado' | null {
+    function statusDaAtividade(atividadeId: number): 'em Análise' | 'Aprovado' | 'Recusado' | null {
         const presenca = minhasPresencas?.find((p: any) => p.atividadeId === atividadeId);
         return presenca ? presenca.status : null;
     }

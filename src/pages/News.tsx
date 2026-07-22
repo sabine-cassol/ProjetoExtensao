@@ -2,30 +2,16 @@ import { Link } from 'react-router-dom'
 // import { NEWS } from '@/data/New.ts'
 import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
-import { type Noticia } from '@/data/NewType';
-import { useQuery } from '@tanstack/react-query';
-// import { useNoticias } from '@/services/noticiaService';
 import { NoticiasSkeleton } from '@/components/noticiasSkeleton';
 import Erro from '@/components/Error';
+import { useNoticias } from '@/services/noticiaService';
 
 function News() {
     const { role } = useAuth();
 
     const [paginaAtual, setPaginaAtual] = useState(1);
 
-    const { data: noticias, isLoading, error } = useQuery<Noticia[]>({
-        queryKey: ['noticias'],
-        queryFn: async () => {
-            const res = await fetch('/api/noticias/todas');
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao buscar notícias');
-            }
-            return res.json();
-        }
-    });
-
-
+    const { data: noticias, isLoading, error } = useNoticias();
     const NOTICIAS_POR_PAGINA = 15;
     const totalDePaginas = Math.ceil((noticias?.length ?? 0) / NOTICIAS_POR_PAGINA);
     const indiceFinal = paginaAtual * NOTICIAS_POR_PAGINA;

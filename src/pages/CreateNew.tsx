@@ -1,12 +1,11 @@
 import Tiptap from "@/components/TipTap"
 import { Calendar, User, ChevronUp, ChevronDown, AlertCircle } from 'lucide-react'
 import { useState } from "react"
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/context/AuthContext';
 import { noticiaSchema } from "@/schemas/authSchemas";
+import { useCriarNoticia } from "@/services/noticiaService";
 
 async function converterParaBase64(arquivo: File): Promise<string> {
     const opcoes = {
@@ -27,8 +26,6 @@ async function converterParaBase64(arquivo: File): Promise<string> {
 
 function CreateNew() {
     const { user } = useAuth();
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
 
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'loading' | 'success'>('idle');
     const [fileName, setFileName] = useState<string>('');
@@ -65,36 +62,7 @@ function CreateNew() {
         }
     };
 
-    const criarMutation = useMutation({
-        mutationFn: async () => {
-            const res = await fetch('/api/noticias', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    titulo,
-                    resumo,
-                    conteudo,
-                    imageUrl: imageBase64
-                })
-            });
-
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao criar notícia');
-            }
-
-            return res.json();
-        },
-        onSuccess: (noticiaCriada) => {
-            queryClient.invalidateQueries({ queryKey: ['noticias'] });
-            toast.success("Notícia publicada com sucesso!");
-            navigate(`/Notícias/${noticiaCriada.id}`);
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao publicar notícia");
-        }
-    });
+    const criarMutation = useCriarNoticia();
 
     const handlePublicar = () => {
         setErrosNoticia({});
@@ -118,9 +86,13 @@ function CreateNew() {
             return;
         }
 
-        criarMutation.mutate();
+        criarMutation.mutate({
+            titulo,
+            resumo,
+            conteudo,
+            imageUrl: imageBase64
+        });
     };
-
 
     // upar imagem com compressão 
     //     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

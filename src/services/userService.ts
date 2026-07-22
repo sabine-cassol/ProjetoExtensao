@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const API_URL = import.meta.env.VITE_API_URL_PROXY || '/api';
 
@@ -23,6 +24,15 @@ export interface Usuario {
 export interface AtualizarUsuarioPayload {
   dados: Usuario;
   role: 'teacher' | 'student' | string;
+}
+
+interface UseUpdateUserOptions {
+  onSuccessCallback?: () => void;
+  updateSession?: (dados: any) => void;
+}
+
+interface UseCreateUserOptions {
+  onSuccessCallback?: () => void;
 }
 
 export const userService = {
@@ -69,34 +79,59 @@ export const userService = {
   }
 };
 
-// --- REACT QUERY HOOKS ---
 
-/**
-  Hook para criar um novo aluno/usuário
- */
-export const useCreateUser = () => {
+export const useCreateUser = (options?: UseCreateUserOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (dadosLogin: CriarUsuarioPayload) => userService.create(dadosLogin),
+    mutationFn: (dadosUsuario: CriarUsuarioPayload) => userService.create(dadosUsuario),
     onSuccess: () => {
-      // Invalida a query de usuários caso precise recarregar listas
       queryClient.invalidateQueries({ queryKey: ['usuarios'] });
+      
+      toast.success("Aluno cadastrado com sucesso!");
+
+      if (options?.onSuccessCallback) {
+        options.onSuccessCallback();
+      }
     },
+    onError: (error: Error) => {
+      console.error("Erro ao cadastrar aluno:", error);
+      toast.error(error.message || "Houve um erro ao criar o aluno");
+    }
   });
 };
 
-/**
-  Hook para atualizar o usuário atual (aluno ou professor)
- */
-export const useUpdateUser = () => {
+export const useUpdateUser = (options?: UseUpdateUserOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ dados, role }: AtualizarUsuarioPayload) => userService.update({ dados, role }),
-    onSuccess: () => {
-      // Invalida e força o re-fetch dos dados do usuário logado
+    mutationFn: ({ dados, role }: AtualizarUsuarioPayload) => 
+      userService.update({ dados, role }),
+      
+    onSuccess: (_, variables) => {
+      // 1. Invalida os dados do cache
       queryClient.invalidateQueries({ queryKey: ['userMe'] });
+
+      // 2. Atualiza a sessão (se fornecida a função)
+      if (options?.updateSession) {
+        options.updateSession({
+          nome: variables.dados.nome,
+          curso: variables.dados.curso,
+          periodo: variables.dados.periodo,
+        });
+      }
+
+      // 3. Executa o callback de fechar edição
+      if (options?.onSuccessCallback) {
+        options.onSuccessCallback();
+      }
+
+      toast.success("Dados atualizados com sucesso!");
+    },
+
+    onError: (err: Error) => {
+      console.error("Falha ao salvar usuário:", err);
+      toast.error(err.message || "Não foi possível atualizar os dados. Tente novamente.");
     },
   });
 };

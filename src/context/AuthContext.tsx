@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const url = import.meta.env.VITE_API_URL_PROXY || '/api';
   
-  
   const role: UserRole = user ? (user.role as UserRole) : 'guest';
   
   const rotaLogout = role === 'teacher' ? '/professores/logout' : '/alunos/logout';
@@ -48,7 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         const usuarioLogado: User = JSON.parse(usuarioLocal);
         const rotaMe = usuarioLogado.role === 'teacher' ? '/professores/me' : '/alunos/me';
-
 
         const response = await fetch(`${url}${rotaMe}`, {
           method: 'GET',

@@ -8,7 +8,6 @@ import { Eye, EyeOff, XCircle, AlertCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { GraduationCap, Microscope } from 'lucide-react';
 import { Toaster } from "@/components/ui/sonner";
-import { toast } from 'sonner';
 import { loginSchema, registerSchema } from '@/schemas/authSchemas';
 import { useCreateUser } from '../services/userService';
 
@@ -33,9 +32,9 @@ function Login() {
     const [erroRegister, setErroRegister] = useState('');
     const [erroLogin, setErroLogin] = useState<string | null>(null);
     const [errosRegister, setErrosRegister] = useState<Record<string, string>>({});
-    const createUserMutation = useCreateUser();
-
-
+    const createUserMutation = useCreateUser({
+        onSuccessCallback: () => setActiveScreen('login')
+    });
 
     const formatarRA = (valor: string): string => {
         const apenasNumeros = valor.replace(/\D/g, '').slice(0, 9);
@@ -123,17 +122,7 @@ function Login() {
             periodo: '',
         };
 
-        createUserMutation.mutate(requestBody, {
-            onSuccess: () => {
-                toast.success("Aluno cadastrado com sucesso!");
-                console.log("Aluno cadastrado com sucesso");
-                setActiveScreen('login');
-            },
-            onError: (error: Error) => {
-                console.error(error);
-                toast.error(error.message || "Houve um erro ao criar o aluno");
-            }
-        });
+        createUserMutation.mutate(requestBody);
     };
     return (
         <>

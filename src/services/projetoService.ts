@@ -117,6 +117,31 @@ export function useProjetos() {
     })
 }
 
+export function useCriarProjeto(onSuccessCallback?: () => void) {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (dados: NovoProjeto) => projetoService.criar(dados),
+    onSuccess: (projetoCriado) => {
+      // Invalida a lista para buscar os dados atualizados
+      queryClient.invalidateQueries({ queryKey: ['projetos'] });
+      
+      toast.success("Projeto criado com sucesso!");
+
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
+
+      // Redireciona para a tela do projeto recém-criado
+      navigate(`/Projetos/${projetoCriado.id}`);
+    },
+    onError: (erro: Error) => {
+      toast.error(erro.message || "Erro ao criar projeto");
+    }
+  });
+}
+
 export function useProjetoMutations(projetoId: string, setIsEditing?: (value: boolean) => void) {
     const queryClient = useQueryClient();
     const navigate = useNavigate();

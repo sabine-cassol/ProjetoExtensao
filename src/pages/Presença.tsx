@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { type Atividade } from '@/data/AtividadeType';
+import { useAtividadesProjeto } from '@/services/atividadeService';
+import { useProjetoId } from '@/services/getProjetosId';
 
 
 interface Presenca {
@@ -16,7 +18,6 @@ interface Presenca {
     localizacaoCheckOut: string | null;
 }
 
-
 export default function Presença() {
     const params = useParams();
     const projetoId = params?.projetoId;
@@ -26,35 +27,8 @@ export default function Presença() {
     const timerRef = useRef<number | null>(null);
     const TEMPO_MINIMO = 10 * 60;
 
-
-    const { data: projetoAtual, isLoading: isLoadingProjeto } = useQuery({
-        queryKey: ['projeto', projetoId],
-        queryFn: async () => {
-            const res = await fetch(`/api/projetos/id/${projetoId}`);
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao buscar projeto');
-            }
-            return res.json();
-        },
-        enabled: !!projetoId
-    });
-
-
-    const { data: atividades, isLoading: isLoadingAtividades } = useQuery<Atividade[]>({
-        queryKey: ['atividades', 'projeto', projetoId],
-        queryFn: async () => {
-            const res = await fetch(`/api/atividades/projeto/${projetoId}`, {
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao buscar atividades');
-            }
-            return res.json();
-        },
-        enabled: !!projetoId
-    });
+    const { data: projetoAtual, isLoading: isLoadingProjeto } = useProjetoId(projetoId!);
+    const { data: atividades, isLoading: isLoadingAtividades } = useAtividadesProjeto(projetoId);
 
     const hoje = new Date().toISOString().split('T')[0];
     const atividadeHoje = atividades?.find((a) => a.data === hoje && a.ativo);

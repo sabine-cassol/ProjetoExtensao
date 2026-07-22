@@ -6,7 +6,7 @@ import { EyeOff, Eye } from "lucide-react";
 import { profileSchema, passwordSchema } from '@/schemas/authSchemas';
 import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
 import { AlertCircle } from "lucide-react";
-import { useUpdateUser } from '../services/userService'; 
+import { useUpdateUser } from '../services/userService';
 import { PerfilSkeleton } from "@/components/perfilSkeleton";
 
 interface UserProfileData {
@@ -20,7 +20,10 @@ interface UserProfileData {
 function Profile() {
     const { user, loading, update, role } = useAuth();
 
-    const updateMutation = useUpdateUser();
+    const updateMutation = useUpdateUser({
+        onSuccessCallback: () => setIsEditing(false),
+        updateSession: (novosDados) => update(novosDados),
+    });
 
     const [isEditing, setIsEditing] = useState(false);
     const [password, setPassword] = useState('');
@@ -90,27 +93,10 @@ function Profile() {
             })
         };
 
-        // Dispara a mutation usando React Query
-        updateMutation.mutate(
-            { dados: dadosParaAtualizar, role },
-            {
-                onSuccess: () => {
-                    // Atualiza o contexto do Auth local
-                    update({
-                        nome: formData.nome,
-                        curso: formData.curso,
-                        periodo: formData.periodo
-                    });
-
-                    setIsEditing(false);
-                    toast.success("Dados atualizados com sucesso!");
-                },
-                onError: (err: Error) => {
-                    console.error("Falha ao salvar usuário:", err);
-                    toast.error("Não foi possível atualizar os dados. Tente novamente.");
-                }
-            }
-        );
+        updateMutation.mutate({
+            dados: dadosParaAtualizar,
+            role
+        });
     };
 
     const handleCancel = () => {
@@ -143,7 +129,6 @@ function Profile() {
             setErrosSenha(erros);
             return;
         }
-
 
         if (password !== confirmPassword) {
             setError('As senhas não coincidem. Verifique e tente novamente.');

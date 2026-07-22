@@ -1,18 +1,16 @@
 
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 // import { NEWS } from '@/data/New.ts'
 import { Calendar, ArrowLeft, User, Pencil, Trash, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 // import { type Noticia } from '@/data/New.ts'
 import Erro from '../components/Error.tsx'
-import { toast } from "sonner"
 import { type Noticia } from '@/data/NewType.ts'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { noticiaSchema } from "@/schemas/authSchemas";
-import { NoticiaDetalhesSkeleton } from '@/components/NewDetailSkeleton.tsx'
-
+import { NoticiaDetalhesSkeleton } from '@/components/NewDetailSkeleton.tsx';
+import {useNoticiaId,useAtualizarNoticia,useDeletarNoticia } from '@/services/noticiaService';
 
 function NewDetail() {
     const { noticiaId } = useParams<{ noticiaId: string }>();
@@ -23,73 +21,17 @@ function NewDetail() {
 
     // const noticia = listaNews.find(n => n.id == noticiaId);
     const [isEditing, setIsEditing] = useState(false);
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
     const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    const { data: noticia, isLoading, error } = useQuery<Noticia>({
-        queryKey: ['noticia', noticiaId],
-        queryFn: async () => {
-            const res = await fetch(`/api/noticias/id/${noticiaId}`);
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao buscar notícia');
-            }
-            return res.json();
-        },
-        enabled: !!noticiaId
-    });
+    const { data: noticia, isLoading, error } = useNoticiaId(noticiaId);
 
-    const atualizarMutation = useMutation({
-        mutationFn: async (dados: Partial<Noticia>) => {
-            const res = await fetch(`/api/noticias/id/${noticiaId}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao atualizar notícia');
-            }
-            return res.json();
-        },
-        onSuccess: (noticiaAtualizada) => {
-            queryClient.setQueryData(['noticia', noticiaId], noticiaAtualizada);
-            queryClient.invalidateQueries({ queryKey: ['noticias'] });
-            setIsEditing(false);
-            toast.success("Notícia atualizada com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao atualizar notícia");
-        }
-    });
+    const atualizarMutation = useAtualizarNoticia(noticiaId!, () => setIsEditing(false));
 
-    const deletarMutation = useMutation({
-        mutationFn: async () => {
-            const res = await fetch(`/api/noticias/id/${noticiaId}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new globalThis.Error(erro.erro || 'Erro ao deletar notícia');
-            }
-            return res.json();
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['noticias'] });
-            toast.success("Notícia deletada com sucesso!");
-            navigate("/Notícias");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao deletar notícia");
-        }
-    });
+    const deletarMutation = useDeletarNoticia(noticiaId!);
 
     const ehAutor = role === 'teacher' && user?.id && noticia?.professorId && String(noticia.professorId) === user.id;
 
