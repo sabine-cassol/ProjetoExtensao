@@ -22,9 +22,10 @@ interface AtividadesComponentProps {
     role: string;
     professorResponsavelId: number;
     userId?: string;
+    alunoInscrito?: boolean;
 }
 
-function Atividades({ role, professorResponsavelId, userId }: AtividadesComponentProps) {
+function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: AtividadesComponentProps) {
     const { projetoId } = useParams<{ projetoId: string }>();
     const queryClient = useQueryClient();
 
@@ -152,6 +153,27 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
             toast.error(erro.message || "Erro ao reativar atividade");
         }
     });
+
+    const { data: minhasPresencas } = useQuery({
+        queryKey: ['presencas', 'minhas'],
+        queryFn: async () => {
+            const res = await fetch('/api/presencas/me', {
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new Error(erro.erro || 'Erro ao buscar presenças');
+            }
+            return res.json();
+        },
+        enabled: role === 'student' && !!alunoInscrito
+    });
+
+    function statusDaAtividade(atividadeId: number): 'pendente' | 'aprovado' | 'recusado' | null {
+        const presenca = minhasPresencas?.find((p: any) => p.atividadeId === atividadeId);
+        return presenca ? presenca.status : null;
+    }
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -399,9 +421,31 @@ function Atividades({ role, professorResponsavelId, userId }: AtividadesComponen
                                 )}
                             </div>
 
+                            {role === 'student' && alunoInscrito && (() => {
+                                const status = statusDaAtividade(atividade.id);
+                                if (!status) {
+                                    return (
+                                        <span className="inline-block text-xs px-2 py-0.5 rounded-full font-semibold bg-zinc-100 text-zinc-500 mb-3">
+                                            Presença não registrada
+                                        </span>
+                                    );
+                                }
+                                const cores: Record<string, string> = {
+                                    pendente: 'bg-amber-100 text-amber-700',
+                                    aprovado: 'bg-emerald-100 text-emerald-700',
+                                    recusado: 'bg-red-100 text-red-700'
+                                };
+                                return (
+                                    <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-semibold mb-3 ${cores[status]}`}>
+                                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                                    </span>
+                                );
+                            })()}
+
                             <div className="text-gray-600 leading-relaxed">
                                 {atividade.descricao}
                             </div>
+
                         </div>
                     )}
                 </div>

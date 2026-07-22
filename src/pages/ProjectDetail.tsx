@@ -645,7 +645,13 @@ function ProjectDetail() {
                                 )}
                             </section>
                         ) : null}
-                        <Atividades role={role} professorResponsavelId={projeto.professorId} userId={user?.id} />
+                        <Atividades
+                            role={role}
+                            professorResponsavelId={projeto.professorId}
+                            userId={user?.id}
+                            alunoInscrito={jaInscrito}
+                        />
+
                         {role === 'guest' ? (
                             <section>
                                 <button className='mt-5 flex bg-(--darkBlue) text-white p-2 cursor-pointer rounded-sm justify-self-center hover:bg-indigo-900 active:bg-indigo-500'> Quero participar </button>

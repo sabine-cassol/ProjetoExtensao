@@ -32,6 +32,27 @@ function Activities() {
         enabled: !!user?.id
     });
 
+    const { data: minhasInscricoes, isLoading: isLoadingInscricoes, error: errorInscricoes } = useQuery({
+        queryKey: ['inscricoes', 'minhas', user?.id],
+        queryFn: async () => {
+            const res = await fetch('/api/inscricoes/alunos/me/inscricoes', {
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                const erro = await res.json();
+                throw new Error(erro.erro || 'Erro ao buscar inscrições');
+            }
+            const dados = await res.json();
+            // extrai o projeto de cada inscrição
+            return dados.map((inscricao: any) => inscricao.projeto);
+        },
+        enabled: role === 'student' && !!user?.id
+    });
+
+    const meusProjetosOuInscricoes = role === 'teacher' ? meusProjetos : minhasInscricoes;
+    const isLoadingProjetosFinal = role === 'teacher' ? isLoadingProjetos : isLoadingInscricoes;
+    const errorProjetosFinal = role === 'teacher' ? errorProjetos : errorInscricoes;
+
 
     const { data: minhasNoticias, isLoading: isLoadingNoticias, error: errorNoticias } = useQuery({
         queryKey: ['noticias', 'professor', user?.id],
@@ -62,13 +83,14 @@ function Activities() {
         setPaginaAtual(1);
     };
 
-    if (isLoadingProjetos || (role === 'teacher' && isLoadingNoticias)) {
+    if (isLoadingProjetosFinal || (role === 'teacher' && isLoadingNoticias)) {
         return <p>Carregando...</p>;
     }
 
-    if (errorProjetos || errorNoticias) {
-        return <Erro tipo="Dados"></Erro>;
+    if (errorProjetosFinal || errorNoticias) {
+        return <p>Erro ao carregar dados</p>;
     }
+
 
 
     return (
@@ -83,7 +105,7 @@ function Activities() {
                         : "border-transparent text-zinc-500 hover:text-zinc-700"
                         }`}>
                         <FolderKanban size={18} />
-                        Projetos ({meusProjetos?.length ?? 0})
+                        Projetos ({meusProjetosOuInscricoes?.length ?? 0})
                     </button>
 
                     {role === 'teacher' && (
@@ -99,7 +121,7 @@ function Activities() {
 
                 {abaAtiva === "projetos" && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6 mt-4">
-                        {meusProjetos?.map((projeto: any) => (
+                        {meusProjetosOuInscricoes?.map((projeto: any) => (
                             <Link to={`/Projetos/${projeto.id}`} key={projeto.id}>
                                 <section className={`bg-white p-4 rounded-lg border flex flex-col justify-between transition-all ease-linear hover:-translate-y-1.5 ${projeto.ativo ? 'border-zinc-200 hover:border-indigo-200' : 'border-zinc-200 opacity-60'
                                     }`}>
