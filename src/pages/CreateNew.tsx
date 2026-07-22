@@ -37,10 +37,10 @@ function CreateNew() {
     const [imageBase64, setImageBase64] = useState<string>('');
     const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
 
+    const textoLimpo = conteudo ? conteudo.replace(/<[^>]+>/g, '') : '';
+    const longText = textoLimpo.length > 600;
 
-    const longText = conteudo && conteudo.length > 600;
-
-    const textoExibido = longText && !isExpanded ? `${conteudo.substring(0, 600)}...` : conteudo
+    const textoExibido = longText && !isExpanded ? `${conteudo.substring(0, 600)}...` : conteudo;
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -49,7 +49,6 @@ function CreateNew() {
         setFileName(file.name);
         setImageFile(file);
         setUploadStatus('loading');
-
 
         try {
             const base64 = await converterParaBase64(file);
@@ -214,7 +213,7 @@ function CreateNew() {
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                         </svg>
                                         <p className="mb-1 text-sm"><span className="font-semibold">Clique para fazer upload</span> ou arraste a imagem</p>
-                                        <p className="text-xs text-gray-400">(Max. 5MB)</p>
+                                        <p className="text-xs text-gray-400">(Max. 1MB)</p>
                                     </>
                                 )}
 
@@ -240,7 +239,7 @@ function CreateNew() {
                         </div>
                         <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 shadow-xs">
 
-                            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white leading-tight font-segoe">
+                            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white leading-tight font-segoe break-words overflow-hidden">
                                 {titulo ? titulo : "-"}
                             </h1>
 
@@ -260,9 +259,17 @@ function CreateNew() {
                                 {resumo ? resumo : "-"}
                             </p>
 
-                            <div className="mt-8 font-normal text-sm leading-relaxed font-segoe whitespace-pre-line indent-8">
-                                {textoExibido || "-"}
-                            </div>
+                            <div
+                                className="mt-8 text-sm font-normal leading-relaxed text-zinc-800 dark:text-zinc-200
+                                [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-4 [&_h1]:mb-2
+                                [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-3 [&_h2]:mb-2
+                                [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-1
+                                [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 
+                                [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3
+                                [&_strong]:font-bold [&_em]:italic [&_blockquote]:border-l-4 [&_blockquote]:border-zinc-300 [&_blockquote]:pl-4 [&_blockquote]:italic
+                                break-words overflow-hidden"
+                                dangerouslySetInnerHTML={{ __html: textoExibido || "-" }}
+                            />  
 
                             {uploadStatus === 'success' && imageFile && (
                                 <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">

@@ -94,16 +94,22 @@ export type PasswordFormData = z.infer<typeof passwordSchema>;
 export const noticiaSchema = z.object({
     titulo: z
         .string()
-        .min(5, 'Título deve ter pelo menos 5 caracteres')
+        .min(5, 'Título deve conter pelo menos 5 caracteres')
         .max(254, 'Título muito longo'),
     resumo: z
         .string()
-        .min(10, 'Resumo deve ter pelo menos 10 caracteres')
+        .min(5, 'Resumo deve conter pelo menos 10 caracteres')
         .max(254, 'Resumo muito longo'),
     conteudo: z
         .string()
         .refine(contemTextoReal, {
             message: 'O conteúdo da notícia não pode ficar vazio'
+        })
+        .refine((val) => {
+            const textoLimpo = val.replace(/<[^>]*>/g, '').trim();
+            return textoLimpo.length >= 10; 
+        }, {
+            message: 'O conteúdo deve conter no mínimo 10 caracteres de texto'
         }),
     imagem: z
         .string()

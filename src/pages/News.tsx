@@ -60,7 +60,7 @@ function News() {
                                                 </span>
                                                 <span className="text-zinc-400 dark:text-zinc-700">•</span>
                                                 <span>
-                                                    {noticia.autor?.nome ?? 'autor desconhecido'}
+                                                    Por {noticia.autor?.nome ?? 'autor desconhecido'}
                                                 </span>
                                             </div>
                                             <p className="text-zinc-600 text-sm mb-4 line-clamp-3 md:line-clamp-2 ">{noticia.resumo}</p>
