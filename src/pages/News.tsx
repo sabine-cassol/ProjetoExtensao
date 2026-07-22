@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
 import { type Noticia } from '@/data/NewType';
 import { useQuery } from '@tanstack/react-query';
-import { useNoticias } from '@/services/noticiaService';
+// import { useNoticias } from '@/services/noticiaService';
 import { NoticiasSkeleton } from '@/components/noticiasSkeleton';
 import Erro from '@/components/Error';
 

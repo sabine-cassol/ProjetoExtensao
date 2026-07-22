@@ -3,7 +3,7 @@ import { PROJECTS } from '@/data/Projects.ts'
 import { Link } from 'react-router-dom'
 import { IdCard } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext';
-import { useProjetos } from '@/services/getTodosProjetos';
+import { useProjetos } from '@/services/projetoService';
 import { ProjetosSkeleton } from '@/components/ProjectsSkeleton';
 import Erro from '@/components/Error';
 

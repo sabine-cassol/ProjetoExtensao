@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { AlertCircle } from 'lucide-react';
+import { projetoService } from '@/services/projetoService';
 
 interface NovoProjeto {
     titulo: string;
@@ -64,21 +65,7 @@ function ProjectDetail() {
     };
 
     const criarMutation = useMutation({
-        mutationFn: async (dados: NovoProjeto) => {
-            const res = await fetch('/api/projetos', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dados)
-            });
-
-            if (!res.ok) {
-                const erro = await res.json();
-                throw new Error(erro.erro || 'Erro ao criar projeto');
-            }
-
-            return res.json();
-        },
+        mutationFn: (dados: NovoProjeto) => projetoService.criar(dados),
         onSuccess: (projetoCriado) => {
             queryClient.invalidateQueries({ queryKey: ['projetos'] });
             toast.success("Projeto criado com sucesso!");
@@ -112,7 +99,7 @@ function ProjectDetail() {
             console.log("Campos com erro de validação:", errosFormatados);
 
             setErrosProjeto(errosFormatados);
-            return; // Bloqueia o envio!
+            return; 
         }
         criarMutation.mutate({
             ...form,

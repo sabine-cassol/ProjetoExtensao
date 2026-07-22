@@ -7,11 +7,9 @@ import { type Projeto } from '@/data/Projects.ts'
 import { Pencil, Trash, RotateCcw, AlertCircle } from 'lucide-react'
 import Erro from '../components/Error.tsx'
 import { toast } from "sonner"
-import { useNavigate } from 'react-router-dom'
 import { useProjetoId } from '@/services/getProjetosId'
 import { ProjectDetailSkeleton } from '@/components/ProjectDetailSkeleton'
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { projetoService } from '@/services/projetoService';
+import { useProjetoMutations } from '@/services/projetoService';
 import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesService'
@@ -23,8 +21,6 @@ function ProjectDetail() {
     const [editForm, setEditForm] = useState<Projeto | undefined>(undefined);
     // const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
     const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
 
     const { data: projeto, isLoading } = useProjetoId(projetoId!);
@@ -32,24 +28,9 @@ function ProjectDetail() {
 
     const inscreverMutation = useInscreverProjeto(projetoId!, user?.id);
     const jaInscrito = minhasInscricoes?.some((inscricao: any) => String(inscricao.projetoId) === String(projetoId));
+    const { atualizarMutation, deletarMutation, ativarMutation } = useProjetoMutations(projetoId!, setIsEditing);
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
-
-    const atualizarMutation = useMutation({
-        mutationFn: (dados: Partial<Projeto>) =>
-            projetoService.atualizar(projetoId!, dados),
-        onSuccess: (projetoAtualizado) => {
-            queryClient.setQueryData(['projeto', projetoId], projetoAtualizado);
-            queryClient.invalidateQueries({ queryKey: ['projetos'] });
-
-            setIsEditing(false);
-            toast.success("Projeto atualizado com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao atualizar projeto");
-        }
-    });
-
 
     const handleStartEditing = () => {
         if (role === "teacher") {
@@ -98,37 +79,12 @@ function ProjectDetail() {
         atualizarMutation.mutate(editForm);
     };
 
-    const deletarMutation = useMutation({
-        mutationFn: () => projetoService.desativar(projetoId!),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['projetos'] });
-            toast.success("Projeto deletado com sucesso!");
-            navigate("/Projetos");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao deletar projeto");
-        }
-    });
-
     const handleDelete = () => {
         const confirmou = confirm("Deseja mesmo deletar o projeto?");
         if (!confirmou) return;
 
         deletarMutation.mutate();
     };
-
-    const ativarMutation = useMutation({
-        mutationFn: () => projetoService.ativar(projetoId!),
-        onSuccess: (projetoAtualizado) => {
-            queryClient.setQueryData(['projeto', projetoId], projetoAtualizado);
-            queryClient.invalidateQueries({ queryKey: ['projetos'] });
-            toast.success("Projeto reativado com sucesso!");
-        },
-        onError: (erro: Error) => {
-            toast.error(erro.message || "Erro ao reativar projeto");
-        }
-    });
-
 
     const handleInscrever = () => {
         inscreverMutation.mutate(undefined, {
