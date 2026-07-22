@@ -72,13 +72,15 @@ export const profileSchema = z.object({
         .string()
         .min(1, 'Curso é obrigatório')
         .optional()
-        .or(z.literal('')),
+        .or(z.literal(''))
+        .optional(),
     periodo: z
         .string()
         .min(1, 'Período é obrigatório')
         .refine((val) => Number(val) >= 1 && Number(val) <= 10, {
             message: 'Período deve ser entre 1 e 10'
         })
+        .optional()
 });
 
 export type ProfileFormData = z.infer<typeof profileSchema>;

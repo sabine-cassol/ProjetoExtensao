@@ -9,13 +9,6 @@ import { AlertCircle } from "lucide-react";
 import { useUpdateUser } from '../services/userService';
 import { PerfilSkeleton } from "@/components/perfilSkeleton";
 
-interface UserProfileData {
-    nome: string;
-    login: string;
-    ra: string;
-    curso?: string;
-    periodo?: string;
-}
 
 function Profile() {
     const { user, loading, update, role } = useAuth();
@@ -66,12 +59,15 @@ function Profile() {
     const handleSave = async () => {
         setErrosPerfil({});
 
-        const validacao = profileSchema.safeParse({
+        const dadosParaValidar = {
             nome: formData.nome,
-            curso: formData.curso,
-            periodo: formData.periodo
-        });
+            ...(role === 'student' && {
+                curso: formData.curso,
+                periodo: formData.periodo,
+            }),
+        };
 
+        const validacao = profileSchema.safeParse(dadosParaValidar);
         if (!validacao.success) {
             const erros: Record<string, string> = {};
             validacao.error.issues.forEach((issue) => {
@@ -89,13 +85,13 @@ function Profile() {
             email: formData.login,
             ...(role === 'student' && {
                 curso: formData.curso,
-                periodo: formData.periodo
-            })
+                periodo: String(formData.periodo),
+            }),
         };
 
         updateMutation.mutate({
             dados: dadosParaAtualizar,
-            role
+            role: role,
         });
     };
 
@@ -229,25 +225,33 @@ function Profile() {
 
                             {role === 'student' && (<div>
                                 <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
-                                <select
-                                    id="curso"
-                                    name="curso"
-                                    value={formData.curso}
-                                    onChange={handleChange}
-                                    disabled={!isEditing}
-                                    className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
-                                        ${!isEditing
-                                            ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
-                                            : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
-                                        }`}
-                                >
-                                    <option value="" disabled={!!formData.curso}>Nenhum curso associado, selecione um curso</option>
-                                    {CURSOS_DISPONIVEIS.map((curso) => (
-                                        <option key={curso} value={curso}>
-                                            {curso}
+                                {!isEditing ? (
+                                    <input
+                                        id="curso"
+                                        name="curso"
+                                        type="text"
+                                        readOnly
+                                        value={formData.curso || 'Nenhum curso associado'}
+                                        className="border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200"
+                                    />
+                                ) : (
+                                    <select
+                                        id="curso"
+                                        name="curso"
+                                        value={formData.curso}
+                                        onChange={handleChange}
+                                        className="border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10"
+                                    >
+                                        <option value="" disabled={!!formData.curso}>
+                                            Nenhum curso associado,Selecione um curso
                                         </option>
-                                    ))}
-                                </select>
+                                        {CURSOS_DISPONIVEIS.map((curso) => (
+                                            <option key={curso} value={curso}>
+                                                {curso}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
 
                                 {errosPerfil.curso && (
                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">

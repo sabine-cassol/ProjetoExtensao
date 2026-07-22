@@ -9,7 +9,7 @@ export interface CriarUsuarioPayload {
   senha: string;
   ra: string;
   curso: string;
-  periodo: string;
+  periodo: string | number;
 }
 
 export interface Usuario {
@@ -17,7 +17,7 @@ export interface Usuario {
   nome?: string;
   email?: string;
   curso?: string;
-  periodo?: string;
+  periodo?: string | number;
   ra?: string;
 }
 
@@ -57,7 +57,9 @@ export const userService = {
   },
 
   update: async ({ dados, role }: AtualizarUsuarioPayload): Promise<Usuario> => {
-    const rotaMe = role === 'teacher' ? '/professores/atualizar' : '/alunos/atualizar';
+    const isTeacher = role?.toLowerCase() === 'teacher' || role?.toLowerCase() === 'professor';
+    
+    const rotaMe = isTeacher ? '/professores/atualizar' : '/alunos/atualizar'
 
     const response = await fetch(`${API_URL}${rotaMe}`, {
       method: 'PUT',
@@ -71,7 +73,6 @@ export const userService = {
     const dadosResposta = await response.json().catch(() => null);
 
     if (!response.ok) {
-      console.error("❌ Detalhes do erro vindos da API:", dadosResposta);
       throw new Error(dadosResposta?.mensagem || `Erro na API: ${response.status}`);
     }
 
