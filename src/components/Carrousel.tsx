@@ -11,7 +11,7 @@ import 'swiper/swiper-bundle.css';
 import 'swiper/css/pagination';
 
 function Carrousel() {
-        const { data: noticias, isLoading, error } = useQuery<Noticia[]>({
+    const { data: noticias, isLoading, error } = useQuery<Noticia[]>({
         queryKey: ['noticias'],
         queryFn: async () => {
             const res = await fetch('/api/noticias/todas');
@@ -23,8 +23,47 @@ function Carrousel() {
         }
     });
 
-    if (isLoading || error || !noticias || noticias.length === 0) {
-        return null; 
+    if (isLoading) {
+        return (
+            <section>
+                <div className="w-full max-w-full overflow-hidden">
+                    <div className="w-full border border-zinc-300 dark:border-zinc-800 bg-card mt-2 relative rounded-md overflow-hidden animate-pulse">
+
+                        <div className="absolute z-20 top-3 left-4 h-7 w-28 bg-zinc-300 dark:bg-zinc-700 rounded" />
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+
+                            <div className="w-full aspect-video bg-zinc-200 dark:bg-zinc-800 relative flex items-end p-4 border-b md:border-b-0 md:border-r border-zinc-300 dark:border-zinc-700">
+
+                                <div className="w-full space-y-2">
+                                    <div className="h-5 bg-zinc-300 dark:bg-zinc-700 rounded w-3/4" />
+                                </div>
+                            </div>
+
+                            <div className="hidden md:flex w-full aspect-video bg-zinc-200 dark:bg-zinc-800 relative items-end p-4">
+                                <div className="w-full space-y-2">
+                                    <div className="h-5 bg-zinc-300 dark:bg-zinc-700 rounded w-2/3" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-zinc-400 dark:bg-zinc-600" />
+                            <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                            <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                        </div>
+
+                        <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 bg-zinc-300 dark:bg-zinc-700 w-8 h-8 md:w-10 md:h-10 rounded-full" />
+                        <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 bg-zinc-300 dark:bg-zinc-700 w-8 h-8 md:w-10 md:h-10 rounded-full" />
+
+                    </div>
+                </div>
+            </section>
+        )
+    }
+    if (error || !noticias || noticias.length === 0) {
+        return null;
     }
 
     return (
@@ -70,7 +109,7 @@ function Carrousel() {
                                 }}
                                 className="w-full"
                             >
-                                {noticias.slice(0,7).map((noticia) => (
+                                {noticias.slice(0, 7).map((noticia) => (
                                     <SwiperSlide key={noticia.id} style={{ minWidth: 0 }}>
                                         <Link to={`/Notícias/${noticia.id}`} className="block w-full aspect-video relative group overflow-hidden">
                                             <div className="flex w-full h-full items-center justify-center bg-muted text-foreground border-zinc-400 md:border-r md:last:border-r-0 select-none">
