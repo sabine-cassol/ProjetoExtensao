@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { NoticiasSkeleton } from '@/components/noticiasSkeleton';
 import Erro from '@/components/Error';
 import { useNoticias } from '@/services/noticiaService';
+import { User } from 'lucide-react';
 
 function News() {
     const { role } = useAuth();
@@ -25,7 +26,6 @@ function News() {
     if (error) {
         return <Erro tipo='Notícia' mensagem='Houve um erro ao carregar as notícias'></Erro>
     }
-
 
     return (
         <>
@@ -54,7 +54,15 @@ function News() {
                                         </div>
                                         <div>
                                             <h2 className="text-[1.30rem] font-bold text-cyan-950 mb-2">{noticia.titulo}</h2>
-                                            <span className="text-xs text-zinc-400 font-medium block mb-2">{new Date(noticia.createdAt).toLocaleDateString('pt-BR')}</span>
+                                            <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium mb-1">
+                                                <span>
+                                                    {new Date(noticia.createdAt).toLocaleDateString('pt-BR')}
+                                                </span>
+                                                <span className="text-zinc-400 dark:text-zinc-700">•</span>
+                                                <span>
+                                                    {noticia.autor?.nome ?? 'autor desconhecido'}
+                                                </span>
+                                            </div>
                                             <p className="text-zinc-600 text-sm mb-4 line-clamp-3 md:line-clamp-2 ">{noticia.resumo}</p>
                                         </div>
                                     </Link>
