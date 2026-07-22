@@ -12,7 +12,7 @@ export const loginSchema = z.object({
         .email('Digite um email válido'),
     password: z
         .string()
-        .min(1, 'Senha é obrigatória')
+        .min(6, 'A senha deve conter no mínimo 6 caracteres')
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
@@ -31,12 +31,20 @@ export const registerSchema = z
             .string()
             .min(1, 'RA é obrigatório')
             .regex(/^\d{8}-\d$/, 'RA deve estar no formato correto'),
+        confirmRegRA: z
+            .string()
+            .min(1, 'Confirmação do RA é obrigatória')
+            .regex(/^\d{8}-\d$/, 'RA deve estar no formato correto'),
         regPassword: z
             .string()
-            .min(8, 'Senha deve ter pelo menos 8 caracteres'),
+            .min(6, 'Senha deve ter pelo menos 8 caracteres'),
         regConfirmPassword: z
             .string()
             .min(1, 'Confirme sua senha')
+    })
+    .refine((data) => data.regRA === data.confirmRegRA, {
+        message: 'Os RAs digitados não coincidem',
+        path: ['RegRAConfirm'], 
     })
     .refine((dados) => dados.regPassword === dados.regConfirmPassword, {
         message: 'As senhas não coincidem',
@@ -107,7 +115,7 @@ export const noticiaSchema = z.object({
         })
         .refine((val) => {
             const textoLimpo = val.replace(/<[^>]*>/g, '').trim();
-            return textoLimpo.length >= 10; 
+            return textoLimpo.length >= 10;
         }, {
             message: 'O conteúdo deve conter no mínimo 10 caracteres de texto'
         }),

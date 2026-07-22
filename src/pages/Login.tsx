@@ -27,10 +27,11 @@ function Login() {
     const [regEmail, setRegEmail] = useState('');
     const [regName, setRegName] = useState('');
     const [regRA, setRegRA] = useState('');
+    const [RegRAConfirm, setRegRAConfirm] = useState('');
     const [regPassword, setRegPassword] = useState('');
     const [regConfirmPassword, setRegConfirmPassword] = useState('');
     const [erroRegister, setErroRegister] = useState('');
-    const [erroLogin, setErroLogin] = useState<string | null>(null);
+    const [erros, setErros] = useState<{ login?: string; password?: string; perfil?: string }>({});
     const [errosRegister, setErrosRegister] = useState<Record<string, string>>({});
     const createUserMutation = useCreateUser({
         onSuccessCallback: () => setActiveScreen('login')
@@ -50,19 +51,31 @@ function Login() {
         setRegRA(formatarRA(e.target.value));
     };
 
+    const handleRAConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRegRAConfirm(formatarRA(e.target.value));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setErroLogin(null);
+        setErros({});
         if (!userRole) {
-            console.error("Nenhum perfil (aluno/professor) foi selecionado.");
+            setErros(prev => ({ ...prev, perfil: "Selecione um perfil antes de continuar." }));
             return;
         }
 
         const validacao = loginSchema.safeParse({ login, password });
 
         if (!validacao.success) {
-            const primeiroErro = validacao.error.issues[0];
-            setErroLogin(primeiroErro.message);
+            const novosErros: { login?: string; password?: string } = {};
+
+            validacao.error.issues.forEach((issue) => {
+                const campo = issue.path[0] as 'login' | 'password';
+                if (!novosErros[campo]) {
+                    novosErros[campo] = issue.message;
+                }
+            });
+
+            setErros(novosErros);
             return;
         }
 
@@ -91,6 +104,7 @@ function Login() {
             regEmail,
             regName,
             regRA,
+            confirmRegRA: RegRAConfirm,
             regPassword,
             regConfirmPassword
         });
@@ -105,8 +119,9 @@ function Login() {
             });
             setErrosRegister(erros);
 
-            if (erros.regEmail || erros.regName || erros.regRA) {
+            if (erros.regEmail || erros.regName || erros.regRA || erros.RegRAConfirm) {
                 setActiveScreen('register');
+                console.log(erros)
             } else {
                 setActiveScreen('register1');
             }
@@ -116,7 +131,7 @@ function Login() {
         const requestBody = {
             email: regEmail.trim(),
             nome: regName.trim(),
-            senha: regConfirmPassword.trim(),
+            senha: regPassword.trim(),
             ra: regRA.trim(),
             curso: '',
             periodo: '',
@@ -210,12 +225,12 @@ function Login() {
                                 <div className="flex flex-col items-center gap-5 ">
                                     <img src={logo1} alt="logo1" className="size-18" />
                                     <h1 className="font-bold text-3xl text-(#005387cc)"> Entrar na sua conta</h1>
-                                    {(erroLogin || erroAuth) && (
+                                    {(erroAuth) && (
                                         <div className="bg-red-100 border border-red-300 px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit dark:bg-red-950/30 dark:border-red-900/50 transition-colors">
                                             <div className="flex items-center gap-2 text-red-700 font-medium text-sm dark:text-red-400">
                                                 <AlertCircle size={16} className='shrink-0' />
                                                 <p className="wrap-break-word">
-                                                    {erroLogin || 'Ocorreu um erro'}
+                                                    {'Ocorreu um erro'}
                                                 </p>
                                             </div>
                                         </div>
@@ -229,6 +244,16 @@ function Login() {
                                             <div className="absolute inset-y-0 right-0 hidden items-center pr-3 pointer-events-none text-destructive [input:invalid:not(:placeholder-shown)~&]:flex [form:submitted_&]:flex">
                                                 <XCircle className="size-4" />
                                             </div>
+                                            {erros.login && (
+                                                <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                    <div className='flex flex-row gap-1 items-center'>
+                                                        <AlertCircle className="size-3.5 shrink-0" />
+                                                        <span className="text-xs font-medium tracking-wide">
+                                                            {erros.login}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                         <label htmlFor="login" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none ">Digite sua senha</label>
                                         <div className="relative mb-2">
@@ -241,6 +266,16 @@ function Login() {
                                                 )}
                                             </button>
                                         </div>
+                                        {erros.password && (
+                                            <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                <div className='flex flex-row gap-1 items-center'>
+                                                    <AlertCircle className="size-3.5 shrink-0" />
+                                                    <span className="text-xs font-medium tracking-wide">
+                                                        {erros.password}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div className="mt-4 flex items-center justify-center gap-2 ">
                                             <button onClick={() => setActiveScreen('selectRole')} className="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-400 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[0px_4px_0px_0px_rgba(0,0,0,0.4)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
@@ -313,7 +348,7 @@ function Login() {
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="regRA" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">RA</label>
-                                                <input id="regRA" required value={regRA} onChange={handleRAChange} type="text" maxLength={10} placeholder="seu nome RA" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regRA"></input>
+                                                <input id="regRA" required value={regRA} onChange={handleRAChange} type="text" maxLength={10} placeholder="digite seu RA" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" max="254" autoComplete="off" name="regRA"></input>
                                                 {errosRegister.regRA && (<div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
                                                         <AlertCircle className="size-3.5 shrink-0" />
@@ -322,6 +357,18 @@ function Login() {
                                                         </span>
                                                     </div>
                                                 </div>)}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <label htmlFor="RegRAConfirm" className="mb-4 flex select-none items-center gap-2 font-bold text-sm leading-none">Confirme seu RA</label>
+                                                <input id="RegRAConfirm" required value={RegRAConfirm} onChange={handleRAConfirmChange} type="text" maxLength={10} placeholder="Confirme seu RA" className="flex h-9 w-full min-w-0 border px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow,border] selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground md:text-sm bg-input/30 border-zinc-300 rounded-md focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive" autoComplete="off" name="RegRAConfirm"/>
+                                                {errosRegister.regRAConfirm && (
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">{errosRegister.regRAConfirm}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className='flex justify-center gap-2 pt-4 p-1 overflow-visible'>
                                                 <button type='button' onClick={() => setActiveScreen('login')} className="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-zinc-400 font-bold text-sm outline-none transition-all duration-300 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-background hover:bg-zinc-100 hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 hover:translate-y-px hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-0.75 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[0px_4px_0px_0px_rgba(0,0,0,0.4)] dark:active:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.4)] dark:hover:shadow-[0px_2px_0px_0px_rgba(0,0,0,0.4)]">
