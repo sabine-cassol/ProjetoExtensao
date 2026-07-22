@@ -3,7 +3,7 @@ import { useState } from 'react'
 // import { PROJECTS } from '@/data/Projects.ts'
 import { useAuth } from '@/context/AuthContext.tsx'
 import { Link } from 'react-router-dom'
-import { type Projeto } from '@/data/Projects.ts'
+import { type Projeto } from '@/data/ProjectType.ts'
 import { Pencil, Trash, RotateCcw, AlertCircle } from 'lucide-react'
 import Erro from '../components/Error.tsx'
 import { toast } from "sonner"
@@ -13,6 +13,12 @@ import { useProjetoMutations } from '@/services/projetoService';
 import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesService'
+
+function formatarPeriodo(inicio: string | null, fim: string | null): string {
+    if (!inicio || !fim) return '-';
+    const formatarData = (iso: string) => new Date(iso).toLocaleDateString('pt-BR');
+    return `${formatarData(inicio)} a ${formatarData(fim)}`;
+}
 
 
 function ProjectDetail() {
@@ -29,15 +35,16 @@ function ProjectDetail() {
     const inscreverMutation = useInscreverProjeto(projetoId!, user?.id);
     const jaInscrito = minhasInscricoes?.some((inscricao: any) => String(inscricao.projetoId) === String(projetoId));
     const { atualizarMutation, deletarMutation, ativarMutation } = useProjetoMutations(projetoId!, setIsEditing);
+    const ehResponsavel = role === 'teacher' && !!user?.id && projeto?.professorId === Number(user.id);
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
 
     const handleStartEditing = () => {
-        if (role === "teacher") {
+        if (ehResponsavel) {
             setEditForm(projeto);
             setIsEditing(true);
         } else {
-            console.log("Você nao tem permissão para editar");
+            console.log("Você não tem permissão para editar");
         }
     };
     const handleChange = (name: keyof Projeto, value: string) => {
@@ -74,8 +81,6 @@ function ProjectDetail() {
         // );
 
         setIsEditing(false);
-
-        toast.success("Projeto atualizado com sucesso!");
         atualizarMutation.mutate(editForm);
     };
 
@@ -114,7 +119,7 @@ function ProjectDetail() {
         <>
             <main className="flex-1 bg-zinc-50/50">
                 <section className="cursor-default">
-                    {role === 'teacher' && (<section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
+                    {ehResponsavel && (<section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
                         {!isEditing ? (
                             <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-sm'>
                                 <button onClick={handleStartEditing} className='cursor-pointer border-r border-zinc-300 bg-white rounded-l-sm p-2 hover:bg-slate-50' title='Editar Projeto'>
@@ -479,52 +484,75 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Período de Inscrição</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
+                                                    <input
+                                                        type="date"
+                                                        value={editForm?.periodoInscricaoInicio || ''}
+                                                        onChange={(e) => handleChange('periodoInscricaoInicio', e.target.value)}
+                                                        className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
+                                                    />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
+                                                    <input
+                                                        type="date"
+                                                        value={editForm?.periodoInscricaoFim || ''}
+                                                        onChange={(e) => handleChange('periodoInscricaoFim', e.target.value)}
+                                                        className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
+                                                    />
                                                 </div>
-                                                {errosProjeto.periodoInscricao && (
+                                                {errosProjeto.periodoInscricaoInicio && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
                                                             <AlertCircle className="size-3.5 shrink-0" />
                                                             <span className="text-xs font-medium tracking-wide">
-                                                                {errosProjeto.periodoInscricao}
+                                                                {errosProjeto.periodoInscricaoInicio}
                                                             </span>
                                                         </div>
                                                     </div>
                                                 )}
                                             </td>
                                         ) : (
-                                            <td className="px-3 py-2 text-justify ">{projeto.periodoInscricao}</td>
+                                            <td className="px-3 py-2 text-justify">
+                                                {formatarPeriodo(projeto.periodoInscricaoInicio, projeto.periodoInscricaoFim)}
+                                            </td>
                                         )}
-
                                     </tr>
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Período de Execução</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
+                                                    <input
+                                                        type="date"
+                                                        value={editForm?.periodoExecucaoInicio || ''}
+                                                        onChange={(e) => handleChange('periodoExecucaoInicio', e.target.value)}
+                                                        className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
+                                                    />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
-                                                    <input type="date" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0" />
-                                                    {errosProjeto.periodoExecucao && (
-                                                        <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
-                                                            <div className='flex flex-row gap-1 items-center'>
-                                                                <AlertCircle className="size-3.5 shrink-0" />
-                                                                <span className="text-xs font-medium tracking-wide">
-                                                                    {errosProjeto.periodoExecucao}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    )}
+                                                    <input
+                                                        type="date"
+                                                        value={editForm?.periodoExecucaoFim || ''}
+                                                        onChange={(e) => handleChange('periodoExecucaoFim', e.target.value)}
+                                                        className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
+                                                    />
                                                 </div>
+                                                {errosProjeto.periodoExecucaoInicio && (
+                                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
+                                                        <div className='flex flex-row gap-1 items-center'>
+                                                            <AlertCircle className="size-3.5 shrink-0" />
+                                                            <span className="text-xs font-medium tracking-wide">
+                                                                {errosProjeto.periodoExecucaoInicio}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </td>
                                         ) : (
-                                            <td className="px-3 py-2 text-justify ">{projeto.periodoExecucao}</td>
+                                            <td className="px-3 py-2 text-justify">
+                                                {formatarPeriodo(projeto.periodoExecucaoInicio, projeto.periodoExecucaoFim)}
+                                            </td>
                                         )}
                                     </tr>
                                 </tbody>

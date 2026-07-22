@@ -20,8 +20,10 @@ export interface Projeto {
     eixo: string;
     ciclo: string;
     numEncontros: string;
-    periodoInscricao: string;
-    periodoExecucao: string
+    periodoInscricaoInicio: string | null;
+    periodoInscricaoFim: string | null;
+    periodoExecucaoInicio: string | null;
+    periodoExecucaoFim: string | null;
     ativo: boolean;
     professorId: number;
     professor: {

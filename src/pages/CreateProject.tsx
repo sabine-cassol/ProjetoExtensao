@@ -5,31 +5,8 @@ import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { AlertCircle } from 'lucide-react';
-import { projetoService } from '@/services/projetoService';
-import { useCriarProjeto } from '@/services/projetoService';
+import { projetoService, type NovoProjeto } from '@/services/projetoService';
 
-interface NovoProjeto {
-    titulo: string;
-    tipo: string;
-    unidade: string;
-    cargaHoraria: string
-    cursosVinculados: string;
-    parceiros: string;
-    colaboradores: string;
-    comunidadeParticipante: string;
-    semestre: string;
-    vagas: string;
-    ods: string;
-    ciclo: string;
-    competencia: string;
-    eixo: string;
-    periodoInscricao: string;
-    periodoExecucao: string;
-    justificativa: string;
-    pretensao: string;
-    requisitos: string;
-    professorId: string;
-}
 
 function ProjectDetail() {
     const { user } = useAuth();
@@ -51,8 +28,10 @@ function ProjectDetail() {
         ciclo: '',
         competencia: '',
         eixo: '',
-        periodoInscricao: '',
-        periodoExecucao: '',
+        periodoInscricaoInicio: '',
+        periodoInscricaoFim: '',
+        periodoExecucaoInicio: '',
+        periodoExecucaoFim: '',
         justificativa: '',
         pretensao: '',
         requisitos: ''
@@ -99,12 +78,9 @@ function ProjectDetail() {
             console.log("Campos com erro de validação:", errosFormatados);
 
             setErrosProjeto(errosFormatados);
-            return; 
+            return;
         }
-        criarMutation.mutate({
-            ...form,
-            professorId: user.id
-        });
+        criarMutation.mutate(form);
     };
 
     return (
@@ -195,7 +171,7 @@ function ProjectDetail() {
                                                     <div className='flex flex-row gap-1 items-center'>
                                                         <AlertCircle className="size-3.5 shrink-0" />
                                                         <span className="text-xs font-medium tracking-wide">
-                                                            {errosProjeto.cursorVinculados}
+                                                            {errosProjeto.cursosVinculados}
                                                         </span>
                                                     </div>
                                                 </div>

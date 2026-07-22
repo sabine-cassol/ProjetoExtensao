@@ -2,7 +2,7 @@ import { type Projeto } from "@/data/ProjectType";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner'; 
+import { toast } from 'sonner';
 
 export interface NovoProjeto {
     titulo: string;
@@ -19,8 +19,10 @@ export interface NovoProjeto {
     ciclo: string;
     competencia: string;
     eixo: string;
-    periodoInscricao: string;
-    periodoExecucao: string;
+    periodoInscricaoInicio: string,
+    periodoInscricaoFim: string,
+    periodoExecucaoInicio: string,
+    periodoExecucaoFim: string,
     justificativa: string;
     pretensao: string;
     requisitos: string;
@@ -28,7 +30,7 @@ export interface NovoProjeto {
 
 export const projetoService = {
     async criar(dados: NovoProjeto): Promise<Projeto> {
-        const res = await fetch(`api/projetos`, {
+        const res = await fetch(`/api/projetos`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -118,28 +120,28 @@ export function useProjetos() {
 }
 
 export function useCriarProjeto(onSuccessCallback?: () => void) {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
-  return useMutation({
-    mutationFn: (dados: NovoProjeto) => projetoService.criar(dados),
-    onSuccess: (projetoCriado) => {
-      // Invalida a lista para buscar os dados atualizados
-      queryClient.invalidateQueries({ queryKey: ['projetos'] });
-      
-      toast.success("Projeto criado com sucesso!");
+    return useMutation({
+        mutationFn: (dados: NovoProjeto) => projetoService.criar(dados),
+        onSuccess: (projetoCriado) => {
+            // Invalida a lista para buscar os dados atualizados
+            queryClient.invalidateQueries({ queryKey: ['projetos'] });
 
-      if (onSuccessCallback) {
-        onSuccessCallback();
-      }
+            toast.success("Projeto criado com sucesso!");
 
-      // Redireciona para a tela do projeto recém-criado
-      navigate(`/Projetos/${projetoCriado.id}`);
-    },
-    onError: (erro: Error) => {
-      toast.error(erro.message || "Erro ao criar projeto");
-    }
-  });
+            if (onSuccessCallback) {
+                onSuccessCallback();
+            }
+
+            // Redireciona para a tela do projeto recém-criado
+            navigate(`/Projetos/${projetoCriado.id}`);
+        },
+        onError: (erro: Error) => {
+            toast.error(erro.message || "Erro ao criar projeto");
+        }
+    });
 }
 
 export function useProjetoMutations(projetoId: string, setIsEditing?: (value: boolean) => void) {

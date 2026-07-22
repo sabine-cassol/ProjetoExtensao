@@ -185,7 +185,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
     }
 
     return (
-        <section className='mt-6'>
+        <section className='mt-6 border border-zinc-300 p-4 rounded-md'>
             <span className='font-bold text-lg font-segoe'> Atividades </span>
 
             {atividades?.length === 0 && !isCriando && (

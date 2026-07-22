@@ -44,7 +44,7 @@ export const registerSchema = z
     })
     .refine((data) => data.regRA === data.confirmRegRA, {
         message: 'Os RAs digitados não coincidem',
-        path: ['RegRAConfirm'], 
+        path: ['RegRAConfirm'],
     })
     .refine((dados) => dados.regPassword === dados.regConfirmPassword, {
         message: 'As senhas não coincidem',
@@ -193,6 +193,10 @@ export const projetoSchema = z.object({
         .refine((arr) => arr.length > 0, {
             message: "Digite semestres válidos separados por vírgula (ex: 1, 2, 3)",
         }),
+    periodoInscricaoInicio: z.string().min(1, 'Data de início da inscrição é obrigatória'),
+    periodoInscricaoFim: z.string().min(1, 'Data de fim da inscrição é obrigatória'),
+    periodoExecucaoInicio: z.string().min(1, 'Data de início da execução é obrigatória'),
+    periodoExecucaoFim: z.string().min(1, 'Data de fim da execução é obrigatória'),
     tipo: detalheSchema,
     unidade: detalheSchema,
     cursosVinculados: detalheSchema,
