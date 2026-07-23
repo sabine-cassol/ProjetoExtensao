@@ -1,6 +1,8 @@
 export default (projetoRepository) => {
     return {
         async criarProjeto(dados, professorLogadoId) {
+            validarPeriodos(dados);
+
             return projetoRepository.criarProjeto({
                 ...dados,
                 professorId: professorLogadoId
@@ -27,6 +29,9 @@ export default (projetoRepository) => {
             if (projeto.professorId !== professorLogadoId) {
                 throw new Error("Você não tem permissão para editar este projeto");
             }
+
+            validarPeriodos({ ...projeto.toJSON(), ...dados });
+
             const projetoAtualizado = await projetoRepository.atualizarProjeto(id, dados);
             return projetoAtualizado;
         },
@@ -49,6 +54,20 @@ export default (projetoRepository) => {
                 throw new Error("Você não tem permissão para ativar este projeto");
             }
             return projetoRepository.atualizarProjeto(id, { ativo: true });
+        }
+    }
+}
+
+function validarPeriodos(dados) {
+    if (dados.periodoInscricaoInicio && dados.periodoInscricaoFim) {
+        if (dados.periodoInscricaoInicio > dados.periodoInscricaoFim) {
+            throw new Error("A data de início da inscrição não pode ser depois da data de fim");
+        }
+    }
+
+    if (dados.periodoExecucaoInicio && dados.periodoExecucaoFim) {
+        if (dados.periodoExecucaoInicio > dados.periodoExecucaoFim) {
+            throw new Error("A data de início da execução não pode ser depois da data de fim");
         }
     }
 }

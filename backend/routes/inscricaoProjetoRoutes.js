@@ -1,13 +1,15 @@
 import express from "express";
-import {Inscricao_projeto} from "../models/index.js";
+import { Inscricao_projeto, Projeto_extensao } from "../models/index.js";
 import inscricaoProjetoRepository from "../repositories/inscricaoProjetoRepository.js";
+import projetoRepository from "../repositories/projetoRepository.js";
 import inscricaoProjetoService from "../services/inscricaoProjetoService.js";
 import inscricaoProjetoController from "../controllers/inscricaoProjetoController.js";
 import autenticar from "../middlewares/autenticar.js";
 import autorizar from "../middlewares/autorizar.js";
 
 const repository = inscricaoProjetoRepository(Inscricao_projeto);
-const service = inscricaoProjetoService(repository);
+const repositoryProjeto = projetoRepository(Projeto_extensao);
+const service = inscricaoProjetoService(repository, repositoryProjeto);
 const controller = inscricaoProjetoController(service);
 
 const router = express.Router();
