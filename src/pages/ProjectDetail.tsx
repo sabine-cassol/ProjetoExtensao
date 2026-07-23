@@ -14,6 +14,9 @@ import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesService'
 import { useNavigate } from 'react-router-dom'
+import SeletorPeriodos from '@/components/SeletorPeriodos';
+import { SeletorCursos } from '@/components/SeletorCursos';
+
 
 function formatarPeriodo(inicio: string | null, fim: string | null): string {
     if (!inicio || !fim) return '-';
@@ -21,6 +24,13 @@ function formatarPeriodo(inicio: string | null, fim: string | null): string {
     return `${formatarData(inicio)} a ${formatarData(fim)}`;
 }
 
+function obterDataLocalHoje(): string {
+    const agora = new Date();
+    const ano = agora.getFullYear();
+    const mes = String(agora.getMonth() + 1).padStart(2, '0');
+    const dia = String(agora.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+}
 
 function ProjectDetail() {
     const { projetoId } = useParams<{ projetoId: string }>();
@@ -94,14 +104,14 @@ function ProjectDetail() {
         deletarMutation.mutate();
     };
     const handleInscrever = () => {
-        // 1. Checa se o perfil está incompleto
         if (!perfilCompleto) {
             toast.info("Complete seu cadastro (curso e período) para se inscrever no projeto.");
-            navigate('/Perfil'); // <-- Coloque a rota exata da sua página de perfil
+            navigate('/Profile', {
+                state: { motivo: 'Complete seu cadastro (curso e período) para se inscrever em projetos.' }
+            });
             return;
         }
 
-        // 2. Se o perfil estiver OK, executa a mutação original
         inscreverMutation.mutate(undefined, {
             onSuccess: () => {
                 toast.success("Inscrição realizada com sucesso!");
@@ -162,27 +172,37 @@ function ProjectDetail() {
                                 <button onClick={() => handleSaveEdit()} disabled={atualizarMutation.isPending} className="flex-1 px-4 py-1.5 text-sm font-medium text-white bg-[#2ab646] border border-green-500 rounded-lg hover:bg-green-600 active:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"> {atualizarMutation.isPending ? 'Salvando...' : 'Confirmar'} </button>
                             </div>)}
                     </section>)}
-                    {role === 'student' && (
-                        <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
-                            <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
-                                {jaInscrito ? (
-                                    <Link
-                                        to={`/Projetos/${projetoId}/Presença`}
-                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'>
-                                        Registrar presença
-                                    </Link>
-                                ) : (
-                                    <button
-                                        onClick={handleInscrever}
-                                        disabled={inscreverMutation.isPending}
-                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'
-                                    >
-                                        {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
-                                    </button>
-                                )}
-                            </div>
-                        </section>
-                    )}
+
+                    {role === 'student' && (() => {
+                        const hoje = obterDataLocalHoje();
+                        const dentroDoperiodo = projeto.periodoInscricaoInicio && projeto.periodoInscricaoFim
+                            ? hoje >= projeto.periodoInscricaoInicio && hoje <= projeto.periodoInscricaoFim
+                            : false;
+
+                        return (
+                            <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
+                                <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
+                                    {jaInscrito ? (
+                                        <Link
+                                            to={`/Projetos/${projetoId}/Presença`}
+                                            className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'>
+                                            Registrar presença
+                                        </Link>
+                                    ) : dentroDoperiodo ? (
+                                        <button
+                                            onClick={handleInscrever}
+                                            disabled={inscreverMutation.isPending}
+                                            className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'
+                                        >
+                                            {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
+                                        </button>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </div>
+                            </section>
+                        );
+                    })()}
 
                     <div className='bg-white border border-zinc-300 p-4'>
 
@@ -287,7 +307,11 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.cursosVinculados || ''} onChange={(e) => handleChange('cursosVinculados', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <SeletorCursos
+                                                    value={editForm?.cursosVinculados || ''}
+                                                    onChange={(novoValor) => handleChange('cursosVinculados', novoValor)}
+                                                />
+
                                                 {errosProjeto.cursosVinculados && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -371,7 +395,11 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Semestre</td>
                                         {isEditing && role === 'teacher' ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.semestre || ''} onChange={(e) => handleChange('semestre', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <SeletorPeriodos
+                                                    value={editForm?.semestre || ''}
+                                                    onChange={(novoValor) => handleChange('semestre', novoValor)}
+                                                />
+
                                                 {errosProjeto.semestre && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>

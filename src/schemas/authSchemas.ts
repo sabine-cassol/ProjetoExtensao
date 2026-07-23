@@ -246,12 +246,13 @@ export const projetoSchema = z.object({
         .transform((val) =>
             val
                 .split(",")
-                .map((item) => Number(item.trim()))
+                .map((item) => Number(item.trim().replace('º', '')))
                 .filter((num) => !isNaN(num) && num > 0)
         )
         .refine((arr) => arr.length > 0, {
-            message: "Digite semestres válidos separados por vírgula (ex: 1, 2, 3)",
+            message: "Selecione ao menos um período",
         }),
+        
     periodoInscricaoInicio: z.string().min(1, 'Data de início da inscrição é obrigatória'),
     periodoInscricaoFim: z.string().min(1, 'Data de fim da inscrição é obrigatória'),
     periodoExecucaoInicio: z.string().min(1, 'Data de início da execução é obrigatória'),
@@ -270,5 +271,26 @@ export const projetoSchema = z.object({
     pretensao: paragrafoSchema,
     requisitos: paragrafoSchema
 })
+    .superRefine((dados, ctx) => {
+        if (dados.periodoInscricaoInicio && dados.periodoInscricaoFim) {
+            if (dados.periodoInscricaoInicio > dados.periodoInscricaoFim) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Data de início não pode ser depois da data de fim',
+                    path: ['periodoInscricaoFim']
+                });
+            }
+        }
+
+        if (dados.periodoExecucaoInicio && dados.periodoExecucaoFim) {
+            if (dados.periodoExecucaoInicio > dados.periodoExecucaoFim) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Data de início não pode ser depois da data de fim',
+                    path: ['periodoExecucaoFim']
+                });
+            }
+        }
+    });
 
 export type ProjetoFormData = z.infer<typeof projetoSchema>;

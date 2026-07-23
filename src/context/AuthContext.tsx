@@ -98,7 +98,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [url]);
 
 
-
   // login sem api
   // const loginAction = async (loginField: string, passwordField: string): Promise<boolean> => {
   //   setLoading(true);

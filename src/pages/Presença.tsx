@@ -65,11 +65,8 @@ export default function Presença() {
 
     const estaTrabalhando = !!presencaAberta;
     const saidaBtnBlock = estaTrabalhando && segundos < TEMPO_MINIMO;
-
-    const numEncontros = Number(projetoAtual?.numEncontros);
-    const cargaHoraria = Number(projetoAtual?.cargaHoraria);
-    const TEMPO_MAXIMO = projetoAtual && numEncontros
-        ? (cargaHoraria / numEncontros) * 3600
+    const TEMPO_MAXIMO = atividadeHoje
+        ? Number(atividadeHoje.cargaHoraria) * 3600
         : 4 * 3600;
 
     useEffect(() => {

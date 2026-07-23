@@ -10,6 +10,7 @@ import { useUpdateUser } from '../services/userService';
 import { PerfilSkeleton } from "@/components/perfilSkeleton";
 import { Link } from 'react-router-dom';
 import { Lock } from 'lucide-react';
+import { useLocation } from "react-router-dom";
 
 
 function Profile() {
@@ -28,9 +29,12 @@ function Profile() {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+
     const [errosPerfil, setErrosPerfil] = useState<Record<string, string>>({});
     const [errosSenha, setErrosSenha] = useState<Record<string, string>>({});
 
+    const location = useLocation();
+    const motivoRedirecionamento = location.state?.motivo as string | undefined;
 
     const [formData, setFormData] = useState({
         nome: user?.nome ?? '',
@@ -134,8 +138,8 @@ function Profile() {
             return;
         }
 
-        if (password.length < 8) {
-            setError('A senha deve conter no mínimo 8 caracteres.');
+        if (password.length < 6) {
+            setError('A senha deve conter no mínimo 6 caracteres.');
             toast.error('A senha é muito curta.');
             return;
         }
@@ -177,6 +181,13 @@ function Profile() {
             <div className="w-full max-w-2xl rounded-lg bg-white p-6 border border-zinc-300">
 
                 <div className="space-y-6">
+                    {motivoRedirecionamento && (
+                        <div className="bg-amber-50 border border-amber-300 text-amber-800 px-4 py-3 rounded-md flex items-start gap-2">
+                            <AlertCircle className="size-4 mt-0.5 shrink-0" />
+                            <span className="text-sm font-medium">{motivoRedirecionamento}</span>
+                        </div>
+                    )}
+
                     <div>
                         <h1 className="font-bold text-2xl text-zinc-900 tracking-tight">Meu Perfil</h1>
                         <p className="text-sm text-zinc-500 mt-1">Suas informações de cadastro no site.</p>

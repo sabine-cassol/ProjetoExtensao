@@ -6,7 +6,8 @@ import { useAuth } from '@/context/AuthContext';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { AlertCircle } from 'lucide-react';
 import { projetoService, type NovoProjeto } from '@/services/projetoService';
-
+import SeletorPeriodos from '@/components/SeletorPeriodos';
+import { SeletorCursos } from '@/components/SeletorCursos';
 
 function ProjectDetail() {
     const { user } = useAuth();
@@ -36,6 +37,7 @@ function ProjectDetail() {
         pretensao: '',
         requisitos: ''
     });
+
 
     const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
 
@@ -165,7 +167,10 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.cursosVinculados} onChange={(e) => handleChange('cursosVinculados', e.target.value)} placeholder="Ex.: Engenharia de Software, Engeharia Civil, Psicologia, etc." className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <SeletorCursos
+                                                value={form.cursosVinculados}
+                                                onChange={(novoValor) => handleChange('cursosVinculados', novoValor)}
+                                            />
                                             {errosProjeto.cursosVinculados && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -229,7 +234,11 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Semestre</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.semestre} onChange={(e) => handleChange('semestre', e.target.value)} placeholder="Ex.: 4°,5°,6°" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <SeletorPeriodos
+                                                value={form.semestre}
+                                                onChange={(novoValor) => handleChange('semestre', novoValor)}
+                                            />
+
                                             {errosProjeto.semestre && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
