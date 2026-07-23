@@ -6,16 +6,24 @@ import { useAuth } from '@/context/AuthContext';
 import { useProjetos } from '@/services/projetoService';
 import { ProjetosSkeleton } from '@/components/ProjectsSkeleton';
 import Erro from '@/components/Error';
+import { useState } from 'react';
 
 function Projects() {
     const { role } = useAuth();
     const { data: projetos, isLoading, error } = useProjetos();
+    const [paginaAtual, setPaginaAtual] = useState(1);
+
+    const PROJETOS_POR_PAGINA = 15;
+    const totalDePaginas = Math.ceil((projetos?.length ?? 0) / PROJETOS_POR_PAGINA);
+    const indiceFinal = paginaAtual * PROJETOS_POR_PAGINA;
+    const indiceInicial = indiceFinal - PROJETOS_POR_PAGINA;
+    const projetosExibidos = projetos?.slice(indiceInicial, indiceFinal) ?? [];
 
     if (isLoading) {
         return <ProjetosSkeleton></ProjetosSkeleton>
     }
-    
-    if(error){
+
+    if (error) {
         return <Erro tipo='Projeto' mensagem='Houve um erro ao carregar os projetos'></Erro>
     }
 
@@ -61,7 +69,7 @@ function Projects() {
                         </Link>
                     ))} */}
 
-                    {projetos?.map((projeto) => (
+                    {projetosExibidos?.map((projeto) => (
                         <Link to={`/Projetos/${projeto.id}`}>
                             <section key={projeto.id} className="bg-white p-4 rounded-lg border border-zinc-200 hover:border-indigo-200 flex flex-col justify-between transition-all ease-linear  hover:-translate-y-1.5">
                                 <div className='min-w-100'>
@@ -87,6 +95,32 @@ function Projects() {
                         </Link>
                     ))}
                 </div>
+                    {totalDePaginas > 1 && (
+                        <div className="flex items-center justify-center gap-2 mt-8 pt-6">
+                            <button onClick={() => setPaginaAtual((prev) => Math.max(prev - 1, 1))} disabled={paginaAtual === 1} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                                Anterior
+                            </button>
+                            <div className="flex items-center gap-1">
+                                {Array.from({ length: totalDePaginas }, (_, index) => {
+                                    const numeroPagina = index + 1;
+                                    const isAtiva = paginaAtual === numeroPagina;
+                                    return (
+                                        <button key={numeroPagina} onClick={() => setPaginaAtual(numeroPagina)}
+                                            className={`w-9 h-9 text-sm font-semibold rounded-md ${isAtiva
+                                                ? 'bg-cyan-400 text-white'
+                                                : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
+                                                }`}>
+                                            {numeroPagina}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <button onClick={() => setPaginaAtual((prev) => Math.min(prev + 1, totalDePaginas))} disabled={paginaAtual === totalDePaginas} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                                Próxima
+                            </button>
+                        </div>
+                    )}
             </main>
 
         </>
