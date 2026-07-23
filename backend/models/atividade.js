@@ -22,6 +22,19 @@ export default (sequelize) => {
             type: DataTypes.BOOLEAN,
             defaultValue: true
         },
+        latitude: {
+            type: DataTypes.DECIMAL(10, 8),
+            allowNull: true
+        },
+        longitude: {
+            type: DataTypes.DECIMAL(11, 8),
+            allowNull: true
+        },
+        raioMetros: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            defaultValue: 100 // tolerância padrão de 100 metros
+        },
         projetoId: {
             type: DataTypes.INTEGER,
             allowNull: false

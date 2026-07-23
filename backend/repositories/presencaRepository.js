@@ -79,7 +79,7 @@ export default (Presenca) => {
                     {
                         model: Aluno,
                         as: "aluno",
-                        attributes: ['nome', 'ra']
+                        attributes: ['nome', 'ra', 'curso', 'periodo']
                     }
                 ],
                 order: [['dataHoraCheckIn', 'DESC']]

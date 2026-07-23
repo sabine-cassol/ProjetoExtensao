@@ -1,19 +1,46 @@
+import { calcularDistanciaMetros } from '../utils/geolocalizacao.js';
+
 export default (presencaRepository, atividadeRepository, inscricaoRepository, alunoRepository, projetoRepository) => {
     return {
+
         async registrarCheckIn(alunoId, dados) {
             const atividade = await atividadeRepository.buscarPorId(dados.atividadeId);
             if (atividade === null) {
                 throw new Error("Atividade não encontrada");
             }
 
-            const hoje = new Date().toISOString().split('T')[0];
-            const dataAtividade = new Date(atividade.data).toISOString().split('T')[0];
+            const dataAtividade = atividade.data;
+            const agora = new Date();
+            const ano = agora.getFullYear();
+            const mes = String(agora.getMonth() + 1).padStart(2, '0');
+            const dia = String(agora.getDate()).padStart(2, '0');
+            const hoje = `${ano}-${mes}-${dia}`;
+
             if (dataAtividade !== hoje) {
                 throw new Error("Check-in só pode ser feito na data da atividade");
             }
 
-            if (atividade.exigeLocalizacao && !dados.localizacaoCheckIn) {
-                throw new Error("Esta atividade exige localização para o check-in");
+            if (atividade.exigeLocalizacao) {
+                if (!dados.latitude || !dados.longitude) {
+                    throw new Error("Esta atividade exige localização para o check-in");
+                }
+
+                if (atividade.latitude && atividade.longitude) {
+                    const distancia = calcularDistanciaMetros(
+                        Number(atividade.latitude),
+                        Number(atividade.longitude),
+                        Number(dados.latitude),
+                        Number(dados.longitude)
+                    );
+
+                    const raioPermitido = atividade.raioMetros || 100;
+
+                    if (distancia > raioPermitido) {
+                        throw new Error(
+                            `Você está fora do local do encontro (distância: ${Math.round(distancia)}m, permitido: ${raioPermitido}m)`
+                        );
+                    }
+                }
             }
 
             if (await inscricaoRepository.buscarInscricao(alunoId, atividade.projetoId) === null) {
@@ -26,7 +53,9 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             return presencaRepository.criarCheckIn({
                 alunoId,
                 atividadeId: dados.atividadeId,
-                localizacaoCheckIn: atividade.exigeLocalizacao ? dados.localizacaoCheckIn : null,
+                localizacaoCheckIn: atividade.exigeLocalizacao
+                    ? `${dados.latitude},${dados.longitude}`
+                    : null,
                 dataHoraCheckIn: new Date()
             });
         },

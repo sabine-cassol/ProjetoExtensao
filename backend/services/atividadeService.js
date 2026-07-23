@@ -8,6 +8,29 @@ export default (atividadeRepository, projetoRepository) => {
             if (projeto.professorId !== professorLogadoId) {
                 throw new Error("Você não tem permissão para criar atividades neste projeto");
             }
+
+
+            const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(dados.projetoId);
+            const jaExisteNessaData = atividadesExistentes.some(
+                (a) => a.ativo && a.data === dados.data
+            );
+
+            if (jaExisteNessaData) {
+                throw new Error("Já existe uma atividade cadastrada nesta data para este projeto");
+            }
+
+            const cargaHorariaAtual = atividadesExistentes
+                .filter((a) => a.ativo)
+                .reduce((total, a) => total + Number(a.cargaHoraria), 0);
+
+            const novaCargaTotal = cargaHorariaAtual + Number(dados.cargaHoraria);
+
+            if (novaCargaTotal > Number(projeto.cargaHoraria)) {
+                throw new Error(
+                    `A carga horária total das atividades (${novaCargaTotal}h) ultrapassaria a carga horária do projeto (${projeto.cargaHoraria}h)`
+                );
+            }
+
             return atividadeRepository.criarAtividade(dados);
         },
 
@@ -25,15 +48,13 @@ export default (atividadeRepository, projetoRepository) => {
 
         async listarTodosPorProjeto(projetoId, professorLogadoId) {
             const atividades = await atividadeRepository.listarTodosPorProjeto(projetoId);
-
             const projeto = await projetoRepository.buscarPorId(projetoId);
             const ehResponsavel = projeto && professorLogadoId && projeto.professorId === professorLogadoId;
 
             if (ehResponsavel) {
-                return atividades; 
+                return atividades;
             }
-
-            return atividades.filter((a) => a.ativo); 
+            return atividades.filter((a) => a.ativo);
         },
 
         async atualizarAtividade(id, dados, professorLogadoId) {
@@ -47,6 +68,33 @@ export default (atividadeRepository, projetoRepository) => {
                 throw new Error("Você não tem permissão para editar esta atividade");
             }
 
+            if (dados.data !== undefined && dados.data !== atividade.data) {
+                const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(atividade.projetoId);
+                const jaExisteNessaData = atividadesExistentes.some(
+                    (a) => a.ativo && a.id !== id && a.data === dados.data
+                );
+
+                if (jaExisteNessaData) {
+                    throw new Error("Já existe uma atividade cadastrada nesta data para este projeto");
+                }
+            }
+
+            // Se a carga horária está sendo alterada, valida o limite
+            if (dados.cargaHoraria !== undefined) {
+                const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(atividade.projetoId);
+                const cargaHorariaOutras = atividadesExistentes
+                    .filter((a) => a.ativo && a.id !== id) // exclui a própria atividade sendo editada
+                    .reduce((total, a) => total + Number(a.cargaHoraria), 0);
+
+                const novaCargaTotal = cargaHorariaOutras + Number(dados.cargaHoraria);
+
+                if (novaCargaTotal > Number(projeto.cargaHoraria)) {
+                    throw new Error(
+                        `A carga horária total das atividades (${novaCargaTotal}h) ultrapassaria a carga horária do projeto (${projeto.cargaHoraria}h)`
+                    );
+                }
+            }
+
             return atividadeRepository.atualizarAtividade(id, dados);
         },
 
@@ -55,12 +103,10 @@ export default (atividadeRepository, projetoRepository) => {
             if (!atividade) {
                 throw new Error("Atividade não encontrada");
             }
-
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
             if (!projeto || projeto.professorId !== professorLogadoId) {
                 throw new Error("Você não tem permissão para desativar esta atividade");
             }
-
             return atividadeRepository.atualizarAtividade(id, { ativo: false });
         },
 
@@ -69,10 +115,31 @@ export default (atividadeRepository, projetoRepository) => {
             if (!atividade) {
                 throw new Error("Atividade não encontrada");
             }
-
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
             if (!projeto || projeto.professorId !== professorLogadoId) {
                 throw new Error("Você não tem permissão para ativar esta atividade");
+            }
+
+            const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(atividade.projetoId);
+            const jaExisteNessaData = atividadesExistentes.some(
+                (a) => a.ativo && a.id !== id && a.data === atividade.data
+            );
+
+            if (jaExisteNessaData) {
+                throw new Error("Não é possível reativar: já existe outra atividade ativa nesta data");
+            }
+
+
+            const cargaHorariaOutras = atividadesExistentes
+                .filter((a) => a.ativo && a.id !== id)
+                .reduce((total, a) => total + Number(a.cargaHoraria), 0);
+
+            const novaCargaTotal = cargaHorariaOutras + Number(atividade.cargaHoraria);
+
+            if (novaCargaTotal > Number(projeto.cargaHoraria)) {
+                throw new Error(
+                    `Não é possível reativar: a carga horária total (${novaCargaTotal}h) ultrapassaria a carga horária do projeto (${projeto.cargaHoraria}h)`
+                );
             }
 
             return atividadeRepository.atualizarAtividade(id, { ativo: true });

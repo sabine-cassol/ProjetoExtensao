@@ -2,7 +2,7 @@ export default (projetoService) => {
     return {
         async criarProjeto(req, res) {
             try {
-                const projeto = await projetoService.criarProjeto(req.body);
+                const projeto = await projetoService.criarProjeto(req.body, req.usuario.id);
                 const dados = projeto.toJSON();
                 res.status(201).json(dados);
             } catch (erro) {

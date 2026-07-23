@@ -1,7 +1,10 @@
 export default (projetoRepository) => {
     return {
-        async criarProjeto(dados) {
-            return projetoRepository.criarProjeto(dados);
+        async criarProjeto(dados, professorLogadoId) {
+            return projetoRepository.criarProjeto({
+                ...dados,
+                professorId: professorLogadoId
+            });
         },
         async buscarProjetoPorId(id) {
             const projeto = await projetoRepository.buscarPorId(id);

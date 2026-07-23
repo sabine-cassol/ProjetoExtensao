@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 
 export default (sequelize) => {
-    class Projeto_extensao extends Model {};
+    class Projeto_extensao extends Model { };
 
     Projeto_extensao.init({
         titulo: {
@@ -62,11 +62,17 @@ export default (sequelize) => {
         numEncontros: {
             type: DataTypes.STRING
         },
-        periodoInscricao: {
-            type: DataTypes.STRING
+        periodoInscricaoInicio: {
+            type: DataTypes.DATEONLY
         },
-        periodoExecucao: {
-            type: DataTypes.STRING
+        periodoInscricaoFim: {
+            type: DataTypes.DATEONLY
+        },
+        periodoExecucaoInicio: {
+            type: DataTypes.DATEONLY
+        },
+        periodoExecucaoFim: {
+            type: DataTypes.DATEONLY
         },
         professorId: {
             type: DataTypes.INTEGER,

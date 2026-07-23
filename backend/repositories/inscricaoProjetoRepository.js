@@ -1,4 +1,4 @@
-import { Aluno, Projeto_extensao } from '../models/index.js';
+import { Aluno, Projeto_extensao, Professor } from '../models/index.js';
 
 export default (Inscricao_projeto) => {
     return {
@@ -21,7 +21,13 @@ export default (Inscricao_projeto) => {
                 where: { alunoId },
                 include: [
                     { model: Aluno, as: "aluno", attributes: ['nome', 'email', 'ra', 'curso'] },
-                    { model: Projeto_extensao, as: "projeto", attributes: ['titulo'] }
+                    {
+                        model: Projeto_extensao,
+                        as: "projeto",
+                        include: [
+                            { model: Professor, as: "professor", attributes: ['nome'] }
+                        ]
+                    }
                 ]
             });
         },
