@@ -28,7 +28,14 @@ interface PresencaProfessor extends PresencaAluno {
     aluno: {
         nome: string;
         ra: string;
+        curso: string;
+        periodo: string;
     };
+}
+
+function formatarDataLocal(dataISO: string): string {
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
 }
 
 
@@ -134,7 +141,7 @@ function Reports() {
             recusado: 'bg-red-100 text-red-700'
         };
         return (
-            <span className={`px-3 py-1 rounded-full ${cores[status] ?? 'bg-zinc-100 text-zinc-600'}`}>
+            <span className={`px-3 py-1 font-semibold rounded-sm ${cores[status] ?? 'bg-zinc-100 text-zinc-600'}`}>
                 {status}
             </span>
         );
@@ -189,9 +196,28 @@ function Reports() {
                                             {role === 'teacher' ? (presenca as PresencaProfessor).aluno.nome : user?.nome}
                                         </p>
                                     </div>
+
+                                    <div className="min-w-0">
+                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">RA</p>
+                                        {/* <p className="text-sm font-semibold truncate">{(presenca as PresencaProfessor).aluno.ra}</p> */}
+                                    </div>
+
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 lg:flex lg:items-center lg:gap-8 lg:flex-1 min-w-0">
+                                    {role === 'teacher' && (
+                                        <>
+                                            <div className="min-w-0">
+                                                <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Curso</p>
+                                                <p className="text-sm font-semibold truncate">{(presenca as PresencaProfessor).aluno.curso}</p>
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Período</p>
+                                                <p className="text-sm font-semibold truncate">{(presenca as PresencaProfessor).aluno.periodo}º</p>
+                                            </div>
+                                        </>
+                                    )}
+
                                     <div className="min-w-0">
                                         <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Projeto</p>
                                         <p className="text-sm font-semibold truncate">{presenca.atividade.projeto.titulo}</p>
@@ -200,7 +226,7 @@ function Reports() {
                                     <div className="min-w-0">
                                         <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Data</p>
                                         <p className="text-sm font-semibold truncate">
-                                            {new Date(presenca.atividade.data).toLocaleDateString('pt-BR')}
+                                            {formatarDataLocal(presenca.atividade.data)}
                                         </p>
                                     </div>
 

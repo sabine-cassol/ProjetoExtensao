@@ -13,6 +13,7 @@ import { useProjetoMutations } from '@/services/projetoService';
 import Atividades from '@/components/Atividades.tsx';
 import { projetoSchema } from '@/schemas/authSchemas'
 import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesService'
+import { useNavigate } from 'react-router-dom'
 
 function formatarPeriodo(inicio: string | null, fim: string | null): string {
     if (!inicio || !fim) return '-';
@@ -36,6 +37,8 @@ function ProjectDetail() {
     const jaInscrito = minhasInscricoes?.some((inscricao: any) => String(inscricao.projetoId) === String(projetoId));
     const { atualizarMutation, deletarMutation, ativarMutation } = useProjetoMutations(projetoId!, setIsEditing);
     const ehResponsavel = role === 'teacher' && !!user?.id && projeto?.professorId === Number(user.id);
+    const perfilCompleto = !!user?.curso && !!user?.periodo;
+    const navigate = useNavigate();
 
     // const projeto = listaProjects.find(p => p.id == projetoId);
 
@@ -90,8 +93,15 @@ function ProjectDetail() {
 
         deletarMutation.mutate();
     };
-
     const handleInscrever = () => {
+        // 1. Checa se o perfil está incompleto
+        if (!perfilCompleto) {
+            toast.info("Complete seu cadastro (curso e período) para se inscrever no projeto.");
+            navigate('/Perfil'); // <-- Coloque a rota exata da sua página de perfil
+            return;
+        }
+
+        // 2. Se o perfil estiver OK, executa a mutação original
         inscreverMutation.mutate(undefined, {
             onSuccess: () => {
                 toast.success("Inscrição realizada com sucesso!");
@@ -101,6 +111,7 @@ function ProjectDetail() {
             }
         });
     };
+
 
     const handleReactivate = () => {
         ativarMutation.mutate();
@@ -155,14 +166,17 @@ function ProjectDetail() {
                         <section className='border border-b-0 border-zinc-200 flex justify-end bg-gray-100 px-4 py-2 rounded-t-sm'>
                             <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md'>
                                 {jaInscrito ? (
-                                    <Link to={`/Projetos/${projetoId}/Presença`} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'>
+                                    <Link
+                                        to={`/Projetos/${projetoId}/Presença`}
+                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800'>
                                         Registrar presença
                                     </Link>
                                 ) : (
                                     <button
                                         onClick={handleInscrever}
                                         disabled={inscreverMutation.isPending}
-                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'>
+                                        className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'
+                                    >
                                         {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
                                     </button>
                                 )}

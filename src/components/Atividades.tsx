@@ -283,6 +283,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                                     type="checkbox"
                                     id="exigeLocalizacao"
                                     checked={formData.exigeLocalizacao}
+                                    defaultChecked={false}
                                     onChange={handleCheckboxChange}
                                     className="cursor-pointer"
                                 />
@@ -429,18 +430,18 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                                 const status = statusDaAtividade(atividade.id);
                                 if (!status) {
                                     return (
-                                        <span className="inline-block text-xs px-2 py-0.5 rounded-full font-semibold bg-zinc-100 text-zinc-500 mb-3">
+                                        <span className="inline-block text-xs px-2 py-0.5 rounded-sm font-semibold bg-zinc-200 text-zinc-500 mb-3">
                                             Presença não registrada
                                         </span>
                                     );
                                 }
                                 const cores: Record<string, string> = {
-                                    pendente: 'bg-amber-100 text-amber-700',
+                                    pendente: 'bg-amber-400 text-zinc-900',
                                     aprovado: 'bg-emerald-100 text-emerald-700',
                                     recusado: 'bg-red-100 text-red-700'
                                 };
                                 return (
-                                    <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-semibold mb-3 ${cores[status]}`}>
+                                    <span className={`inline-block text-xs px-2 py-0.5 rounded-sm font-semibold mb-3 ${cores[status]}`}>
                                         {status.charAt(0).toUpperCase() + status.slice(1)}
                                     </span>
                                 );
