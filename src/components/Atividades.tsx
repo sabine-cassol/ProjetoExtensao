@@ -91,6 +91,10 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    function formatarDataLocal(dataISO: string): string {
+        const [ano, mes, dia] = dataISO.split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
 
     const handleCargaHorariaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let valor = e.target.value.replace(',', '.');
@@ -168,7 +172,11 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
             titulo: formData.titulo,
             descricao: formData.descricao,
             data: formData.data,
-            cargaHoraria: formData.cargaHoraria
+            cargaHoraria: formData.cargaHoraria,
+            exigeLocalizacao: formData.exigeLocalizacao,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
+            raioMetros: formData.raioMetros
         });
 
         if (!validacao.success) {
@@ -190,7 +198,10 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                 descricao: formData.descricao,
                 data: formData.data,
                 cargaHoraria: Number(formData.cargaHoraria.replace(',', '.')),
-                exigeLocalizacao: formData.exigeLocalizacao
+                exigeLocalizacao: formData.exigeLocalizacao,
+                latitude: formData.exigeLocalizacao ? Number(formData.latitude) : undefined,
+                longitude: formData.exigeLocalizacao ? Number(formData.longitude) : undefined,
+                raioMetros: formData.exigeLocalizacao ? Number(formData.raioMetros) : undefined
             }
         });
     };
@@ -375,7 +386,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                     ) : (
                         <div className={`mt-2 min-w-full font-segoe text-sm border border-gray-200 p-4 bg-white shadow-sm ${!atividade.ativo ? 'opacity-60' : ''}`}>
                             <div className="flex items-start justify-between">
-                                <h1 className="text-base font-semibold text-zinc-800 mb-1">{atividade.titulo}</h1>
+                                <h1 className="text-base text-zinc-800 font-bold mb-1">{atividade.titulo}</h1>
 
                                 {ehResponsavel && (
                                     <div className='flex items-center overflow-hidden border border-zinc-300 bg-white rounded-sm shrink-0'>
@@ -398,7 +409,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                             <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-3">
                                 <span className="font-medium text-gray-600">{atividade.cargaHoraria}h</span>
                                 <span className="text-gray-300">•</span>
-                                <span>{new Date(atividade.data).toLocaleDateString('pt-BR')}</span>
+                                <span>{formatarDataLocal(atividade.data)}</span>
                                 {!atividade.ativo && (
                                     <>
                                         <span className="text-gray-300">•</span>

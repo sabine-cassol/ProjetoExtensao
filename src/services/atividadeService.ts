@@ -8,6 +8,9 @@ interface AtividadePayload {
     data: string;
     cargaHoraria: number;
     exigeLocalizacao: boolean;
+    latitude?: number;
+    longitude?: number;
+    raioMetros?: number;
     projetoId: number;
 }
 

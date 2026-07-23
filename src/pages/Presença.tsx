@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { type Atividade } from '@/data/AtividadeType';
 import { useAtividadesProjeto } from '@/services/atividadeService';
 import { useProjetoId } from '@/services/getProjetosId';
 
@@ -30,7 +29,15 @@ export default function Presença() {
     const { data: projetoAtual, isLoading: isLoadingProjeto } = useProjetoId(projetoId!);
     const { data: atividades, isLoading: isLoadingAtividades } = useAtividadesProjeto(projetoId);
 
-    const hoje = new Date().toISOString().split('T')[0];
+    function obterDataLocalHoje(): string {
+        const agora = new Date();
+        const ano = agora.getFullYear();
+        const mes = String(agora.getMonth() + 1).padStart(2, '0');
+        const dia = String(agora.getDate()).padStart(2, '0');
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    const hoje = obterDataLocalHoje();
     const atividadeHoje = atividades?.find((a) => a.data === hoje && a.ativo);
 
     const { data: minhasPresencas, isLoading: isLoadingPresencas } = useQuery<Presenca[]>({
@@ -137,7 +144,7 @@ export default function Presença() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     atividadeId: atividadeHoje!.id,
-                    localizacaoCheckOut: null  
+                    localizacaoCheckOut: null
                 })
             });
             if (!res.ok) {
