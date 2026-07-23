@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 // import { PROJECTS } from "@/data/Projects";
 // import { NEWS } from '@/data/New.ts';
 import { Link } from "react-router-dom";
-import { IdCard, Newspaper, FolderKanban } from "lucide-react";
+import { IdCard, Newspaper, FolderKanban, Lock } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query';
 // import { projetoService } from '@/services/projetoService';
@@ -87,6 +87,25 @@ function Activities() {
 
     if (errorProjetosFinal || errorNoticias) {
         return <p>Erro ao carregar dados</p>;
+    }
+
+    if (!user) {
+        return (
+            <div className="flex-1 flex flex-col bg-white justify-center items-center p-6 text-center border rounded-lg border-zinc-300 ">
+                <div className="p-6 bg-zinc-200 text-zinc-600 rounded-full flex items-center justify-center mb-2">
+                    <Lock className="size-12" />
+                </div>
+                <h2 className="text-3xl font-bold text-zinc-900 mb-1">
+                    Acesso Restrito
+                </h2>
+                <p className="text-sm text-zinc-500 max-w-xs pt-2">
+                    Você precisa estar conectado à sua conta para visualizar esta página.
+                </p>
+                <Link to="/login" className="inline-flex mt-4 items-center justify-center px-4 py-2 text-sm font-medium text-white bg-(--lightCyan) hover:bg-cyan-500 rounded-lg transition-colors shadow-xs">
+                    Fazer Login
+                </Link>
+            </div>
+        );
     }
 
     return (

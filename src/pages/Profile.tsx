@@ -8,6 +8,8 @@ import { CURSOS_DISPONIVEIS } from '@/schemas/authSchemas';
 import { AlertCircle } from "lucide-react";
 import { useUpdateUser } from '../services/userService';
 import { PerfilSkeleton } from "@/components/perfilSkeleton";
+import { Link } from 'react-router-dom';
+import { Lock } from 'lucide-react';
 
 
 function Profile() {
@@ -152,7 +154,22 @@ function Profile() {
     }
 
     if (!user) {
-        return <div className="flex-1 flex justify-center items-center">Você precisa estar logado para ver esta página.</div>;
+        return (
+            <div className="flex-1 flex flex-col bg-white justify-center items-center p-6 text-center border rounded-lg border-zinc-300 ">
+                <div className="p-6 bg-zinc-200 text-zinc-600 rounded-full flex items-center justify-center mb-2">
+                    <Lock className="size-12" />
+                </div>
+                <h2 className="text-3xl font-bold text-zinc-900 mb-1">
+                    Acesso Restrito
+                </h2>
+                <p className="text-sm text-zinc-500 max-w-xs pt-2">
+                    Você precisa estar conectado à sua conta para visualizar esta página.
+                </p>
+                <Link to="/login" className="inline-flex mt-4 items-center justify-center px-4 py-2 text-sm font-medium text-white bg-(--lightCyan) hover:bg-cyan-500 rounded-lg transition-colors shadow-xs">
+                    Fazer Login
+                </Link>
+            </div>
+        );
     }
     return (
         <section className='flex-1 flex text-center justify-center items-center'>

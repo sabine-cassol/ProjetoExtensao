@@ -4,6 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
 import { PRESENCES } from '@/data/Presences';
 import { toast } from 'sonner';
+import { Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface PresencaAluno {
     id: number;
@@ -127,7 +129,7 @@ function Reports() {
 
     const formatarStatus = (status: string) => {
         const cores: Record<string, string> = {
-            pendente: 'bg-amber-100 text-amber-700',
+            pendente: 'bg-amber-300 text-zinc-900',
             aprovado: 'bg-emerald-100 text-emerald-700',
             recusado: 'bg-red-100 text-red-700'
         };
@@ -142,12 +144,31 @@ function Reports() {
         return <p className="p-6">Carregando presenças...</p>;
     }
 
+    if (!user) {
+        return (
+            <div className="flex-1 flex flex-col bg-white justify-center items-center p-6 text-center border rounded-lg border-zinc-300 ">
+                <div className="p-6 bg-zinc-200 text-zinc-600 rounded-full flex items-center justify-center mb-2">
+                    <Lock className="size-12" />
+                </div>
+                <h2 className="text-3xl font-bold text-zinc-900 mb-1">
+                    Acesso Restrito
+                </h2>
+                <p className="text-sm text-zinc-500 max-w-xs pt-2">
+                    Você precisa estar conectado à sua conta para visualizar esta página.
+                </p>
+                <Link to="/login" className="inline-flex mt-4 items-center justify-center px-4 py-2 text-sm font-medium text-white bg-(--lightCyan) hover:bg-cyan-500 rounded-lg transition-colors shadow-xs">
+                    Fazer Login
+                </Link>
+            </div>
+        );
+    }
+
     if (error) {
         return <p className="p-6 text-red-500">Erro ao carregar presenças</p>;
     }
 
 
-     return (
+    return (
         <>
             <main className="flex-1">
                 <h1 className="text-3xl font-bold overflow-hidden">Relatórios de presença</h1>
