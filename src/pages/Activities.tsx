@@ -142,7 +142,7 @@ function Activities() {
                                             </div>
                                             <div className='mt-1 flex flex-row text-center gap-2'>
                                                 <IdCard className='font-semibold text-zinc-500' />
-                                                <p className='text-xs text-zinc-500 font-medium'>{projeto.professor.nome}</p>
+                                                <p className='text-xs text-zinc-500 font-medium'>{projeto.professor?.nome}</p>
                                             </div>
                                         </div>
 
