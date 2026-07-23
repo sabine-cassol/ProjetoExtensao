@@ -41,6 +41,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         setIsCriando(true);
     };
     const [editandoId, setEditandoId] = useState<number | null>(null);
+    const [paginaAtual, setPaginaAtual] = useState(1);
     const [formData, setFormData] = useState({
         titulo: '',
         descricao: '',
@@ -58,6 +59,12 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
     };
 
     const { data: atividades, isLoading, error } = useAtividadesProjeto(projetoId);
+
+    const ATIVIDADES_POR_PAGINA = 15;
+    const totalDePaginas = Math.ceil((atividades?.length ?? 0) / ATIVIDADES_POR_PAGINA);
+    const indiceFinal = paginaAtual * ATIVIDADES_POR_PAGINA;
+    const indiceInicial = indiceFinal - ATIVIDADES_POR_PAGINA;
+    const atividadesExibidas = atividades?.slice(indiceInicial, indiceFinal) ?? [];
 
     const { criarMutation, atualizarMutation, desativarMutation, ativarMutation } = useAtividadesMutations(projetoId, {
         onCriarSucesso: () => {
@@ -246,14 +253,14 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
     }
 
     return (
-        <section className='mt-6 border border-zinc-300 p-4 rounded-md'>
+        <section className='mt-6'>
             <span className='font-bold text-lg font-segoe'> Atividades </span>
 
             {atividades?.length === 0 && !isCriando && (
                 <p className="mt-2 text-sm text-zinc-500">Nenhuma atividade cadastrada ainda.</p>
             )}
 
-            {atividades?.map((atividade) => (
+            {atividadesExibidas?.map((atividade) => (
                 <div key={atividade.id}>
                     {editandoId === atividade.id ? (
                         <form onSubmit={(e) => handleSalvarEdicao(e, atividade.id)} className="min-w-full text-sm border border-gray-200 p-4 shadow-sm space-y-3 mt-2">
@@ -551,6 +558,32 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                 <div className="mt-4 flex justify-center items-center">
                     <button onClick={handleAbrirCriacao} className="bg-[#2ab646] p-2 px-4 text-white font-semibold rounded-md cursor-pointer hover:bg-green-600 transition-colors">
                         Cadastrar atividade
+                    </button>
+                </div>
+            )}
+            {totalDePaginas > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-8 pt-6">
+                    <button onClick={() => setPaginaAtual((prev) => Math.max(prev - 1, 1))} disabled={paginaAtual === 1} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                        Anterior
+                    </button>
+                    <div className="flex items-center gap-1">
+                        {Array.from({ length: totalDePaginas }, (_, index) => {
+                            const numeroPagina = index + 1;
+                            const isAtiva = paginaAtual === numeroPagina;
+                            return (
+                                <button key={numeroPagina} onClick={() => setPaginaAtual(numeroPagina)}
+                                    className={`w-9 h-9 text-sm font-semibold rounded-md ${isAtiva
+                                        ? 'bg-cyan-400 text-white'
+                                        : 'text-zinc-600 hover:bg-zinc-100 border border-zinc-300 cursor-pointer'
+                                        }`}>
+                                    {numeroPagina}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <button onClick={() => setPaginaAtual((prev) => Math.min(prev + 1, totalDePaginas))} disabled={paginaAtual === totalDePaginas} className="px-4 py-2 cursor-pointer text-sm font-medium text-zinc-600 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed ">
+                        Próxima
                     </button>
                 </div>
             )}
