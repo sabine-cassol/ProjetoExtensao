@@ -6,9 +6,9 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { useAuth } from '../context/AuthContext';
 
 function Header() {
- 
+
     const { toggleSidebar } = useSidebar();
-    const { role } = useAuth();
+    const { role, loading } = useAuth();
 
     return (
         <>
@@ -61,13 +61,17 @@ function Header() {
                             </Link>
                         </nav>
                         <div className="col-start-3 flex justify-end items-center gap-2 relative">
-                            {role === 'guest' && (
+
+                            {loading ? (
+                                null
+                            ) : role === 'guest' ? (
                                 <Link to="/Login">
                                     <button className='p-2 px-4 cursor-pointer  text-white font-semibold rounded-lg bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-400'>
                                         Inscrever-se
                                     </button>
                                 </Link>
-                            )}
+                            ) : null}
+
                         </div>
                     </div>
                 </div>

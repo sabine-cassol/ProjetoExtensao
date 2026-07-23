@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { USERS } from '../data/Users.ts'
 import { loginStudent, loginTeacher, type AuthResponse } from '../services/Login.ts';
 
 export type UserRole = 'guest' | 'student' | 'teacher';
