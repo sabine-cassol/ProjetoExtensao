@@ -50,7 +50,7 @@ function Activities() {
     const meusProjetosOuInscricoes = role === 'teacher' ? meusProjetos : minhasInscricoes;
     const isLoadingProjetosFinal = role === 'teacher' ? isLoadingProjetos : isLoadingInscricoes;
     const errorProjetosFinal = role === 'teacher' ? errorProjetos : errorInscricoes;
-
+    const nenhumProjeto = !meusProjetosOuInscricoes || meusProjetosOuInscricoes.length === 0
 
     const { data: minhasNoticias, isLoading: isLoadingNoticias, error: errorNoticias } = useQuery({
         queryKey: ['noticias', 'professor', user?.id],
@@ -95,14 +95,21 @@ function Activities() {
 
                 <h1 className="text-3xl font-bold overflow-hidden">Minhas Atividades</h1>
 
+                {nenhumProjeto && (
+                    <p className="text-sm text-zinc-500 pt-2">Nenhuma atividade no site ainda.</p>
+                )
+                }
                 <div className="flex gap-4 mb-6 border-b border-zinc-100 pb-2 mt-4">
-                    <button onClick={() => handleMudarAba("projetos")} className={`flex items-center gap-2 pb-2 text-sm font-medium border-b-2 cursor-pointer ${abaAtiva === "projetos"
-                        ? "border-indigo-500 text-blue-600"
-                        : "border-transparent text-zinc-500 hover:text-zinc-700"
-                        }`}>
-                        <FolderKanban size={18} />
-                        Projetos ({meusProjetosOuInscricoes?.length ?? 0})
-                    </button>
+                    {!nenhumProjeto && (
+                        <button onClick={() => handleMudarAba("projetos")} className={`flex items-center gap-2 pb-2 text-sm font-medium border-b-2 cursor-pointer ${abaAtiva === "projetos"
+                            ? "border-indigo-500 text-blue-600"
+                            : "border-transparent text-zinc-500 hover:text-zinc-700"
+                            }`}>
+                            <FolderKanban size={18} />
+                            Projetos ({meusProjetosOuInscricoes?.length ?? 0})
+                        </button>
+                    )
+                    }
 
                     {role === 'teacher' && (
                         <button onClick={() => handleMudarAba("noticias")} className={`flex items-center gap-2 pb-2 text-sm font-medium border-b-2 cursor-pointer ${abaAtiva === "noticias"
@@ -116,35 +123,39 @@ function Activities() {
                 </div>
 
                 {abaAtiva === "projetos" && (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6 mt-4">
-                        {meusProjetosOuInscricoes?.map((projeto: any) => (
-                            <Link to={`/Projetos/${projeto.id}`} key={projeto.id}>
-                                <section className={`bg-white p-4 rounded-lg border flex flex-col justify-between transition-all ease-linear hover:-translate-y-1.5 ${projeto.ativo ? 'border-zinc-200 hover:border-indigo-200' : 'border-zinc-200 opacity-60'
-                                    }`}>
-                                    <div className='min-w-100'>
-                                        <div className="flex items-center justify-between">
-                                            <h2 className="text-base font-bold text-zinc-900 tracking-tight mb-1">{projeto.titulo}</h2>
+                    nenhumProjeto ? (
+                        <></>
+                    ) : (
+                        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6 mt-4">
+                            {meusProjetosOuInscricoes?.map((projeto: any) => (
+                                <Link to={`/Projetos/${projeto.id}`} key={projeto.id}>
+                                    <section className={`bg-white p-4 rounded-lg border flex flex-col justify-between transition-all ease-linear hover:-translate-y-1.5 ${projeto.ativo ? 'border-zinc-200 hover:border-indigo-200' : 'border-zinc-200 opacity-60'
+                                        }`}>
+                                        <div className='min-w-100'>
+                                            <div className="flex items-center justify-between">
+                                                <h2 className="text-base font-bold text-zinc-900 tracking-tight mb-1">{projeto.titulo}</h2>
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-2 text-sm font-normal text-zinc-500">
+                                                <p className='text-xs font-medium text-zinc-600'>{projeto.tipo}</p>
+                                                <span className="font-semibold" aria-hidden="true">•</span>
+                                                <p className='text-xs font-medium text-zinc-600'>{projeto.cargaHoraria}h</p>
+                                            </div>
+                                            <div className='mt-1 flex flex-row text-center gap-2'>
+                                                <IdCard className='font-semibold text-zinc-500' />
+                                                <p className='text-xs text-zinc-500 font-medium'>{projeto.professor.nome}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-wrap items-center gap-2 text-sm font-normal text-zinc-500">
-                                            <p className='text-xs font-medium text-zinc-600'>{projeto.tipo}</p>
-                                            <span className="font-semibold" aria-hidden="true">•</span>
-                                            <p className='text-xs font-medium text-zinc-600'>{projeto.cargaHoraria}h</p>
-                                        </div>
-                                        <div className='mt-1 flex flex-row text-center gap-2'>
-                                            <IdCard className='font-semibold text-zinc-500' />
-                                            <p className='text-xs text-zinc-500 font-medium'>{projeto.professor.nome}</p>
-                                        </div>
-                                    </div>
 
-                                    <div className="flex justify-center items-center mt-6 pt-4">
-                                        <p className="text-sm font-semibold text-indigo-500 hover:text-indigo-800 flex items-center justify-center gap-1 group">
-                                            Ver detalhes do projeto
-                                        </p>
-                                    </div>
-                                </section>
-                            </Link>
-                        ))}
-                    </div>
+                                        <div className="flex justify-center items-center mt-6 pt-4">
+                                            <p className="text-sm font-semibold text-indigo-500 hover:text-indigo-800 flex items-center justify-center gap-1 group">
+                                                Ver detalhes do projeto
+                                            </p>
+                                        </div>
+                                    </section>
+                                </Link>
+                            ))}
+                        </div>
+                    )
                 )}
 
 
