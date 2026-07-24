@@ -123,6 +123,7 @@ function ProjectDetail() {
     };
 
 
+
     const handleReactivate = () => {
         ativarMutation.mutate();
     };
@@ -136,6 +137,21 @@ function ProjectDetail() {
         )
     }
 
+    function normalizarTexto(texto: string): string {
+        return texto.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    const cursoElegivel = !projeto.cursosVinculados || projeto.cursosVinculados
+        .split(',')
+        .map((c) => normalizarTexto(c))
+        .includes(normalizarTexto(user?.curso ?? ''));
+
+    const periodoElegivel = !projeto.semestre || projeto.semestre
+        .split(',')
+        .map((p) => Number(p.trim().replace('º', '')))
+        .includes(Number(user?.periodo));
+
+    const elegivel = perfilCompleto && cursoElegivel && periodoElegivel;
     return (
         <>
             <main className="flex-1 bg-zinc-50/50">
@@ -189,13 +205,17 @@ function ProjectDetail() {
                                             Registrar presença
                                         </Link>
                                     ) : dentroDoperiodo ? (
-                                        <button
-                                            onClick={handleInscrever}
-                                            disabled={inscreverMutation.isPending}
-                                            className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed'
-                                        >
-                                            {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
-                                        </button>
+                                        elegivel ? (
+                                            <button onClick={handleInscrever} disabled={inscreverMutation.isPending} /* ... */>
+                                                {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
+                                            </button>
+                                        ) : (
+                                            <span className="p-2 text-zinc-500 text-sm font-medium">
+                                                {!cursoElegivel
+                                                    ? 'Seu curso não está entre os cursos vinculados a este projeto'
+                                                    : 'Este projeto não aceita alunos do seu período'}
+                                            </span>
+                                        )
                                     ) : (
                                         <></>
                                     )}
@@ -207,7 +227,7 @@ function ProjectDetail() {
                     <div className='bg-white border border-zinc-300 p-4'>
 
                         <section>
-                            {isEditing && role === 'teacher' ? (
+                            {isEditing && ehResponsavel ? (
                                 <>
                                     <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     {errosProjeto.titulo && (
@@ -242,7 +262,7 @@ function ProjectDetail() {
                                 <tbody className="divide-y divide-gray-200">
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Tipo</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.tipo || ''} onChange={(e) => handleChange('tipo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.tipo && (
@@ -263,7 +283,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Unidade</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.unidade || ''} onChange={(e) => handleChange('unidade', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.unidade && (
@@ -284,7 +304,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Carga horária</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.cargaHoraria && (
@@ -305,7 +325,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Cursos Vinculados</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <SeletorCursos
                                                     value={editForm?.cursosVinculados || ''}
@@ -330,7 +350,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Parceiros</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.parceiros || ''} onChange={(e) => handleChange('parceiros', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.parceiros && (
@@ -351,7 +371,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Colaboradores</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.colaboradores || ''} onChange={(e) => handleChange('colaboradores', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.colaboradores && (
@@ -372,7 +392,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Comunidade Participante</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.comunidadeParticipante || ''} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.comunidadeParticipante && (
@@ -393,7 +413,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Semestre</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <SeletorPeriodos
                                                     value={editForm?.semestre || ''}
@@ -418,7 +438,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Vagas</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.vagas || ''} onChange={(e) => handleChange('vagas', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.vagas && (
@@ -440,7 +460,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">ODS</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ods || ''} onChange={(e) => handleChange('ods', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ods && (
@@ -462,7 +482,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Ciclo</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.ciclo || ''} onChange={(e) => handleChange('ciclo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ciclo && (
@@ -483,7 +503,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Competência</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.competencia || ''} onChange={(e) => handleChange('competencia', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.competencia && (
@@ -505,7 +525,7 @@ function ProjectDetail() {
 
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Eixo</td>
-                                        {isEditing && role === 'teacher' ? (
+                                        {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
                                                 <input type="text" value={editForm?.eixo || ''} onChange={(e) => handleChange('eixo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.eixo && (
@@ -601,11 +621,11 @@ function ProjectDetail() {
                             </table>
                         </div>
 
-                        {(projeto.justificativa && projeto.justificativa.length > 0) || (isEditing && role === 'teacher') ? (
+                        {(projeto.justificativa && projeto.justificativa.length > 0) || (isEditing && ehResponsavel) ? (
                             <section className="mt-3">
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Justificativa de Relevância</span>
 
-                                {isEditing && role === 'teacher' ? (
+                                {isEditing && ehResponsavel ? (
                                     <>
                                         <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.justificativa && (
@@ -625,11 +645,11 @@ function ProjectDetail() {
                             </section>
                         ) : null}
 
-                        {(projeto.pretensao && projeto.pretensao.length > 0) || (isEditing && role === 'teacher') ? (
+                        {(projeto.pretensao && projeto.pretensao.length > 0) || (isEditing && ehResponsavel) ? (
                             <section className="mt-3">
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Pretensão da atividade</span>
 
-                                {isEditing && role === 'teacher' ? (
+                                {isEditing && ehResponsavel ? (
                                     <>
                                         <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.pretensao && (
@@ -649,10 +669,10 @@ function ProjectDetail() {
                             </section>
                         ) : null}
 
-                        {(projeto.requisitos && projeto.requisitos.length > 0) || (isEditing && role === 'teacher') ? (
+                        {(projeto.requisitos && projeto.requisitos.length > 0) || (isEditing && ehResponsavel) ? (
                             <section className="mt-3">
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitos Técnicos</span>
-                                {isEditing && role === 'teacher' ? (
+                                {isEditing && ehResponsavel ? (
                                     <>
                                         <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.requisitos && (

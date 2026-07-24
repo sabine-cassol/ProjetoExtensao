@@ -164,7 +164,6 @@ function CreateNew() {
                                 </div>
                             </div>
                         )}
-
                     </div>
                     <div>
                         <Tiptap value={conteudo} onChange={setConteudo} />

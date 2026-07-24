@@ -11,6 +11,8 @@ import { PerfilSkeleton } from "@/components/perfilSkeleton";
 import { Link } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import { useLocation } from "react-router-dom";
+import { useMinhasInscricoes } from '@/services/inscricoesService';
+
 
 
 function Profile() {
@@ -32,6 +34,9 @@ function Profile() {
 
     const [errosPerfil, setErrosPerfil] = useState<Record<string, string>>({});
     const [errosSenha, setErrosSenha] = useState<Record<string, string>>({});
+
+    const { data: minhasInscricoes } = useMinhasInscricoes(user?.id, role);
+    const temInscricoes = (minhasInscricoes?.length ?? 0) > 0;
 
     const location = useLocation();
     const motivoRedirecionamento = location.state?.motivo as string | undefined;
@@ -251,67 +256,55 @@ function Profile() {
                                 />
                             </div>)}
 
-                            {role === 'student' && (<div>
+                            <div>
                                 <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
-                                {!isEditing ? (
-                                    <input
-                                        id="curso"
-                                        name="curso"
-                                        type="text"
-                                        readOnly
-                                        value={formData.curso || 'Nenhum curso associado'}
-                                        className="border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200"
-                                    />
-                                ) : (
-                                    <select
-                                        id="curso"
-                                        name="curso"
-                                        value={formData.curso}
-                                        onChange={handleChange}
-                                        className="border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10"
-                                    >
-                                        <option value="" disabled={!!formData.curso}>
-                                            Nenhum curso associado,Selecione um curso
-                                        </option>
-                                        {CURSOS_DISPONIVEIS.map((curso) => (
-                                            <option key={curso} value={curso}>
-                                                {curso}
-                                            </option>
-                                        ))}
-                                    </select>
-                                )}
-
-                                {errosPerfil.curso && (
-                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
-                                        <div className='flex flex-row gap-1 items-center'>
-                                            <AlertCircle className="size-3.5 shrink-0" />
-                                            <span className="text-xs font-medium tracking-wide">
-                                                {errosPerfil.curso}
-                                            </span>
-                                        </div>
-                                    </div>
+                                <select
+                                    id="curso"
+                                    name="curso"
+                                    value={formData.curso}
+                                    onChange={handleChange}
+                                    disabled={!isEditing || temInscricoes}
+                                    className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
+                                        ${!isEditing || temInscricoes
+                                            ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
+                                            : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
+                                        }`}>
+                                    <option value="">Selecione um curso</option>
+                                    {CURSOS_DISPONIVEIS.map((curso) => (
+                                        <option key={curso} value={curso}>{curso}</option>
+                                    ))}
+                                </select>
+                                {temInscricoes && isEditing && (
+                                    <p className="text-xs text-amber-600 mt-1">
+                                        Não é possível alterar o curso enquanto estiver inscrito em algum projeto.
+                                    </p>
                                 )}
                             </div>
-                            )}
 
-                            {role === 'student' && (<div>
-                                <label htmlFor="periodo" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Período </label>
-                                <input id="periodo" name="periodo" type="number" min="0" max="10" value={formData.periodo} onChange={handleChange} readOnly={!isEditing} className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
-                                        ${!isEditing
-                                        ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
-                                        : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
-                                    }`} />
-                                {errosPerfil.periodo && (
-                                    <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
-                                        <div className='flex flex-row gap-1 items-center'>
-                                            <AlertCircle className="size-3.5 shrink-0" />
-                                            <span className="text-xs font-medium tracking-wide">
-                                                {errosPerfil.periodo}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>)}
+                            {role === 'student' && (
+                                <div>
+                                    <label htmlFor="periodo" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Período </label>
+                                    <input
+                                        id="periodo"
+                                        name="periodo"
+                                        type="number"
+                                        min="0"
+                                        max="10"
+                                        value={formData.periodo}
+                                        onChange={handleChange}
+                                        readOnly={!isEditing || temInscricoes}
+                                        className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
+                                         ${!isEditing || temInscricoes
+                                                ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
+                                                : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
+                                            }`}/>
+                                    {temInscricoes && isEditing && (
+                                        <p className="text-xs text-amber-600 mt-1">
+                                            Não é possível alterar o período enquanto estiver inscrito em algum projeto.
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                         </div>
                         <div className='flex justify-center gap-3 px-4'>
                             {!isEditing ? (
