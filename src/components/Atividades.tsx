@@ -27,12 +27,15 @@ interface AtividadesComponentProps {
     professorResponsavelId: number;
     userId?: string;
     alunoInscrito?: boolean;
+    isAdmin?: boolean;
 }
 
-function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: AtividadesComponentProps) {
+function Atividades({ role, professorResponsavelId, userId, alunoInscrito, isAdmin }: AtividadesComponentProps) {
     const { projetoId } = useParams<{ projetoId: string }>();
 
-    const ehResponsavel = role === 'teacher' && userId && String(professorResponsavelId) === userId;
+    const ehResponsavel = role === 'teacher' && !!userId && (
+        String(professorResponsavelId) === userId || !!isAdmin
+    );
 
     const [isCriando, setIsCriando] = useState(false);
     const handleAbrirCriacao = () => {

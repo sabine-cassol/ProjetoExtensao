@@ -19,6 +19,7 @@ export interface AuthResponse {
         id: number | string;
         nome: string;
         email: string;
+        isAdmin: boolean
     };
 }
 export const loginStudent = {

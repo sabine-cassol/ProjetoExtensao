@@ -9,4 +9,5 @@ export interface Users {
     password?: string;
     curso?: string;
     periodo?: string;
+    isAdmin?: boolean;
 }

@@ -46,7 +46,9 @@ function ProjectDetail() {
     const inscreverMutation = useInscreverProjeto(projetoId!, user?.id);
     const jaInscrito = minhasInscricoes?.some((inscricao: any) => String(inscricao.projetoId) === String(projetoId));
     const { atualizarMutation, deletarMutation, ativarMutation } = useProjetoMutations(projetoId!, setIsEditing);
-    const ehResponsavel = role === 'teacher' && !!user?.id && projeto?.professorId === Number(user.id);
+    const ehResponsavel = role === 'teacher' && !!user?.id && (
+        projeto?.professorId === Number(user.id) || user?.isAdmin
+    );
     const perfilCompleto = !!user?.curso && !!user?.periodo;
     const navigate = useNavigate();
 
@@ -206,7 +208,7 @@ function ProjectDetail() {
                                         </Link>
                                     ) : dentroDoperiodo ? (
                                         elegivel ? (
-                                            <button onClick={handleInscrever} disabled={inscreverMutation.isPending} /* ... */>
+                                            <button onClick={handleInscrever} disabled={inscreverMutation.isPending} className='p-2 bg-(--subTitle) text-white font-semibold hover:bg-blue-800 cursor-pointer' /* ... */>
                                                 {inscreverMutation.isPending ? 'Inscrevendo...' : 'Inscrever-se no projeto'}
                                             </button>
                                         ) : (
@@ -696,6 +698,7 @@ function ProjectDetail() {
                             professorResponsavelId={projeto.professorId}
                             userId={user?.id}
                             alunoInscrito={jaInscrito}
+                            isAdmin={user?.isAdmin}
                         />
 
                         {role === 'guest' ? (

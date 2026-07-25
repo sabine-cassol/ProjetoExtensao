@@ -11,6 +11,7 @@ interface User {
   ra: string;
   curso?: string;
   periodo?: string;
+  isAdmin?: boolean;
 }
 
 interface AuthContextData {
@@ -30,9 +31,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [erroAuth, setErroAuth] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const url = import.meta.env.VITE_API_URL_PROXY || '/api';
-  
+
   const role: UserRole = user ? (user.role as UserRole) : 'guest';
-  
+
   const rotaLogout = role === 'teacher' ? '/professores/logout' : '/alunos/logout';
   useEffect(() => {
     const verificarSessao = async () => {
@@ -80,7 +81,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           role: usuarioLogado.role,
           ra: 'ra' in dadosInternos ? String(dadosInternos.ra) : '',
           curso: dadosInternos.curso || undefined,
-          periodo: dadosInternos.periodo || undefined
+          periodo: dadosInternos.periodo || undefined,
+          isAdmin: 'isAdmin' in dadosInternos ? Boolean(dadosInternos.isAdmin) : false,
         };
 
         setUser(usuarioAtualizado);
@@ -169,6 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         ra: 'ra' in dadosUsuario ? String(dadosUsuario.ra) : '',
         curso: 'curso' in dadosUsuario ? String(dadosUsuario.curso) : undefined,
         periodo: 'periodo' in dadosUsuario ? String(dadosUsuario.periodo) : undefined,
+        isAdmin: 'isAdmin' in dadosUsuario ? Boolean(dadosUsuario.isAdmin) : false,
       };
 
       console.log(dadosUsuario)
@@ -208,16 +211,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem(key);
       }
     });
-    try{
-      const response = await fetch(`${url}${rotaLogout}`,{
+    try {
+      const response = await fetch(`${url}${rotaLogout}`, {
         method: 'POST',
         credentials: 'include'
       });
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error('erro ao fazer logout');
       }
-    } catch(erro){
-      console.error('Falha no logout',erro);
+    } catch (erro) {
+      console.error('Falha no logout', erro);
     }
     setUser(null);
     setErroAuth(null);

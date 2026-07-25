@@ -235,7 +235,7 @@ export default function Presença() {
                     </p>
 
                     <p className="text-xs text-slate-400 ">
-                        Min: 10m | Máx por encontro: {formatarCronometro(TEMPO_MAXIMO)}
+                        Min: 10m | Máx pelo encontro: {formatarCronometro(TEMPO_MAXIMO)}
                     </p>
                 </div>
 

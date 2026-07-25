@@ -56,7 +56,9 @@ function NewDetail() {
 
     const deletarMutation = useDeletarNoticia(noticiaId!);
 
-    const ehAutor = role === 'teacher' && user?.id && noticia?.professorId && String(noticia.professorId) === user.id;
+    const ehAutor = role === 'teacher' && !!user?.id && (
+        noticia?.professorId === Number(user.id) || user?.isAdmin
+    );
 
     const handleStartEditing = () => {
         if (ehAutor) {
