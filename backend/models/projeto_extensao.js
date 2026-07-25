@@ -59,9 +59,6 @@ export default (sequelize) => {
         ciclo: {
             type: DataTypes.STRING
         },
-        numEncontros: {
-            type: DataTypes.STRING
-        },
         periodoInscricaoInicio: {
             type: DataTypes.DATEONLY
         },

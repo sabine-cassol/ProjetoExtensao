@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 
 export default (sequelize) => {
-    class Professor extends Model { 
+    class Professor extends Model {
         //Método para verificar senha 
         async verificarSenha(senhaDigita) {
             return bcrypt.compare(senhaDigita, this.senha);
@@ -42,8 +42,13 @@ export default (sequelize) => {
         modelName: "Professores",
 
         hooks: {
-            beforeCreate: async (Professor) => {
-                Professor.senha = await bcrypt.hash(Professor.senha, 10);
+            beforeCreate: async (professor) => {
+                professor.senha = await bcrypt.hash(professor.senha, 10);
+            },
+            beforeUpdate: async (professor) => {
+                if (professor.changed('senha')) {
+                    professor.senha = await bcrypt.hash(professor.senha, 10);
+                }
             }
         }
     });

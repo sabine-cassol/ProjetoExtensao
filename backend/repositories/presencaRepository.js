@@ -85,6 +85,34 @@ export default (Presenca) => {
                 order: [['dataHoraCheckIn', 'DESC']]
             });
         },
+
+        // presencaRepository.js
+        async listarPorProfessorEProjeto(professorId, projetoId) {
+            return Presenca.findAll({
+                include: [
+                    {
+                        model: Atividade,
+                        as: "atividade",
+                        attributes: ['titulo', 'data', 'projetoId'],
+                        where: projetoId ? { projetoId } : undefined,
+                        include: [
+                            {
+                                model: Projeto_extensao,
+                                as: "projeto",
+                                where: { professorId },
+                                attributes: ['titulo']
+                            }
+                        ]
+                    },
+                    {
+                        model: Aluno,
+                        as: "aluno",
+                        attributes: ['nome', 'ra', 'curso', 'periodo']
+                    }
+                ],
+                order: [['dataHoraCheckIn', 'DESC']]
+            });
+        },
         async atualizarStatus(id, status) {
             const presenca = await Presenca.findByPk(id);
             if (!presenca) return null;
