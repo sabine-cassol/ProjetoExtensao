@@ -14,7 +14,7 @@ function Header() {
         <>
             <header className="top-0 sticky z-60 w-full border-b border-zinc-300 bg-background pointer-events-auto ">
                 <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-4">
-                    <div className="flex items-center justify-around h-16 md:grid md:grid-cols-3">
+                    <div className="flex items-center justify-between md:justify-around h-16 md:grid md:grid-cols-3">
 
                         <div className="flex justify-self-start items-center gap-3">
 
