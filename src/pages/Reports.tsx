@@ -6,6 +6,7 @@ import { PRESENCES } from '@/data/Presences';
 import { toast } from 'sonner';
 import { Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ReportsSkeleton } from '@/components/ReportsSkeleton';
 
 interface PresencaAluno {
     id: number;
@@ -44,6 +45,11 @@ function Reports() {
     const { role, user } = useAuth();
     const [paginaAtual, setPaginaAtual] = useState(1);
     const queryClient = useQueryClient();
+
+    const [filtroProjetoId, setFiltroProjetoId] = useState<string>('');
+    const [filtroRa, setFiltroRa] = useState<string>('');
+    const [filtroStatus, setFiltroStatus] = useState<string>('');
+
 
 
     const PRESENCAS_POR_PAGINA = 15;
@@ -124,10 +130,50 @@ function Reports() {
     const isLoading = role === 'teacher' ? isLoadingProfessor : isLoadingAluno;
     const error = role === 'teacher' ? errorProfessor : errorAluno;
 
-    const totalDePaginas = Math.ceil((presencas?.length ?? 0) / PRESENCAS_POR_PAGINA);
+    const formatarRA = (valor: string): string => {
+        const apenasNumeros = valor.replace(/\D/g, '').slice(0, 9);
+
+        if (apenasNumeros.length <= 8) {
+            return apenasNumeros;
+        }
+
+        return `${apenasNumeros.slice(0, 8)}-${apenasNumeros.slice(8)}`;
+    };
+
+    const projetosUnicos = role === 'teacher'
+        ? Array.from(
+            new Map(
+                (presencasProfessor ?? []).map((p) => [
+                    p.atividade.projetoId,
+                    { id: p.atividade.projetoId, titulo: p.atividade.projeto.titulo }
+                ])
+            ).values()
+        )
+        : [];
+
+    const presencasFiltradas = presencas?.filter((presenca) => {
+        if (role === 'teacher') {
+            const p = presenca as PresencaProfessor;
+
+            if (filtroProjetoId && p.atividade.projetoId !== Number(filtroProjetoId)) {
+                return false;
+            }
+
+            if (filtroRa && !p.aluno.ra.toLowerCase().includes(filtroRa.toLowerCase())) {
+                return false;
+            }
+
+            if (filtroStatus && p.status !== filtroStatus) {
+                return false;
+            }
+        }
+        return true;
+    }) ?? [];
+
+    const totalDePaginas = Math.ceil(presencasFiltradas.length / PRESENCAS_POR_PAGINA);
     const indiceFinal = paginaAtual * PRESENCAS_POR_PAGINA;
     const indiceInicial = indiceFinal - PRESENCAS_POR_PAGINA;
-    const presencasExibidas = presencas?.slice(indiceInicial, indiceFinal) ?? [];
+    const presencasExibidas = presencasFiltradas.slice(indiceInicial, indiceFinal);
 
     const formatarHora = (dataIso: string | null): string => {
         if (!dataIso) return '--:--:--';
@@ -148,7 +194,7 @@ function Reports() {
     };
 
     if (isLoading) {
-        return <p className="p-6">Carregando presenças...</p>;
+        return <ReportsSkeleton></ReportsSkeleton>
     }
 
     if (!user) {
@@ -174,7 +220,6 @@ function Reports() {
         return <p className="p-6 text-red-500">Erro ao carregar presenças</p>;
     }
 
-
     return (
         <>
             <main className="flex-1">
@@ -182,99 +227,148 @@ function Reports() {
                 <section className='mt-4 w-full'>
                     <div className="block space-y-4">
 
+
+                        {role === 'teacher' && (
+                            <div className="flex flex-col sm:flex-row gap-3 mb-4 w-full min-w-0">
+                                <select value={filtroProjetoId} onChange={(e) => { setFiltroProjetoId(e.target.value); setPaginaAtual(1); }} className="border border-zinc-300 rounded-md p-2 text-sm flex-1 min-w-0 w-full sm:w-auto">
+                                    <option value="">Todos os projetos</option>
+                                    {projetosUnicos.map((proj) => (
+                                        <option key={proj.id} value={proj.id}>{proj.titulo}</option>
+                                    ))}
+                                </select>
+
+                                <input type="text" placeholder="Buscar por RA do aluno" value={filtroRa} onChange={(e) => { setFiltroRa(e.target.value); setPaginaAtual(1); }} className="border border-zinc-300 rounded-md p-2 text-sm flex-1 min-w-0 w-full sm:w-auto" />
+
+                                <select
+                                    value={filtroStatus}
+                                    onChange={(e) => { setFiltroStatus(e.target.value); setPaginaAtual(1); }}
+                                    className="border border-zinc-300 rounded-md p-2 text-sm flex-1 min-w-0 w-full sm:w-auto">
+                                    <option value="">Todos os status</option>
+                                    <option value="pendente">Pendente</option>
+                                    <option value="aprovado">Aprovado</option>
+                                    <option value="recusado">Recusado</option>
+                                </select>
+                            </div>
+                        )}
+
                         {presencasExibidas.length === 0 && (
-                            <p className="text-sm text-zinc-500">Nenhuma presença registrada ainda.</p>
+                            <p className="text-sm text-zinc-500">Nenhuma presença registrada.</p>
                         )}
 
                         {presencasExibidas.map((presenca) => (
-                            <div key={presenca.id} className="w-full rounded-xl border border-zinc-300 p-4 sm:p-5 font-body text-slate-700">
-                                <div className="grid grid-cols-1 lg:grid-cols-[180px_100px_140px_80px_160px_110px_80px_80px_auto] gap-4 items-center">
+                            <div
+                                key={presenca.id}
+                                className="w-full rounded-xl border border-zinc-300 p-4 sm:p-5 font-body text-slate-700 bg-white">
 
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Nome completo</p>
-                                        <p className="text-sm font-semibold truncate">
-                                            {role === 'teacher' ? (presenca as PresencaProfessor).aluno.nome : user?.nome}
-                                        </p>
+                                <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.5fr_1fr_1.2fr_0.8fr_1.5fr_1fr_0.8fr_0.8fr_auto] lg:items-center">
+
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:contents gap-3 pb-3 lg:pb-0 border-b lg:border-none border-zinc-200">
+
+                                        <div className="min-w-0 col-span-2 sm:col-span-1 lg:col-span-1" title={role === 'teacher' ? (presenca as PresencaProfessor).aluno.nome : user?.nome}>
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Nome completo</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800">
+                                                {role === 'teacher' ? (presenca as PresencaProfessor).aluno.nome : user?.nome}
+                                            </p>
+                                        </div>
+
+                                        <div className="min-w-0" title={role === 'teacher' ? (presenca as PresencaProfessor).aluno.ra : user?.ra}>
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">RA</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800">
+                                                {role === 'teacher' ? (presenca as PresencaProfessor).aluno.ra : user?.ra}
+                                            </p>
+                                        </div>
+
+                                        {role === 'teacher' && (
+                                            <>
+                                                <div className="min-w-0" title={(presenca as PresencaProfessor).aluno.curso}>
+                                                    <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Curso</p>
+                                                    <p className="text-sm font-semibold truncate text-slate-800">
+                                                        {(presenca as PresencaProfessor).aluno.curso}
+                                                    </p>
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Período</p>
+                                                    <p className="text-sm font-semibold truncate text-slate-800">
+                                                        {(presenca as PresencaProfessor).aluno.periodo}º
+                                                    </p>
+                                                </div>
+                                            </>
+                                        )}
+
+                                        <div className="min-w-0 col-span-2 sm:col-span-1 lg:col-span-1" title={presenca.atividade.projeto.titulo}>
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Projeto</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800" title={presenca.atividade.projeto.titulo}>
+                                                {presenca.atividade.projeto.titulo}
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">RA</p>
-                                        <p className="text-sm font-semibold truncate">
-                                            {role === 'teacher' ? (presenca as PresencaProfessor).aluno.ra : user?.ra}
-                                        </p>
+                                    <div className="grid grid-cols-3 lg:contents gap-2 pb-3 lg:pb-0 border-b lg:border-none border-zinc-200" title={formatarDataLocal(presenca.atividade.data)}>
+                                        <div className="min-w-0">
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Data</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800">
+                                                {formatarDataLocal(presenca.atividade.data)}
+                                            </p>
+                                        </div>
+
+                                        <div className="min-w-0" title={formatarHora(presenca.dataHoraCheckIn)}>
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Entrada</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800">
+                                                {formatarHora(presenca.dataHoraCheckIn)}
+                                            </p>
+                                        </div>
+
+                                        <div className="min-w-0" title={formatarHora(presenca.dataHoraCheckOut)}>
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">Saída</p>
+                                            <p className="text-sm font-semibold truncate text-slate-800">
+                                                {formatarHora(presenca.dataHoraCheckOut)}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     {role === 'teacher' && (
-                                        <>
-                                            <div className="min-w-0">
-                                                <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Curso</p>
-                                                <p className="text-sm font-semibold truncate">{(presenca as PresencaProfessor).aluno.curso}</p>
+                                        <div className="flex items-center justify-between lg:justify-end gap-2 pt-1 lg:pt-0">
+                                            <span className="lg:hidden text-xs font-bold uppercase tracking-wider text-slate-400">
+                                                {presenca.status === 'pendente' ? 'Ação solicitada' : 'Status'}
+                                            </span>
+                                            <div className="flex items-center gap-2">
+                                                {presenca.status === 'pendente' ? (
+                                                    <>
+                                                        <button
+                                                            title="Recusar presença"
+                                                            onClick={() => recusarMutation.mutate(presenca.id)}
+                                                            disabled={recusarMutation.isPending || aprovarMutation.isPending}
+                                                            className="cursor-pointer h-10 px-3 sm:px-0 sm:w-10 flex items-center justify-center gap-1 rounded-lg bg-red-500 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 disabled:opacity-50 font-medium text-xs sm:text-sm">
+                                                            <X size={18} strokeWidth={2.5} />
+                                                            <span className="sm:hidden">Recusar</span>
+                                                        </button>
+
+                                                        <button
+                                                            title="Aceitar presença"
+                                                            onClick={() => aprovarMutation.mutate(presenca.id)}
+                                                            disabled={recusarMutation.isPending || aprovarMutation.isPending}
+                                                            className="cursor-pointer h-10 px-3 sm:px-0 sm:w-10 flex items-center justify-center gap-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.95] transition shrink-0 shadow-sm disabled:opacity-50 font-medium text-xs sm:text-sm"
+                                                        >
+                                                            <Check size={18} strokeWidth={2.5} />
+                                                            <span className="sm:hidden">Aceitar</span>
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    formatarStatus(presenca.status)
+                                                )}
                                             </div>
-                                            <div className="min-w-0">
-                                                <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Período</p>
-                                                <p className="text-sm font-semibold truncate">{(presenca as PresencaProfessor).aluno.periodo}º</p>
-                                            </div>
-                                        </>
-                                    )}
-
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Projeto</p>
-                                        <p className="text-sm font-semibold truncate">{presenca.atividade.projeto.titulo}</p>
-                                    </div>
-
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Data</p>
-                                        <p className="text-sm font-semibold truncate">
-                                            {formatarDataLocal(presenca.atividade.data)}
-                                        </p>
-                                    </div>
-
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Entrada</p>
-                                        <p className="text-sm font-semibold truncate">{formatarHora(presenca.dataHoraCheckIn)}</p>
-                                    </div>
-
-                                    <div className="min-w-0">
-                                        <p className="text-[13px] uppercase font-medium text-[#b7b9bb]">Saída</p>
-                                        <p className="text-sm font-semibold truncate">{formatarHora(presenca.dataHoraCheckOut)}</p>
-                                    </div>
-
-                                    {role === 'teacher' && (
-                                        <div className="flex items-center gap-2 justify-end">
-                                            {presenca.status === 'pendente' ? (
-                                                <>
-                                                    <button
-                                                        title="Recusar presença"
-                                                        onClick={() => recusarMutation.mutate(presenca.id)}
-                                                        disabled={recusarMutation.isPending || aprovarMutation.isPending}
-                                                        className="cursor-pointer h-10 w-10 flex items-center justify-center rounded-lg bg-red-400 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 border border-red-200/60 disabled:opacity-50"
-                                                    >
-                                                        <X size={18} strokeWidth={2.5} />
-                                                    </button>
-
-                                                    <button
-                                                        title="Aceitar presença"
-                                                        onClick={() => aprovarMutation.mutate(presenca.id)}
-                                                        disabled={recusarMutation.isPending || aprovarMutation.isPending}
-                                                        className="cursor-pointer h-10 w-10 flex items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.95] transition shrink-0 shadow-sm shadow-emerald-600/10 disabled:opacity-50"
-                                                    >
-                                                        <Check size={18} strokeWidth={2.5} />
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                formatarStatus(presenca.status)
-                                            )}
                                         </div>
                                     )}
 
                                     {role === 'student' && (
-                                        <div className="flex flex-col items-end">
-                                            <p className="text-[12px] uppercase font-bold tracking-wider text-slate-400 mb-1 text-right w-full">
+                                        <div className="flex items-center justify-between lg:flex-col lg:items-end pt-1 lg:pt-0">
+                                            <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">
                                                 Status
                                             </p>
-                                            {formatarStatus(presenca.status)}
+                                            <div>{formatarStatus(presenca.status)}</div>
                                         </div>
                                     )}
+
                                 </div>
                             </div>
                         ))}

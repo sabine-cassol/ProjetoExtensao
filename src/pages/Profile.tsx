@@ -29,9 +29,6 @@ function Profile() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
 
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
-
     const [errosPerfil, setErrosPerfil] = useState<Record<string, string>>({});
     const [errosSenha, setErrosSenha] = useState<Record<string, string>>({});
 
@@ -137,25 +134,18 @@ function Profile() {
             return;
         }
 
-        if (password !== confirmPassword) {
-            setError('As senhas não coincidem. Verifique e tente novamente.');
-            toast.error('As senhas não coincidem.');
-            return;
-        }
-
-        if (password.length < 6) {
-            setError('A senha deve conter no mínimo 6 caracteres.');
-            toast.error('A senha é muito curta.');
-            return;
-        }
-
-        console.log('Enviando para o banco de dados...', { id: user?.id, novaSenha: password });
-
-        setSuccess(true);
-        toast.success("Senha alterada com sucesso");
-
-        setPassword('');
-        setConfirmPassword('');
+        updateMutation.mutate({
+            dados: { senha: password },
+            role: role,
+        }, {
+            onSuccess: () => {
+                setPassword('');
+                setConfirmPassword('');
+            },
+            onError: (erro: Error) => {
+                toast.error(erro.message || "Erro ao alterar senha");
+            }
+        });
     };
 
     if (loading) {
@@ -256,30 +246,32 @@ function Profile() {
                                 />
                             </div>)}
 
-                            <div>
-                                <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
-                                <select
-                                    id="curso"
-                                    name="curso"
-                                    value={formData.curso}
-                                    onChange={handleChange}
-                                    disabled={!isEditing || temInscricoes}
-                                    className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
+
+                            {role === 'student' && (
+                                <div>
+                                    <label htmlFor="curso" className="font-segoe text-sm font-medium text-zinc-700 flex items-center gap-2"> Curso </label>
+                                    <select
+                                        id="curso"
+                                        name="curso"
+                                        value={formData.curso}
+                                        onChange={handleChange}
+                                        disabled={!isEditing || temInscricoes}
+                                        className={`border w-full mt-2 text-zinc-800 border-zinc-400 font-normal rounded-md p-2 focus:outline-none transition-all
                                         ${!isEditing || temInscricoes
-                                            ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
-                                            : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
-                                        }`}>
-                                    <option value="">Selecione um curso</option>
-                                    {CURSOS_DISPONIVEIS.map((curso) => (
-                                        <option key={curso} value={curso}>{curso}</option>
-                                    ))}
-                                </select>
-                                {temInscricoes && isEditing && (
-                                    <p className="text-xs text-amber-600 mt-1">
-                                        Não é possível alterar o curso enquanto estiver inscrito em algum projeto.
-                                    </p>
-                                )}
-                            </div>
+                                                ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
+                                                : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
+                                            }`}>
+                                        <option value="">Selecione um curso</option>
+                                        {CURSOS_DISPONIVEIS.map((curso) => (
+                                            <option key={curso} value={curso}>{curso}</option>
+                                        ))}
+                                    </select>
+                                    {temInscricoes && isEditing && (
+                                        <p className="text-xs text-amber-600 mt-1">
+                                            Não é possível alterar o curso enquanto estiver inscrito em algum projeto.
+                                        </p>
+                                    )}
+                                </div>)}
 
                             {role === 'student' && (
                                 <div>
@@ -297,7 +289,7 @@ function Profile() {
                                          ${!isEditing || temInscricoes
                                                 ? 'bg-zinc-200/80 text-zinc-500 select-none cursor-default border-zinc-200'
                                                 : 'bg-white text-zinc-900 focus:ring-2 focus:ring-blue-500/10'
-                                            }`}/>
+                                            }`} />
                                     {temInscricoes && isEditing && (
                                         <p className="text-xs text-amber-600 mt-1">
                                             Não é possível alterar o período enquanto estiver inscrito em algum projeto.

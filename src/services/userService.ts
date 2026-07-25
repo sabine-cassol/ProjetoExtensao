@@ -22,7 +22,7 @@ export interface Usuario {
 }
 
 export interface AtualizarUsuarioPayload {
-  dados: Usuario;
+  dados: Partial<Usuario> & { senha?: string };
   role: 'teacher' | 'student' | string;
 }
 
@@ -34,6 +34,7 @@ interface UseUpdateUserOptions {
 interface UseCreateUserOptions {
   onSuccessCallback?: () => void;
 }
+
 
 export const userService = {
   create: async (dadoslogin: CriarUsuarioPayload): Promise<Usuario> => {
@@ -52,13 +53,13 @@ export const userService = {
       console.error("❌ Detalhes do erro vindos da API:", dados);
       throw new Error(dados?.mensagem || `Erro na API: ${response.status}`);
     }
-    
+
     return dados;
   },
 
   update: async ({ dados, role }: AtualizarUsuarioPayload): Promise<Usuario> => {
     const isTeacher = role?.toLowerCase() === 'teacher' || role?.toLowerCase() === 'professor';
-    
+
     const rotaMe = isTeacher ? '/professores/atualizar' : '/alunos/atualizar'
 
     const response = await fetch(`${API_URL}${rotaMe}`, {
@@ -88,7 +89,7 @@ export const useCreateUser = (options?: UseCreateUserOptions) => {
     mutationFn: (dadosUsuario: CriarUsuarioPayload) => userService.create(dadosUsuario),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['usuarios'] });
-      
+
       toast.success("Aluno cadastrado com sucesso!");
 
       if (options?.onSuccessCallback) {
@@ -106,23 +107,20 @@ export const useUpdateUser = (options?: UseUpdateUserOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ dados, role }: AtualizarUsuarioPayload) => 
+    mutationFn: ({ dados, role }: AtualizarUsuarioPayload) =>
       userService.update({ dados, role }),
-      
-    onSuccess: (_, variables) => {
-      // 1. Invalida os dados do cache
+
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['userMe'] });
 
-      // 2. Atualiza a sessão (se fornecida a função)
       if (options?.updateSession) {
         options.updateSession({
-          nome: variables.dados.nome,
-          curso: variables.dados.curso,
-          periodo: variables.dados.periodo,
+          nome: data.nome,
+          curso: data.curso,
+          periodo: data.periodo,
         });
       }
 
-      // 3. Executa o callback de fechar edição
       if (options?.onSuccessCallback) {
         options.onSuccessCallback();
       }
