@@ -45,7 +45,8 @@ export default (projetoService) => {
                 const projeto = await projetoService.atualizarProjeto(
                     req.params.id,
                     req.body,
-                    req.usuario.id
+                    req.usuario.id,
+                    req.usuario.isAdmin
                 );
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
@@ -59,7 +60,7 @@ export default (projetoService) => {
 
         async desativarProjeto(req, res) {
             try {
-                const projeto = await projetoService.desativarProjeto(req.params.id, req.usuario.id);
+                const projeto = await projetoService.desativarProjeto(req.params.id, req.usuario.id, req.usuario.isAdmin);
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
@@ -69,7 +70,7 @@ export default (projetoService) => {
 
         async ativarProjeto(req, res) {
             try {
-                const projeto = await projetoService.ativarProjeto(req.params.id, req.usuario.id);
+                const projeto = await projetoService.ativarProjeto(req.params.id, req.usuario.id, req.usuario.isAdmin);
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {

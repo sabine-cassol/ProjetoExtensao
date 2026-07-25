@@ -21,12 +21,12 @@ export default (projetoRepository) => {
         async listarTodosPorProfessor(professorId) {
             return projetoRepository.listarTodosPorProfessor(professorId);
         },
-        async atualizarProjeto(id, dados, professorLogadoId) {
+        async atualizarProjeto(id, dados, professorLogadoId, isAdmin) {
             const projeto = await projetoRepository.atualizarProjeto(id, dados);
             if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            if (projeto.professorId !== professorLogadoId) {
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para editar este projeto");
             }
 
@@ -35,22 +35,22 @@ export default (projetoRepository) => {
             const projetoAtualizado = await projetoRepository.atualizarProjeto(id, dados);
             return projetoAtualizado;
         },
-        async desativarProjeto(id, professorLogadoId) {
+        async desativarProjeto(id, professorLogadoId, isAdmin) {
             const projeto = await projetoRepository.buscarPorId(id);
             if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            if (projeto.professorId !== professorLogadoId) {
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para desativar este projeto");
             }
             return projetoRepository.atualizarProjeto(id, { ativo: false });
         },
-        async ativarProjeto(id, professorLogadoId) {
+        async ativarProjeto(id, professorLogadoId,isAdmin) {
             const projeto = await projetoRepository.buscarPorId(id);
             if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            if (projeto.professorId !== professorLogadoId) {
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para ativar este projeto");
             }
             return projetoRepository.atualizarProjeto(id, { ativo: true });

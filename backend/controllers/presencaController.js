@@ -55,7 +55,7 @@ export default (presencaService) => {
         },
         async aprovarPresenca(req, res) {
             try {
-                const presenca = await presencaService.aprovarPresenca(req.params.id, req.usuario.id);
+                const presenca = await presencaService.aprovarPresenca(req.params.id, req.usuario.id,req.usuario.isAdmin);
                 res.status(200).json(presenca.toJSON());
             } catch (erro) {
                 res.status(403).json({erro : erro.message});
@@ -63,7 +63,7 @@ export default (presencaService) => {
         },
         async recusarPresenca(req, res) {
             try {
-                const presenca = await presencaService.recusarPresenca(req.params.id, req.usuario.id);
+                const presenca = await presencaService.recusarPresenca(req.params.id, req.usuario.id,req.usuario.isAdmin);
                 res.status(200).json(presenca.toJSON());
             } catch (erro) {
                 res.status(403).json({erro : erro.message});

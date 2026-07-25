@@ -36,7 +36,12 @@ export default (sequelize) => {
         ativo: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
+
     }, {
         sequelize,
         modelName: "Professores",

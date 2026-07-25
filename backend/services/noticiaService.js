@@ -25,23 +25,23 @@ export default (noticiaRepository) => {
         },
 
 
-        async atualizarNoticia(id, dados, professorLogadoId) {
+        async atualizarNoticia(id, dados, professorLogadoId,isAdmin) {
             const noticia = await noticiaRepository.buscarPorId(id);
             if (!noticia) {
                 throw new Error("Notícia não encontrada");
             }
-            if (noticia.professorId !== professorLogadoId) {
+            if (noticia.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para editar esta notícia");
             }
             return noticiaRepository.atualizarNoticia(id, dados);
         },
 
-        async deletarNoticia(id, professorLogadoId) {
+        async deletarNoticia(id, professorLogadoId,isAdmin) {
             const noticia = await noticiaRepository.buscarPorId(id);
             if (!noticia) {
                 throw new Error("Notícia não encontrada");
             }
-            if (noticia.professorId !== professorLogadoId) {
+            if (noticia.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para deletar esta notícia");
             }
             return noticiaRepository.deletar(id);

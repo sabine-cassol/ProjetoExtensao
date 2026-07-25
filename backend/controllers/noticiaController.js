@@ -39,7 +39,7 @@ export default (noticiaService) => {
 
         async atualizarNoticia(req, res) {
             try {
-                const noticia = await noticiaService.atualizarNoticia(req.params.id, req.body, req.usuario.id);
+                const noticia = await noticiaService.atualizarNoticia(req.params.id, req.body, req.usuario.id, req.usuario.isAdmin);
                 res.status(200).json(noticia.toJSON());
             } catch (erro) {
                 res.status(403).json({ erro: erro.message });
@@ -48,7 +48,7 @@ export default (noticiaService) => {
 
         async deletarNoticia(req, res) {
             try {
-                await noticiaService.deletarNoticia(req.params.id, req.usuario.id);
+                await noticiaService.deletarNoticia(req.params.id, req.usuario.id, req.usuario.isAdmin);
                 res.status(200).json({ mensagem: "Notícia deletada com sucesso" });
             } catch (erro) {
                 res.status(403).json({ erro: erro.message });

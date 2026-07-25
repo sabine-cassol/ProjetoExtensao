@@ -99,7 +99,7 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             return presencaRepository.listarPorProfessor(professorId);
         },
 
-        async aprovarPresenca(id, professorLogadoId) {
+        async aprovarPresenca(id, professorLogadoId,isAdmin) {
             const presenca = await presencaRepository.buscarPorId(id);
             if (!presenca) {
                 throw new Error("Presença não encontrada");
@@ -111,14 +111,14 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             }
 
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
-            if (!projeto || projeto.professorId !== professorLogadoId) {
+            if (!projeto || projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para gerenciar esta presença");
             }
 
             return presencaRepository.atualizarStatus(id, 'aprovado');
         },
 
-        async recusarPresenca(id, professorLogadoId) {
+        async recusarPresenca(id, professorLogadoId, isAdmin) {
             const presenca = await presencaRepository.buscarPorId(id);
             if (!presenca) {
                 throw new Error("Presença não encontrada");
@@ -130,7 +130,7 @@ export default (presencaRepository, atividadeRepository, inscricaoRepository, al
             }
 
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
-            if (!projeto || projeto.professorId !== professorLogadoId) {
+            if (!projeto || projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para gerenciar esta presença");
             }
 

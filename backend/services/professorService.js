@@ -1,4 +1,3 @@
-
 import jwt from "jsonwebtoken";
 
 /**
@@ -6,15 +5,6 @@ import jwt from "jsonwebtoken";
  */
 export default (professorRepository) => {
     return {
-        /**
-         * Cadastro de professor. CREATE - rota POST
-         * 
-         * Faz verificação do email da req, e, caso ele já exista, ele lança uma error
-         * caso não exista ele retorna o professor cadastrado.
-         * 
-         * @param {*} dados da req HTTP.
-         * @returns Professor com os dados persistidos no banco.
-         */
         async cadastrarProfessor(dados) {
             const emailJaExiste = await professorRepository.buscarPorEmail(dados.email);
 
@@ -24,7 +14,6 @@ export default (professorRepository) => {
 
             return professorRepository.criarProfessor(dados);
         },
-
 
         async verificarLogin(email, senha) {
             const professor = await professorRepository.buscarPorEmail(email);
@@ -38,13 +27,12 @@ export default (professorRepository) => {
             }
 
             const token = jwt.sign(
-                {id: professor.id, tipo: "professor"},
+                { id: professor.id, tipo: "professor", isAdmin: professor.isAdmin },
                 process.env.JWT_SECRET,
-                {expiresIn: "8h"}
+                { expiresIn: "8h" }
             );
 
             return { professor, token };
-
         },
 
         async buscarPorId(id) {
@@ -83,6 +71,28 @@ export default (professorRepository) => {
             }
             professorAtivado.ativo = true;
             return professorRepository.atualizarProfessor(id, professorAtivado);
+        },
+
+        async promoverAdmin(id, solicitanteEhAdmin) {
+            if (!solicitanteEhAdmin) {
+                throw new Error("Apenas administradores podem promover outros professores");
+            }
+            const professor = await professorRepository.atualizarProfessor(id, { isAdmin: true });
+            if (!professor) {
+                throw new Error("Professor não encontrado");
+            }
+            return professor;
+        },
+
+        async removerAdmin(id, solicitanteEhAdmin) {
+            if (!solicitanteEhAdmin) {
+                throw new Error("Apenas administradores podem remover privilégios de outros professores");
+            }
+            const professor = await professorRepository.atualizarProfessor(id, { isAdmin: false });
+            if (!professor) {
+                throw new Error("Professor não encontrado");
+            }
+            return professor;
         }
     }
 }

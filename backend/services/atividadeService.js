@@ -1,14 +1,23 @@
 export default (atividadeRepository, projetoRepository) => {
     return {
-        async criarAtividade(dados, professorLogadoId) {
+        async criarAtividade(dados, professorLogadoId, isAdmin) {
             const projeto = await projetoRepository.buscarPorId(dados.projetoId);
             if (!projeto) {
                 throw new Error("Projeto não encontrado");
             }
-            if (projeto.professorId !== professorLogadoId) {
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para criar atividades neste projeto");
             }
 
+            if (!projeto.periodoExecucaoInicio || !projeto.periodoExecucaoFim) {
+                throw new Error("Este projeto não tem período de execução definido");
+            }
+
+            if (dados.data < projeto.periodoExecucaoInicio || dados.data > projeto.periodoExecucaoFim) {
+                throw new Error(
+                    `A data da atividade deve estar dentro do período de execução do projeto (${formatarDataBR(projeto.periodoExecucaoInicio)} a ${formatarDataBR(projeto.periodoExecucaoFim)})`
+                );
+            }
 
             const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(dados.projetoId);
             const jaExisteNessaData = atividadesExistentes.some(
@@ -57,18 +66,24 @@ export default (atividadeRepository, projetoRepository) => {
             return atividades.filter((a) => a.ativo);
         },
 
-        async atualizarAtividade(id, dados, professorLogadoId) {
+        async atualizarAtividade(id, dados, professorLogadoId, isAdmin) {
             const atividade = await atividadeRepository.buscarPorId(id);
             if (!atividade) {
                 throw new Error("Atividade não encontrada");
             }
 
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
-            if (!projeto || projeto.professorId !== professorLogadoId) {
+            if (!projeto || (projeto.professorId !== professorLogadoId && !isAdmin)) {
                 throw new Error("Você não tem permissão para editar esta atividade");
             }
 
             if (dados.data !== undefined && dados.data !== atividade.data) {
+                if (dados.data < projeto.periodoExecucaoInicio || dados.data > projeto.periodoExecucaoFim) {
+                    throw new Error(
+                        `A data da atividade deve estar dentro do período de execução do projeto (${formatarDataBR(projeto.periodoExecucaoInicio)} a ${formatarDataBR(projeto.periodoExecucaoFim)})`
+                    );
+                }
+
                 const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(atividade.projetoId);
                 const jaExisteNessaData = atividadesExistentes.some(
                     (a) => a.ativo && a.id !== id && a.data === dados.data
@@ -79,11 +94,10 @@ export default (atividadeRepository, projetoRepository) => {
                 }
             }
 
-            // Se a carga horária está sendo alterada, valida o limite
             if (dados.cargaHoraria !== undefined) {
                 const atividadesExistentes = await atividadeRepository.listarTodosPorProjeto(atividade.projetoId);
                 const cargaHorariaOutras = atividadesExistentes
-                    .filter((a) => a.ativo && a.id !== id) // exclui a própria atividade sendo editada
+                    .filter((a) => a.ativo && a.id !== id)
                     .reduce((total, a) => total + Number(a.cargaHoraria), 0);
 
                 const novaCargaTotal = cargaHorariaOutras + Number(dados.cargaHoraria);
@@ -98,25 +112,25 @@ export default (atividadeRepository, projetoRepository) => {
             return atividadeRepository.atualizarAtividade(id, dados);
         },
 
-        async desativarAtividade(id, professorLogadoId) {
+        async desativarAtividade(id, professorLogadoId, isAdmin) {
             const atividade = await atividadeRepository.buscarPorId(id);
             if (!atividade) {
                 throw new Error("Atividade não encontrada");
             }
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
-            if (!projeto || projeto.professorId !== professorLogadoId) {
+            if (!projeto || projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para desativar esta atividade");
             }
             return atividadeRepository.atualizarAtividade(id, { ativo: false });
         },
 
-        async ativarAtividade(id, professorLogadoId) {
+        async ativarAtividade(id, professorLogadoId, isAdmin) {
             const atividade = await atividadeRepository.buscarPorId(id);
             if (!atividade) {
                 throw new Error("Atividade não encontrada");
             }
             const projeto = await projetoRepository.buscarPorId(atividade.projetoId);
-            if (!projeto || projeto.professorId !== professorLogadoId) {
+            if (!projeto || projeto.professorId !== professorLogadoId && !isAdmin) {
                 throw new Error("Você não tem permissão para ativar esta atividade");
             }
 
@@ -128,7 +142,6 @@ export default (atividadeRepository, projetoRepository) => {
             if (jaExisteNessaData) {
                 throw new Error("Não é possível reativar: já existe outra atividade ativa nesta data");
             }
-
 
             const cargaHorariaOutras = atividadesExistentes
                 .filter((a) => a.ativo && a.id !== id)
@@ -145,4 +158,9 @@ export default (atividadeRepository, projetoRepository) => {
             return atividadeRepository.atualizarAtividade(id, { ativo: true });
         }
     }
+}
+
+function formatarDataBR(dataISO) {
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
 }
