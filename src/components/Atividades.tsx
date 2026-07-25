@@ -47,7 +47,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
         descricao: '',
         data: '',
         cargaHoraria: '',
-        exigeLocalizacao: true,
+        exigeLocalizacao: false,
         latitude: '',
         longitude: '',
         raioMetros: '100'
@@ -278,7 +278,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                                 )}
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 border border-zinc-400 p-2 max-w-80 rounded-sm">
                                 <input
                                     type="checkbox"
                                     id="exigeLocalizacao"
@@ -293,46 +293,59 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito }: Ati
                             </div>
 
                             {formData.exigeLocalizacao && (
-                                <div className="grid grid-cols-3 gap-2">
-                                    <div>
-                                        <label className="text-xs text-gray-500">Latitude</label>
+                                <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                                    <div className='flex flex-col gap-1'>
+                                        <label className="text-xs text-gray-700">Latitude</label>
                                         <input
                                             type="text"
                                             name="latitude"
                                             placeholder="-23.5505"
                                             value={formData.latitude}
                                             onChange={handleInputChange}
-                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                                         />
+                                        {errosAtividade.latitude && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosAtividade.latitude}</span>
+                                        )}
+
                                     </div>
-                                    <div>
-                                        <label className="text-xs text-gray-500">Longitude</label>
+                                    <div className='flex flex-col gap-1'>
+                                        <label className="text-xs text-gray-700">Longitude</label>
                                         <input
                                             type="text"
                                             name="longitude"
                                             placeholder="-46.6333"
                                             value={formData.longitude}
                                             onChange={handleInputChange}
-                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                                         />
+                                        {errosAtividade.longitude && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosAtividade.longitude}</span>
+                                        )}
+
                                     </div>
-                                    <div>
-                                        <label className="text-xs text-gray-500">Raio (m)</label>
+                                    <div className='flex flex-col gap-1'>
+                                        <label className="text-xs text-gray-700">Raio (m)</label>
                                         <input
                                             type="number"
                                             name="raioMetros"
                                             placeholder="100"
                                             value={formData.raioMetros}
                                             onChange={handleInputChange}
-                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500"
+                                            className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                                         />
+                                        {errosAtividade.raioMetros && (
+                                            <span className="text-red-600 text-xs mt-1 block">{errosAtividade.raioMetros}</span>
+                                        )}
                                     </div>
+
                                     <button
                                         type="button"
                                         onClick={preencherLocalizacaoAtual}
-                                        className="text-xs text-blue-600 hover:underline">
+                                        className="flex text-xs text-blue-600 hover:underline cursor-pointer">
                                         Usar minha localização atual
                                     </button>
+
                                 </div>
                             )}
 
