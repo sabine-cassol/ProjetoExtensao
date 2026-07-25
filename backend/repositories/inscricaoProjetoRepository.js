@@ -1,6 +1,6 @@
 import { Aluno, Projeto_extensao, Professor } from '../models/index.js';
 
-export default (Inscricao_projeto,projetoRepository) => {
+export default (Inscricao_projeto, projetoRepository) => {
     return {
         async criarInscricao(dados) {
             const {alunoId, projetoId} = dados;
@@ -29,12 +29,14 @@ export default (Inscricao_projeto,projetoRepository) => {
                 );
             }
 
-            const inscricaoExistente = await inscricaoProjetoRepository.buscarInscricao(alunoId, projetoId);
+            const inscricaoExistente = await Inscricao_projeto.findOne({
+                where: { alunoId, projetoId }
+            });
             if (inscricaoExistente) {
                 throw new Error("Aluno já inscrito nesse projeto");
             }
 
-            return inscricaoProjetoRepository.criarInscricao(dados);
+            return Inscricao_projeto.create(dados);
         },
 
         async listarAlunosPorProjeto(projetoId) {
@@ -62,7 +64,6 @@ export default (Inscricao_projeto,projetoRepository) => {
                 ]
             }); 
         },
-
 
         async buscarInscricao(alunoId, projetoId) {
             return Inscricao_projeto.findOne({

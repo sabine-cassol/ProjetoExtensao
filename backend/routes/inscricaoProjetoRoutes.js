@@ -7,8 +7,8 @@ import inscricaoProjetoService from "../services/inscricaoProjetoService.js";
 import inscricaoProjetoController from "../controllers/inscricaoProjetoController.js";
 import autenticar from "../middlewares/autenticar.js";
 
-const repository = inscricaoProjetoRepository(Inscricao_projeto);
 const repositoryProjeto = projetoRepository(Projeto_extensao);
+const repository = inscricaoProjetoRepository(Inscricao_projeto, repositoryProjeto);
 const repositoryAluno = alunoRepository(Aluno);
 const service = inscricaoProjetoService(repository, repositoryProjeto, repositoryAluno);
 const controller = inscricaoProjetoController(service);
