@@ -355,7 +355,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito, isAdm
 
                             <div className="flex items-center gap-3 text-xs text-gray-500">
                                 <div className="flex items-center gap-1">
-                                    <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleCargaHorariaChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                    <input type="text" inputMode="decimal" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleCargaHorariaChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     <span className="text-gray-400">h</span>
                                     {errosAtividade.cargaHoraria && (
                                         <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
@@ -480,7 +480,7 @@ function Atividades({ role, professorResponsavelId, userId, alunoInscrito, isAdm
 
                     <div className="flex items-center gap-3 text-xs text-gray-500">
                         <div className="flex items-center gap-1">
-                            <input type="number" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <input type="text" inputMode="decimal" name="cargaHoraria" placeholder="Carga horária (ex: 4)" required min="1" value={formData.cargaHoraria} onChange={handleInputChange} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                             <span className="text-gray-400">h</span>
                         </div>
                         <span className="text-gray-300">•</span>
