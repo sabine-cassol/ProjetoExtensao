@@ -51,6 +51,7 @@ src/
   ```bash
     git clone -b dev-eduardo-2 https://github.com/sabine-cassol/ProjetoExtensao/
   ```
+  
   - É preciso criar um arquivo .env na raíz do projeto nesse formato
   
   ```env
