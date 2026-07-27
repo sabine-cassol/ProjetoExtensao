@@ -6,6 +6,7 @@ import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/context/AuthContext';
 import { noticiaSchema } from "@/schemas/authSchemas";
 import { useCriarNoticia } from "@/services/noticiaService";
+import { useRef } from "react";
 
 async function converterParaBase64(arquivo: File): Promise<string> {
     const opcoes = {
@@ -36,6 +37,7 @@ function CreateNew() {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageBase64, setImageBase64] = useState<string>('');
     const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
+    const refsCampos = useRef<Record<string, HTMLElement | null>>({});
 
     const textoLimpo = conteudo ? conteudo.replace(/<[^>]+>/g, '') : '';
     const longText = textoLimpo.length > 600;
@@ -82,6 +84,14 @@ function CreateNew() {
                 }
             });
             setErrosNoticia(erros);
+
+          const primeiroCampoComErro = Object.keys(erros)[0];
+            const elemento = refsCampos.current[primeiroCampoComErro];
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elemento.focus();
+            }
+
             return;
         }
 
@@ -141,7 +151,7 @@ function CreateNew() {
                     </div>
                     <div className="mt-4 flex flex-col gap-2 ">
                         <label htmlFor="input" className="font-semibold">Digite o título da notícia</label>
-                        <input type="text" required maxLength={254} value={titulo} onChange={(e) => setTitulo(e.target.value)} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <input type="text" required maxLength={254} value={titulo} onChange={(e) => setTitulo(e.target.value)} ref={(el) => { refsCampos.current['titulo'] = el; }} className="border border-zinc-300  rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                         {errosNoticia.titulo && (
                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                 <div className='flex flex-row gap-1 items-center'>
@@ -153,7 +163,7 @@ function CreateNew() {
                             </div>
                         )}
                         <label htmlFor="input" className="font-semibold">Digite o resumo da notícia</label>
-                        <input type="text" required maxLength={254} value={resumo} onChange={(e) => setResumo(e.target.value)} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                        <input type="text" required maxLength={254} value={resumo} onChange={(e) => setResumo(e.target.value)} ref={(el) => { refsCampos.current['resumo'] = el; }} className="border border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                         {errosNoticia.resumo && (
                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                 <div className='flex flex-row gap-1 items-center'>
@@ -166,7 +176,7 @@ function CreateNew() {
                         )}
                     </div>
                     <div>
-                        <Tiptap value={conteudo} onChange={setConteudo} />
+                        <Tiptap value={conteudo} onChange={setConteudo}  />
                         {errosNoticia.conteudo && (
                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                 <div className='flex flex-row gap-1 items-center'>
@@ -268,7 +278,7 @@ function CreateNew() {
                                 [&_strong]:font-bold [&_em]:italic [&_blockquote]:border-l-4 [&_blockquote]:border-zinc-300 [&_blockquote]:pl-4 [&_blockquote]:italic
                                 break-words overflow-hidden"
                                 dangerouslySetInnerHTML={{ __html: textoExibido || "-" }}
-                            />  
+                            />
 
                             {uploadStatus === 'success' && imageFile && (
                                 <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border-2 border-zinc-300 ">

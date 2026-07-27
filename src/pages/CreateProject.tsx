@@ -8,11 +8,13 @@ import { AlertCircle } from 'lucide-react';
 import { projetoService, type NovoProjeto } from '@/services/projetoService';
 import SeletorPeriodos from '@/components/SeletorPeriodos';
 import { SeletorCursos } from '@/components/SeletorCursos';
+import { useRef } from 'react'
 
 function ProjectDetail() {
     const { user } = useAuth();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const refsCampos = useRef<Record<string, HTMLElement | null>>({});
 
     const [form, setForm] = useState<Omit<NovoProjeto, 'professorId'>>({
         titulo: '',
@@ -80,6 +82,14 @@ function ProjectDetail() {
             console.log("Campos com erro de validação:", errosFormatados);
 
             setErrosProjeto(errosFormatados);
+
+            const primeiroCampoComErro = Object.keys(errosFormatados)[0];
+            const elemento = refsCampos.current[primeiroCampoComErro];
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elemento.focus();
+            }
+
             return;
         }
         criarMutation.mutate(form);
@@ -98,7 +108,7 @@ function ProjectDetail() {
                         <section className="flex flex-col gap-2">
                             <label htmlFor="inputName" className="font-semibold">Digite o nome do projeto</label>
                             {/* <input name="nome" required maxLength={100} className="text-xl md:text-xl font-bold text-slate-800 mb-4 border-b-2 border-(--lightCyan) outline-none bg-slate-50 px-2 w-full dark:bg-zinc-800 dark:text-zinc-100 dark:border-violet-400"/> */}
-                            <input id="inputName" type="text" required maxLength={254} value={form.titulo} onChange={(e) => handleChange('titulo', e.target.value)} className="border text-lg font-bold border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-(--lightCyan) focus-within:ring-2 focus-within:ring-(--lightCyan) focus-within:border-zinc-500 transition-all focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px]" />
+                            <input id="inputName" type="text" required maxLength={254} value={form.titulo} onChange={(e) => handleChange('titulo', e.target.value)} ref={(el) => { refsCampos.current['titulo'] = el; }} className="border text-lg font-bold border-zinc-300 rounded-sm p-2 focus:outline-none focus:border-(--lightCyan) focus-within:ring-2 focus-within:ring-(--lightCyan) focus-within:border-zinc-500 transition-all focus-visible:border-(--lightCyan) focus-visible:ring-(--lightCyan)/30 focus-visible:ring-[3px]" />
                             {errosProjeto.titulo && (
                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                     <div className='flex flex-row gap-1 items-center'>
@@ -118,7 +128,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Tipo</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.tipo} onChange={(e) => handleChange('tipo', e.target.value)} placeholder="Ex.: Prestação de serviço" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.tipo} onChange={(e) => handleChange('tipo', e.target.value)} placeholder="Ex.: Prestação de serviço" ref={(el) => { refsCampos.current['tipo'] = el; }} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.tipo && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -135,7 +145,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Unidade</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.unidade} onChange={(e) => handleChange('unidade', e.target.value)} placeholder="Ex.: Ponta Grossa" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.unidade} onChange={(e) => handleChange('unidade', e.target.value)} ref={(el) => { refsCampos.current['unidade'] = el; }} placeholder="Ex.: Ponta Grossa" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.unidade && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -151,7 +161,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Carga Horária</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" placeholder="Ex.: 40" value={form.cargaHoraria} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" placeholder="Ex.: 40" value={form.cargaHoraria} onChange={(e) => handleChange('cargaHoraria', e.target.value)} ref={(el) => { refsCampos.current['cargaHoraria'] = el; }} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.cargaHoraria && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -186,7 +196,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Parceiros</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.parceiros} onChange={(e) => handleChange('parceiros', e.target.value)} placeholder="Ex.: Nenhum" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.parceiros} onChange={(e) => handleChange('parceiros', e.target.value)} ref={(el) => { refsCampos.current['parceiros'] = el; }} placeholder="Ex.: Nenhum" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.parceiros && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -202,7 +212,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Colaboradores</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.colaboradores} onChange={(e) => handleChange('colaboradores', e.target.value)} placeholder="Ex.: Nenhum" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.colaboradores} onChange={(e) => handleChange('colaboradores', e.target.value)} ref={(el) => { refsCampos.current['colaboradores'] = el; }} placeholder="Ex.: Nenhum" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.colaboradores && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -218,7 +228,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Comunidade Participante</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.comunidadeParticipante} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} placeholder="Ex.: Alunos do ensino médio" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.comunidadeParticipante} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} ref={(el) => { refsCampos.current['comunidadeParticipante'] = el; }} placeholder="Ex.: Alunos do ensino médio" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.comunidadeParticipante && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -254,7 +264,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Vagas</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.vagas} onChange={(e) => handleChange('vagas', e.target.value)} placeholder="Ex.: 500" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.vagas} onChange={(e) => handleChange('vagas', e.target.value)} ref={(el) => { refsCampos.current['vagas'] = el; }} placeholder="Ex.: 500" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.vagas && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -270,7 +280,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">ODS</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.ods} onChange={(e) => handleChange('ods', e.target.value)} placeholder="Ex.: Educação de qualidade" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.ods} onChange={(e) => handleChange('ods', e.target.value)} ref={(el) => { refsCampos.current['ods'] = el; }} placeholder="Ex.: Educação de qualidade" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.ods && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -286,7 +296,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Ciclo</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.ciclo} onChange={(e) => handleChange('ciclo', e.target.value)} placeholder="Ex.: Bimestral, semestral, etc." className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.ciclo} onChange={(e) => handleChange('ciclo', e.target.value)} ref={(el) => { refsCampos.current['ciclo'] = el; }} placeholder="Ex.: Bimestral, semestral, etc." className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.ciclo && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -303,7 +313,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Competência</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.competencia} onChange={(e) => handleChange('competencia', e.target.value)} placeholder="Ex.: Competência 1" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.competencia} onChange={(e) => handleChange('competencia', e.target.value)} ref={(el) => { refsCampos.current['competencia'] = el; }} placeholder="Ex.: Competência 1" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.competencia && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -320,7 +330,7 @@ function ProjectDetail() {
                                     <tr>
                                         <td className="px-3 py-2 font-bold text-zinc-900">Eixo</td>
                                         <td className="px-3 py-2 text-justify">
-                                            <input type="text" value={form.eixo} onChange={(e) => handleChange('eixo', e.target.value)} placeholder="[3] - Inovação, Tecnologia e Desenvolvimento Social" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                            <input type="text" value={form.eixo} onChange={(e) => handleChange('eixo', e.target.value)} ref={(el) => { refsCampos.current['eixo'] = el; }} placeholder="[3] - Inovação, Tecnologia e Desenvolvimento Social" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                             {errosProjeto.eixo && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                     <div className='flex flex-row gap-1 items-center'>
@@ -379,7 +389,7 @@ function ProjectDetail() {
 
                         <section className="mt-3 flex flex-col gap-2">
                             <span className='font-bold text-sm font-segoe text-[#424242]'>Justificativa de Relevância</span>
-                            <textarea placeholder="Justificativa do projeto" value={form.justificativa} onChange={(e) => handleChange('justificativa', e.target.value)} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <textarea placeholder="Justificativa do projeto" value={form.justificativa} onChange={(e) => handleChange('justificativa', e.target.value)} ref={(el) => { refsCampos.current['justificativa'] = el; }} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                             {errosProjeto.justificativa && (
                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                     <div className='flex flex-row gap-1 items-center'>
@@ -393,7 +403,7 @@ function ProjectDetail() {
                         </section>
                         <section className="mt-3">
                             <span className='font-bold text-sm font-segoe text-[#424242]'>Pretensão da atividade</span>
-                            <textarea placeholder="Pretensão do projeto" value={form.pretensao} onChange={(e) => handleChange('pretensao', e.target.value)} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <textarea placeholder="Pretensão do projeto" value={form.pretensao} onChange={(e) => handleChange('pretensao', e.target.value)} ref={(el) => { refsCampos.current['pretensao'] = el; }} className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                             {errosProjeto.pretensao && (
                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                     <div className='flex flex-row gap-1 items-center'>
@@ -408,7 +418,7 @@ function ProjectDetail() {
 
                         <section className="mt-3">
                             <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitios Técnicos</span>
-                            <textarea value={form.requisitos} onChange={(e) => handleChange('requisitos', e.target.value)} placeholder="Requisitos técnicos para participar do projeto" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                            <textarea value={form.requisitos} onChange={(e) => handleChange('requisitos', e.target.value)} ref={(el) => { refsCampos.current['requisitos'] = el; }} placeholder="Requisitos técnicos para participar do projeto" className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                             {errosProjeto.requisitos && (
                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                     <div className='flex flex-row gap-1 items-center'>

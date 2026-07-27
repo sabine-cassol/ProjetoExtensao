@@ -16,6 +16,7 @@ import { useInscreverProjeto, useMinhasInscricoes } from '@/services/inscricoesS
 import { useNavigate } from 'react-router-dom'
 import SeletorPeriodos from '@/components/SeletorPeriodos';
 import { SeletorCursos } from '@/components/SeletorCursos';
+import { useRef } from 'react'
 
 
 function formatarPeriodo(inicio: string | null, fim: string | null): string {
@@ -39,6 +40,7 @@ function ProjectDetail() {
     // const [listaProjects, setListaProjects] = useState(PROJECTS);
     const [isEditing, setIsEditing] = useState(false);
     const [errosProjeto, setErrosProjeto] = useState<Record<string, string>>({});
+    const refsCampos = useRef<Record<string, HTMLElement | null>>({});
 
     const { data: projeto, isLoading } = useProjetoId(projetoId!);
     const { data: minhasInscricoes } = useMinhasInscricoes(user?.id, role);
@@ -89,6 +91,14 @@ function ProjectDetail() {
 
 
             setErrosProjeto(errosFormatados);
+
+            const primeiroCampoComErro = Object.keys(errosFormatados)[0];
+            const elemento = refsCampos.current[primeiroCampoComErro];
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elemento.focus();
+            }
+
             return;
         }
         // setListaProjects(prevLista =>
@@ -123,7 +133,6 @@ function ProjectDetail() {
             }
         });
     };
-
 
 
     const handleReactivate = () => {
@@ -231,7 +240,7 @@ function ProjectDetail() {
                         <section>
                             {isEditing && ehResponsavel ? (
                                 <>
-                                    <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                    <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} ref={(el) => { refsCampos.current['titulo'] = el; }} className="border font-bold text-lg md:text-2xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                     {errosProjeto.titulo && (
                                         <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                             <div className='flex flex-row gap-1 items-center'>
@@ -266,7 +275,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Tipo</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.tipo || ''} onChange={(e) => handleChange('tipo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.tipo || ''} onChange={(e) => handleChange('tipo', e.target.value)} ref={(el) => { refsCampos.current['tipo'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.tipo && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -287,7 +296,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold w-1/3 text-zinc-900">Unidade</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.unidade || ''} onChange={(e) => handleChange('unidade', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.unidade || ''} onChange={(e) => handleChange('unidade', e.target.value)} ref={(el) => { refsCampos.current['unidade'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.unidade && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -308,7 +317,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Carga horária</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.cargaHoraria || ''} onChange={(e) => handleChange('cargaHoraria', e.target.value)} ref={(el) => { refsCampos.current['cargaHoraria'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.cargaHoraria && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -354,7 +363,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Parceiros</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.parceiros || ''} onChange={(e) => handleChange('parceiros', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.parceiros || ''} onChange={(e) => handleChange('parceiros', e.target.value)} ref={(el) => { refsCampos.current['parceiros'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.parceiros && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -375,7 +384,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Colaboradores</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.colaboradores || ''} onChange={(e) => handleChange('colaboradores', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.colaboradores || ''} onChange={(e) => handleChange('colaboradores', e.target.value)} ref={(el) => { refsCampos.current['colaboradores'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.colaboradores && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -396,7 +405,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Comunidade Participante</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.comunidadeParticipante || ''} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.comunidadeParticipante || ''} onChange={(e) => handleChange('comunidadeParticipante', e.target.value)} ref={(el) => { refsCampos.current['comunidadeParticipante'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.comunidadeParticipante && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -442,7 +451,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Vagas</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.vagas || ''} onChange={(e) => handleChange('vagas', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.vagas || ''} onChange={(e) => handleChange('vagas', e.target.value)} ref={(el) => { refsCampos.current['vagas'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.vagas && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -464,7 +473,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">ODS</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.ods || ''} onChange={(e) => handleChange('ods', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.ods || ''} onChange={(e) => handleChange('ods', e.target.value)} ref={(el) => { refsCampos.current['ods'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ods && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -486,7 +495,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Ciclo</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.ciclo || ''} onChange={(e) => handleChange('ciclo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.ciclo || ''} onChange={(e) => handleChange('ciclo', e.target.value)} ref={(el) => { refsCampos.current['ciclo'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.ciclo && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -507,7 +516,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Competência</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.competencia || ''} onChange={(e) => handleChange('competencia', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.competencia || ''} onChange={(e) => handleChange('competencia', e.target.value)} ref={(el) => { refsCampos.current['competencia'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.competencia && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -529,7 +538,7 @@ function ProjectDetail() {
                                         <td className="px-3 py-2 font-bold text-zinc-900">Eixo</td>
                                         {isEditing && ehResponsavel ? (
                                             <td className="px-3 py-2 text-justify">
-                                                <input type="text" value={editForm?.eixo || ''} onChange={(e) => handleChange('eixo', e.target.value)} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                                <input type="text" value={editForm?.eixo || ''} onChange={(e) => handleChange('eixo', e.target.value)} ref={(el) => { refsCampos.current['eixo'] = el; }} className="border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                                 {errosProjeto.eixo && (
                                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                         <div className='flex flex-row gap-1 items-center'>
@@ -555,12 +564,14 @@ function ProjectDetail() {
                                                         type="date"
                                                         value={editForm?.periodoInscricaoInicio || ''}
                                                         onChange={(e) => handleChange('periodoInscricaoInicio', e.target.value)}
+                                                        ref={(el) => { refsCampos.current['periodoInscricaoInicio'] = el; }}
                                                         className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
                                                     />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
                                                     <input
                                                         type="date"
                                                         value={editForm?.periodoInscricaoFim || ''}
+                                                        ref={(el) => { refsCampos.current['periodoInscricaoFim'] = el; }}
                                                         onChange={(e) => handleChange('periodoInscricaoFim', e.target.value)}
                                                         className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
                                                     />
@@ -592,12 +603,14 @@ function ProjectDetail() {
                                                         type="date"
                                                         value={editForm?.periodoExecucaoInicio || ''}
                                                         onChange={(e) => handleChange('periodoExecucaoInicio', e.target.value)}
+                                                        ref={(el) => { refsCampos.current['periodoExecucaoInicio'] = el; }}
                                                         className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
                                                     />
                                                     <span className="text-zinc-400 text-center hidden sm:inline">-</span>
                                                     <input
                                                         type="date"
                                                         value={editForm?.periodoExecucaoFim || ''}
+                                                        ref={(el) => { refsCampos.current['periodoExecucaoFim'] = el; }}
                                                         onChange={(e) => handleChange('periodoExecucaoFim', e.target.value)}
                                                         className="border w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-0"
                                                     />
@@ -629,7 +642,7 @@ function ProjectDetail() {
 
                                 {isEditing && ehResponsavel ? (
                                     <>
-                                        <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        <textarea value={editForm?.justificativa ?? ''} onChange={(e) => handleChange('justificativa', e.target.value)} ref={(el) => { refsCampos.current['justificativa'] = el; }} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.justificativa && (
                                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                 <div className='flex flex-row gap-1 items-center'>
@@ -653,7 +666,7 @@ function ProjectDetail() {
 
                                 {isEditing && ehResponsavel ? (
                                     <>
-                                        <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        <textarea value={editForm?.pretensao ?? ''} onChange={(e) => handleChange('pretensao', e.target.value)} ref={(el) => { refsCampos.current['pretensao'] = el; }} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.pretensao && (
                                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                 <div className='flex flex-row gap-1 items-center'>
@@ -676,7 +689,7 @@ function ProjectDetail() {
                                 <span className='font-bold text-sm font-segoe text-[#424242]'>Requisitos Técnicos</span>
                                 {isEditing && ehResponsavel ? (
                                     <>
-                                        <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
+                                        <textarea value={editForm?.requisitos ?? ''} onChange={(e) => handleChange('requisitos', e.target.value)} ref={(el) => { refsCampos.current['requisitos'] = el; }} className="mt-1 border px-3 py-2 w-full text-zinc-700 border-zinc-400 rounded-sm focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 transition-all resize-y " />
                                         {errosProjeto.requisitos && (
                                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                                 <div className='flex flex-row gap-1 items-center'>
@@ -698,14 +711,7 @@ function ProjectDetail() {
                             professorResponsavelId={projeto.professorId}
                             userId={user?.id}
                             alunoInscrito={jaInscrito}
-                            isAdmin={user?.isAdmin}
-                        />
-
-                        {role === 'guest' ? (
-                            <section>
-                                <button className='mt-5 flex bg-(--darkBlue) text-white p-2 cursor-pointer rounded-sm justify-self-center hover:bg-indigo-900 active:bg-indigo-500'> Quero participar </button>
-                            </section>
-                        ) : null}
+                            isAdmin={user?.isAdmin} />
 
                     </div>
                 </section>

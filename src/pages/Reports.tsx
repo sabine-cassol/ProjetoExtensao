@@ -258,10 +258,11 @@ function Reports() {
                         {presencasExibidas.map((presenca) => (
                             <div
                                 key={presenca.id}
-                                className="w-full rounded-xl border border-zinc-300 p-4 sm:p-5 font-body text-slate-700 bg-white">
-
+                                className="w-full rounded-xl border border-zinc-300 p-4 sm:p-5 font-body text-slate-700 bg-white"
+                            >
                                 <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.5fr_1fr_1.2fr_0.8fr_1.5fr_1fr_0.8fr_0.8fr_auto] lg:items-center">
 
+                                    {/* BLOCO DADOS DO ALUNO E PROJETO */}
                                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:contents gap-3 pb-3 lg:pb-0 border-b lg:border-none border-zinc-200">
 
                                         <div className="min-w-0 col-span-2 sm:col-span-1 lg:col-span-1" title={role === 'teacher' ? (presenca as PresencaProfessor).aluno.nome : user?.nome}>
@@ -326,6 +327,7 @@ function Reports() {
                                         </div>
                                     </div>
 
+
                                     {role === 'teacher' && (
                                         <div className="flex items-center justify-between lg:justify-end gap-2 pt-1 lg:pt-0">
                                             <span className="lg:hidden text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -338,7 +340,8 @@ function Reports() {
                                                             title="Recusar presença"
                                                             onClick={() => recusarMutation.mutate(presenca.id)}
                                                             disabled={recusarMutation.isPending || aprovarMutation.isPending}
-                                                            className="cursor-pointer h-10 px-3 sm:px-0 sm:w-10 flex items-center justify-center gap-1 rounded-lg bg-red-500 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 disabled:opacity-50 font-medium text-xs sm:text-sm">
+                                                            className="cursor-pointer h-10 px-3 sm:px-0 sm:w-10 flex items-center justify-center gap-1 rounded-lg bg-red-500 text-white hover:bg-red-600 active:scale-[0.95] transition shrink-0 disabled:opacity-50 font-medium text-xs sm:text-sm"
+                                                        >
                                                             <X size={18} strokeWidth={2.5} />
                                                             <span className="sm:hidden">Recusar</span>
                                                         </button>
@@ -354,14 +357,38 @@ function Reports() {
                                                         </button>
                                                     </>
                                                 ) : (
-                                                    formatarStatus(presenca.status)
+                                                    <div className="flex items-center gap-2">
+                                                        {formatarStatus(presenca.status)}
+                                                        <div className="flex items-center overflow-hidden border border-zinc-300 bg-white rounded-md">
+                                                            {presenca.status !== 'aprovado' && (
+                                                                <button
+                                                                    title="Aprovar presença"
+                                                                    onClick={() => aprovarMutation.mutate(presenca.id)}
+                                                                    disabled={recusarMutation.isPending || aprovarMutation.isPending}
+                                                                    className="cursor-pointer p-1.5 hover:bg-slate-50 disabled:opacity-50 border-r border-zinc-300"
+                                                                >
+                                                                    <Check size={14} className="text-emerald-600" />
+                                                                </button>
+                                                            )}
+                                                            {presenca.status !== 'recusado' && (
+                                                                <button
+                                                                    title="Recusar presença"
+                                                                    onClick={() => recusarMutation.mutate(presenca.id)}
+                                                                    disabled={recusarMutation.isPending || aprovarMutation.isPending}
+                                                                    className="cursor-pointer p-1.5 hover:bg-slate-50 disabled:opacity-50"
+                                                                >
+                                                                    <X size={14} className="text-red-500" />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
                                     )}
 
                                     {role === 'student' && (
-                                        <div className="flex items-center justify-between lg:flex-col lg:items-end pt-1 lg:pt-0">
+                                        <div className="flex items-center justify-between lg:flex-col lg:items-end lg:col-start-9 lg:justify-self-end pt-1 lg:pt-0">
                                             <p className="text-[11px] lg:text-[12px] uppercase font-bold tracking-wider text-slate-400">
                                                 Status
                                             </p>

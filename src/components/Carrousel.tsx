@@ -88,15 +88,15 @@ function Carrousel() {
                                     disableOnInteraction: false,
                                     pauseOnMouseEnter: true,
                                 }}
-                                loop={true}
+                                loop={noticias.length > 1}
+                                watchOverflow={true}
                                 spaceBetween={-1}
                                 slidesPerView={1}
                                 breakpoints={{
                                     768: {
-                                        slidesPerView: 2,
+                                        slidesPerView: noticias.length > 1 ? 2 : 1,
                                     },
                                 }}
-
                                 pagination={{
                                     clickable: true,
                                 }}

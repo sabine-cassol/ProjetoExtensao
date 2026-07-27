@@ -14,6 +14,7 @@ import { useNoticiaId, useAtualizarNoticia, useDeletarNoticia } from '@/services
 import Tiptap from '@/components/TipTap.tsx'
 import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression';
+import { useRef } from 'react'
 
 async function converterParaBase64(arquivo: File): Promise<string> {
     const opcoes = {
@@ -37,6 +38,7 @@ function NewDetail() {
     const { role, user } = useAuth();
     const { pathname } = useLocation();
     const [editForm, setEditForm] = useState<Noticia | undefined>(undefined);
+    const refsCampos = useRef<Record<string, HTMLElement | null>>({});
     // const [listaNews, setListaNews] = useState(NEWS);
 
     // const noticia = listaNews.find(n => n.id == noticiaId);
@@ -120,6 +122,14 @@ function NewDetail() {
                 }
             });
             setErrosNoticia(erros);
+
+            const primeiroCampoComErro = Object.keys(erros)[0];
+            const elemento = refsCampos.current[primeiroCampoComErro];
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                elemento.focus();
+            }
+
             return;
         }
 
@@ -146,7 +156,6 @@ function NewDetail() {
 
     return (
         <>
-
             <main className="flex-1 bg-zinc-50/50">
 
                 <h1 className="text-2xl font-bold">
@@ -174,7 +183,7 @@ function NewDetail() {
 
                         {isEditing ? (
                             <>
-                                <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} className="border text-3xl md:text-4xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                <input type="text" value={editForm?.titulo || ''} onChange={(e) => handleChange('titulo', e.target.value)} ref={(el) => { refsCampos.current['titulo'] = el; }} className="border text-3xl md:text-4xl w-full text-zinc-800 border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosNoticia.titulo && (
                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                         <div className='flex flex-row gap-1 items-center'>
@@ -208,7 +217,7 @@ function NewDetail() {
 
                         {isEditing ? (
                             <>
-                                <input type="text" value={editForm?.resumo || ''} onChange={(e) => handleChange('resumo', e.target.value)} className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 border w-full  border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
+                                <input type="text" value={editForm?.resumo || ''} onChange={(e) => handleChange('resumo', e.target.value)} ref={(el) => { refsCampos.current['resumo'] = el; }} className="mt-6 text-sm font-medium  text-zinc-600 pl-4 italic bg-neutral-100  py-2 border w-full  border-zinc-400 rounded-sm p-2 focus:outline-none focus:border-zinc-500 focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all" />
                                 {errosNoticia.resumo && (
                                     <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                         <div className='flex flex-row gap-1 items-center'>

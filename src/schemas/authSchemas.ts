@@ -252,7 +252,7 @@ export const projetoSchema = z.object({
         .refine((arr) => arr.length > 0, {
             message: "Selecione ao menos um período",
         }),
-        
+
     periodoInscricaoInicio: z.string().min(1, 'Data de início da inscrição é obrigatória'),
     periodoInscricaoFim: z.string().min(1, 'Data de fim da inscrição é obrigatória'),
     periodoExecucaoInicio: z.string().min(1, 'Data de início da execução é obrigatória'),
