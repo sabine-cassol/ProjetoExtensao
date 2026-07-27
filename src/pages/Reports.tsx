@@ -237,7 +237,11 @@ function Reports() {
                                     ))}
                                 </select>
 
-                                <input type="text" placeholder="Buscar por RA do aluno" value={filtroRa} onChange={(e) => { setFiltroRa(e.target.value); setPaginaAtual(1); }} className="border border-zinc-300 rounded-md p-2 text-sm flex-1 min-w-0 w-full sm:w-auto" />
+                                <input type="text" placeholder="Buscar por RA do aluno" value={filtroRa} onChange={(e) => {
+                                    const valorFormatado = formatarRA(e.target.value);
+                                    setFiltroRa(valorFormatado);
+                                    setPaginaAtual(1);
+                                }} className="border border-zinc-300 rounded-md p-2 text-sm flex-1 min-w-0 w-full sm:w-auto" />
 
                                 <select
                                     value={filtroStatus}
