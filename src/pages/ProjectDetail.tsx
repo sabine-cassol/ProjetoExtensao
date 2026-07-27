@@ -341,6 +341,7 @@ function ProjectDetail() {
                                                 <SeletorCursos
                                                     value={editForm?.cursosVinculados || ''}
                                                     onChange={(novoValor) => handleChange('cursosVinculados', novoValor)}
+                                                    ref={(el) => { refsCampos.current['cursosVinculados'] = el; }}
                                                 />
 
                                                 {errosProjeto.cursosVinculados && (
@@ -429,6 +430,7 @@ function ProjectDetail() {
                                                 <SeletorPeriodos
                                                     value={editForm?.semestre || ''}
                                                     onChange={(novoValor) => handleChange('semestre', novoValor)}
+                                                    ref={(el) => { refsCampos.current['semestre'] = el; }}
                                                 />
 
                                                 {errosProjeto.semestre && (

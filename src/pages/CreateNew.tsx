@@ -8,6 +8,7 @@ import { noticiaSchema } from "@/schemas/authSchemas";
 import { useCriarNoticia } from "@/services/noticiaService";
 import { useRef } from "react";
 
+
 async function converterParaBase64(arquivo: File): Promise<string> {
     const opcoes = {
         maxSizeMB: 1,
@@ -38,6 +39,7 @@ function CreateNew() {
     const [imageBase64, setImageBase64] = useState<string>('');
     const [errosNoticia, setErrosNoticia] = useState<Record<string, string>>({});
     const refsCampos = useRef<Record<string, HTMLElement | null>>({});
+    const refImagem = useRef<HTMLLabelElement>(null);
 
     const textoLimpo = conteudo ? conteudo.replace(/<[^>]+>/g, '') : '';
     const longText = textoLimpo.length > 600;
@@ -85,7 +87,7 @@ function CreateNew() {
             });
             setErrosNoticia(erros);
 
-          const primeiroCampoComErro = Object.keys(erros)[0];
+            const primeiroCampoComErro = Object.keys(erros)[0];
             const elemento = refsCampos.current[primeiroCampoComErro];
             if (elemento) {
                 elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -176,7 +178,7 @@ function CreateNew() {
                         )}
                     </div>
                     <div>
-                        <Tiptap value={conteudo} onChange={setConteudo}  />
+                        <Tiptap value={conteudo} onChange={setConteudo} ref={(el) => { refsCampos.current['conteudo'] = el; }} />
                         {errosNoticia.conteudo && (
                             <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
                                 <div className='flex flex-row gap-1 items-center'>
@@ -192,7 +194,7 @@ function CreateNew() {
                     <div className="mt-4 flex flex-col gap-2">
                         <span className="font-semibold text-neutral-700">Envie a imagem referente à notícia</span>
 
-                        <label htmlFor="image-upload" className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-200 ${uploadStatus === 'loading' ? 'border-blue-300 bg-blue-50/50 cursor-wait' : ''} ${uploadStatus === 'success' ? 'border-green-300 bg-green-50/50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-blue-300'}`}>
+                        <label htmlFor="image-upload" ref={(el) => { refsCampos.current['imagem'] = el; }} className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-200 ${uploadStatus === 'loading' ? 'border-blue-300 bg-blue-50/50 cursor-wait' : ''} ${uploadStatus === 'success' ? 'border-green-300 bg-green-50/50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-blue-300'}`}>
                             <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-500 px-4 text-center">
                                 {uploadStatus === 'loading' && (
                                     <>

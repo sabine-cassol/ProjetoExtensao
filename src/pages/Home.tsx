@@ -54,7 +54,7 @@ function Home() {
                             <div className='bg-[#203864] p-6 rounded-xl text-white'>
                                 <ScrollText size={40} />
                             </div>
-                            <p>Certificados </p>
+                            <p>Atividades</p>
                         </div>
                     </section>
                 </section>

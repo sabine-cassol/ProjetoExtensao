@@ -39,6 +39,7 @@ function NewDetail() {
     const { pathname } = useLocation();
     const [editForm, setEditForm] = useState<Noticia | undefined>(undefined);
     const refsCampos = useRef<Record<string, HTMLElement | null>>({});
+    const refImagem = useRef<HTMLLabelElement>(null);
     // const [listaNews, setListaNews] = useState(NEWS);
 
     // const noticia = listaNews.find(n => n.id == noticiaId);
@@ -241,6 +242,7 @@ function NewDetail() {
                                     <Tiptap
                                         value={editForm?.conteudo || ''}
                                         onChange={(novoConteudo) => handleChange('conteudo', novoConteudo)}
+                                        ref={(el) => { refsCampos.current['conteudo'] = el; }}
                                     />
                                 </div>
                                 {errosNoticia.conteudo && (

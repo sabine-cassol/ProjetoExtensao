@@ -180,6 +180,7 @@ function ProjectDetail() {
                                             <SeletorCursos
                                                 value={form.cursosVinculados}
                                                 onChange={(novoValor) => handleChange('cursosVinculados', novoValor)}
+                                                ref={(el) => { refsCampos.current['cursosVinculados'] = el; }}
                                             />
                                             {errosProjeto.cursosVinculados && (
                                                 <div className="flex items-center gap-1.5 mt-1.5 text-red-600">
@@ -247,6 +248,7 @@ function ProjectDetail() {
                                             <SeletorPeriodos
                                                 value={form.semestre}
                                                 onChange={(novoValor) => handleChange('semestre', novoValor)}
+                                                ref={(el) => { refsCampos.current['semestre'] = el; }}
                                             />
 
                                             {errosProjeto.semestre && (
