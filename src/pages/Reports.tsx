@@ -143,10 +143,12 @@ function Reports() {
     const projetosUnicos = role === 'teacher'
         ? Array.from(
             new Map(
-                (presencasProfessor ?? []).map((p) => [
-                    p.atividade.projetoId,
-                    { id: p.atividade.projetoId, titulo: p.atividade.projeto.titulo }
-                ])
+                (presencasProfessor ?? [])
+                    .filter((p) => p.atividade && p.atividade.projeto)
+                    .map((p) => [
+                        p.atividade.projetoId,
+                        { id: p.atividade.projetoId, titulo: p.atividade.projeto.titulo }
+                    ])
             ).values()
         )
         : [];

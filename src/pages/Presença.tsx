@@ -24,7 +24,7 @@ export default function Presença() {
 
     const [segundos, setSegundos] = useState<number>(0);
     const timerRef = useRef<number | null>(null);
-    const TEMPO_MINIMO = 10 * 60;
+    const TEMPO_MINIMO = 60 * 60;
 
     const { data: projetoAtual, isLoading: isLoadingProjeto } = useProjetoId(projetoId!);
     const { data: atividades, isLoading: isLoadingAtividades } = useAtividadesProjeto(projetoId);

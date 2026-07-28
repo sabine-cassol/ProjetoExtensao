@@ -3,6 +3,9 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect } from 'react';
 
+import Link from '@tiptap/extension-link';
+
+
 interface TiptapProps {
   value: string;
   onChange: (val: string) => void;
@@ -10,7 +13,15 @@ interface TiptapProps {
 
 const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-blue-600 underline hover:text-blue-800'
+        }
+      })
+    ],
     content: value,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
@@ -22,6 +33,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
     }
   });
 
+
+
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value, { emitUpdate: false });
@@ -32,6 +45,19 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
     return null;
   }
 
+
+  const adicionarLink = () => {
+    const url = window.prompt('Digite a URL do link:');
+    if (url === null) return; // usuário cancelou
+
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
+    }
+
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  };
+
   return (
     <div ref={ref} className="w-full mt-6 border border-zinc-200 rounded-lg overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-500 transition-all">
 
@@ -39,9 +65,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`px-3 py-1 text-xs font-bold rounded hover:bg-zinc-200/60 ${
-            editor.isActive('bold') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs font-bold rounded hover:bg-zinc-200/60 ${editor.isActive('bold') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           B
         </button>
@@ -49,9 +74,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`px-3 py-1 text-xs italic rounded hover:bg-zinc-200/60 ${
-            editor.isActive('italic') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs italic rounded hover:bg-zinc-200/60 ${editor.isActive('italic') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           I
         </button>
@@ -61,9 +85,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={`px-3 py-1 text-xs font-semibold rounded hover:bg-zinc-200/60 ${
-            editor.isActive('heading', { level: 2 }) ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs font-semibold rounded hover:bg-zinc-200/60 ${editor.isActive('heading', { level: 2 }) ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           H2
         </button>
@@ -71,9 +94,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className={`px-3 py-1 text-xs font-semibold rounded hover:bg-zinc-200/60 ${
-            editor.isActive('heading', { level: 3 }) ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs font-semibold rounded hover:bg-zinc-200/60 ${editor.isActive('heading', { level: 3 }) ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           H3
         </button>
@@ -83,9 +105,8 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`px-3 py-1 text-xs rounded hover:bg-zinc-200/60 ${
-            editor.isActive('bulletList') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs rounded hover:bg-zinc-200/60 ${editor.isActive('bulletList') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           • Lista
         </button>
@@ -93,11 +114,17 @@ const Tiptap = forwardRef<HTMLDivElement, TiptapProps>(({ value, onChange }, ref
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`px-3 py-1 text-xs rounded hover:bg-zinc-200/60 ${
-            editor.isActive('orderedList') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
-          }`}
+          className={`px-3 py-1 text-xs rounded hover:bg-zinc-200/60 ${editor.isActive('orderedList') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}
         >
           1. Lista
+        </button>
+        <button
+          type="button"
+          onClick={adicionarLink}
+          className={`px-3 py-1 text-xs rounded hover:bg-zinc-200/60 ${editor.isActive('link') ? 'bg-zinc-200 text-zinc-900' : 'text-zinc-600'
+            }`}>
+          🔗 Link
         </button>
       </div>
 
