@@ -4,7 +4,9 @@ import AtividadeModel from "./atividade.js";
 import PresencaModel from "./presenca.js";
 import ProfessoreModel from "./professor.js";
 import ProjetoExtensaoModel from "./projeto_extensao.js";
-import inscricaoProjeto from "./inscricao_projeto.js";
+import inscricaoProjetoModel from "./inscricao_projeto.js";
+import VisitanteModel from "./visitante.js";
+import InscricaoVisitanteModel from "./inscricao_visitante.js";
 
 
 const Aluno = AlunoModel(sequelize);
@@ -12,7 +14,9 @@ const Presenca = PresencaModel(sequelize);
 const Professor = ProfessoreModel(sequelize);
 const Atividade = AtividadeModel(sequelize);
 const Projeto_extensao = ProjetoExtensaoModel(sequelize);
-const Inscricao_projeto = inscricaoProjeto(sequelize); 
+const Inscricao_projeto = inscricaoProjetoModel(sequelize); 
+const Visitante = VisitanteModel(sequelize);
+const Inscricao_visitante = InscricaoVisitanteModel(sequelize);
 
 
 Aluno.hasMany(Presenca, {
@@ -70,8 +74,26 @@ Inscricao_projeto.belongsTo(Projeto_extensao, {
     as: "projeto"
 });
 
+Visitante.hasMany(Inscricao_visitante, {
+    foreignKey: "visitanteId",
+    as: "inscricoesEmProjetos"
+});
+Inscricao_visitante.belongsTo(Visitante, {
+    foreignKey: "visitanteId",
+    as: "visitante"
+});
+
+Projeto_extensao.hasMany(Inscricao_visitante, {
+    foreignKey: "projetoId",
+    as: "inscricoesEmProjetos"
+});
+Inscricao_visitante.belongsTo(Projeto_extensao, {
+    foreignKey: "projetoId",
+    as: "projeto"
+});
 
 
 
 
-export {sequelize, Aluno, Presenca, Professor, Atividade, Projeto_extensao, Inscricao_projeto};
+
+export {sequelize, Aluno, Presenca, Professor, Atividade, Projeto_extensao, Inscricao_projeto, Visitante, Inscricao_visitante};

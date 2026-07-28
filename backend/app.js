@@ -7,7 +7,9 @@ import alunoRoutes from "./routes/alunoRoutes.js"
 import projetoRoutes from "./routes/projetoRoutes.js";
 import atividadeRoutes from "./routes/atividadeRoutes.js";
 import presencaRoutes from "./routes/presencaRoutes.js";
+import visitanteRoutes from "./routes/visitanteRoutes.js";
 import inscricaoProjetoRoutes from "./routes/inscricaoProjetoRoutes.js";
+import inscricaoVisitanteRoutes from "./routes/inscricaoVisitanteRoutes.js";
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -25,7 +27,9 @@ app.use("/alunos", alunoRoutes);
 app.use("/projetos", projetoRoutes);
 app.use("/atividades", atividadeRoutes);
 app.use("/presencas", presencaRoutes);
-app.use("/inscricoes", inscricaoProjetoRoutes);
+app.use("/visitantes", visitanteRoutes);
+app.use("/inscricoesAlunos", inscricaoProjetoRoutes);
+app.use("/inscricoesVisitantes", inscricaoVisitanteRoutes);
 
 // Servir os arquivos estáticos do React (dist)
 app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));
