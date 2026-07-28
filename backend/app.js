@@ -7,6 +7,7 @@ import alunoRoutes from "./routes/alunoRoutes.js"
 import projetoRoutes from "./routes/projetoRoutes.js";
 import atividadeRoutes from "./routes/atividadeRoutes.js";
 import presencaRoutes from "./routes/presencaRoutes.js";
+import visitanteRoutes from "./routes/visitanteRoutes.js";
 import inscricaoProjetoRoutes from "./routes/inscricaoProjetoRoutes.js";
 import noticiaRoutes from "./routes/noticiaRoute.js";
 import cookieParser from 'cookie-parser';

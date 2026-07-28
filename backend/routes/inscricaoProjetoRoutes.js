@@ -15,9 +15,9 @@ const controller = inscricaoProjetoController(service);
 
 const router = express.Router();
 
-router.post("/projetos/:projetoId/inscricoes", autenticar, controller.criarInscricao);
-router.get("/projetos/:projetoId/alunos", autenticar, controller.listarAlunosPorProjeto);
-router.get("/alunos/me/inscricoes", autenticar, controller.listarMinhasInscricoes);
-router.get("/alunos/:alunoId/inscricoes", autenticar, controller.listarInscricoesPorAluno);
+router.post("/projeto/:projetoId", autenticar, autorizar("aluno"), (req, res) => controller.criarInscricao(req, res));
+router.get("/projetos/:projetoId", autenticar, autorizar("professor"), (req, res) => controller.listarAlunosPorProjeto(req, res));
+router.get("/me/inscricoes", autenticar, autorizar("aluno"), (req, res) => controller.listarMinhasInscricoes(req, res));
+router.get("/alunos/:alunoId", autenticar, autorizar("professor"), (req, res) => controller.listarInscricoesPorAluno(req, res));
 
 export default router;
