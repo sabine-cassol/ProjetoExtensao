@@ -9,8 +9,10 @@ import atividadeRoutes from "./routes/atividadeRoutes.js";
 import presencaRoutes from "./routes/presencaRoutes.js";
 import visitanteRoutes from "./routes/visitanteRoutes.js";
 import inscricaoProjetoRoutes from "./routes/inscricaoProjetoRoutes.js";
-import inscricaoVisitanteRoutes from "./routes/inscricaoVisitanteRoutes.js";
+import noticiaRoutes from "./routes/noticiaRoute.js";
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+
 
 const app = express();
 const PORT = 3000;
@@ -18,18 +20,23 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors({
+  origin: true,
+  credentials: true 
+}));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/professores", professorRoutes);
 app.use("/alunos", alunoRoutes);
 app.use("/projetos", projetoRoutes);
 app.use("/atividades", atividadeRoutes);
 app.use("/presencas", presencaRoutes);
-app.use("/visitantes", visitanteRoutes);
-app.use("/inscricoesAlunos", inscricaoProjetoRoutes);
-app.use("/inscricoesVisitantes", inscricaoVisitanteRoutes);
+app.use("/inscricoes", inscricaoProjetoRoutes);
+app.use("/noticias", noticiaRoutes);
+
 
 // Servir os arquivos estáticos do React (dist)
 app.use(express.static(path.join(__dirname, "../frontend/Projext_front/dist")));
@@ -39,7 +46,7 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/Projext_front/index.html"));
 });
 
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     console.log("Tabelas sincronizadas!!");
   }).catch(err => {

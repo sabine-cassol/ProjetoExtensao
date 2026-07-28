@@ -1,4 +1,4 @@
-import {Professor} from "../models/index.js";
+import { Professor } from "../models/index.js";
 
 export default (Projeto_extensao) => {
     return {
@@ -10,6 +10,7 @@ export default (Projeto_extensao) => {
             return Projeto_extensao.findByPk(id, {
                 include: {
                     model: Professor,
+                    as: "professor",
                     attributes: ['nome']
                 }
             });
@@ -17,8 +18,10 @@ export default (Projeto_extensao) => {
 
         async listarTodos() {
             return Projeto_extensao.findAll({
+                where: { ativo: true },
                 include: {
                     model: Professor,
+                    as: "professor",
                     attributes: ['nome']
                 }
             });
@@ -29,16 +32,17 @@ export default (Projeto_extensao) => {
                 where: { professorId },
                 include: {
                     model: Professor,
+                    as: "professor",
                     attributes: ['nome']
                 }
-            });
+            }); 
         },
 
         async atualizarProjeto(id, novoProjeto) {
             const projeto = await Projeto_extensao.findByPk(id);
             if (!projeto) return null;
             await projeto.update(novoProjeto);
-            return Projeto_extensao.update(novoProjeto);
+            return projeto;  
         },
 
         async deletar(id) {

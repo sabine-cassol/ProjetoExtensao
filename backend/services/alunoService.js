@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export default (alunoRepository) => {
+export default (alunoRepository, inscricaoProjetoRepository) => {
     return {
         async cadastrarAluno(dados) {
             const emailJaExiste = await alunoRepository.buscarPorEmail(dados.email);
@@ -35,7 +35,7 @@ export default (alunoRepository) => {
 
         async buscarPorId(id) {
             const aluno = await alunoRepository.buscarPorId(id);
-            if(!aluno) {
+            if (!aluno) {
                 throw new Error("Aluno não encontrado");
             }
             return aluno;
@@ -43,7 +43,7 @@ export default (alunoRepository) => {
 
         async buscarPorRA(ra) {
             const aluno = await alunoRepository.buscarPorRA(ra);
-            if(!aluno) {
+            if (!aluno) {
                 throw new Error("Aluno não encontrado");
             }
             return aluno;
@@ -58,6 +58,13 @@ export default (alunoRepository) => {
         },
 
         async atualizar(id, dados) {
+            if (dados.curso !== undefined || dados.periodo !== undefined) {
+                const inscricoes = await inscricaoProjetoRepository.listarInscricoesPorAluno(id);
+                if (inscricoes.length > 0) {
+                    throw new Error("Não é possível alterar curso/período enquanto estiver inscrito em algum projeto");
+                }
+            }
+
             const aluno = await alunoRepository.atualizarAluno(id, dados);
             if (!aluno) {
                 throw new Error("Aluno não encontrado");

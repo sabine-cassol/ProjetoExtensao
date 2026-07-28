@@ -1,7 +1,12 @@
 export default (projetoRepository) => {
     return {
-        async criarProjeto(dados) {
-            return projetoRepository.criarProjeto(dados);
+        async criarProjeto(dados, professorLogadoId) {
+            validarPeriodos(dados);
+
+            return projetoRepository.criarProjeto({
+                ...dados,
+                professorId: professorLogadoId
+            });
         },
         async buscarProjetoPorId(id) {
             const projeto = await projetoRepository.buscarPorId(id);
@@ -13,31 +18,56 @@ export default (projetoRepository) => {
         async listarTodos() {
             return projetoRepository.listarTodos();
         },
-        async listarTodosPorProfessor(professorId) { 
+        async listarTodosPorProfessor(professorId) {
             return projetoRepository.listarTodosPorProfessor(professorId);
         },
-        async atualizarProjeto(id, dados) {
+        async atualizarProjeto(id, dados, professorLogadoId, isAdmin) {
             const projeto = await projetoRepository.atualizarProjeto(id, dados);
             if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            return projeto; 
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
+                throw new Error("Você não tem permissão para editar este projeto");
+            }
+
+            validarPeriodos({ ...projeto.toJSON(), ...dados });
+
+            const projetoAtualizado = await projetoRepository.atualizarProjeto(id, dados);
+            return projetoAtualizado;
         },
-        async desativarProjeto(id) {
-            const projetoDesativado = await projetoRepository.buscarPorId(id);
-            if (!projetoDesativado) {
+        async desativarProjeto(id, professorLogadoId, isAdmin) {
+            const projeto = await projetoRepository.buscarPorId(id);
+            if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            projetoDesativado.ativo = false;
-            return projetoRepository.atualizarProjeto(id, projetoDesativado);
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
+                throw new Error("Você não tem permissão para desativar este projeto");
+            }
+            return projetoRepository.atualizarProjeto(id, { ativo: false });
         },
-        async ativarProjeto(id) {
-            const projetoAtivado = await projetoRepository.buscarPorId(id);
-            if (!projetoAtivado) {
+        async ativarProjeto(id, professorLogadoId,isAdmin) {
+            const projeto = await projetoRepository.buscarPorId(id);
+            if (!projeto) {
                 throw new Error("Projeto de extensão não encontrado");
             }
-            projetoAtivado.ativo = true;
-            return projetoRepository.atualizarProjeto(id, projetoAtivado);
+            if (projeto.professorId !== professorLogadoId && !isAdmin) {
+                throw new Error("Você não tem permissão para ativar este projeto");
+            }
+            return projetoRepository.atualizarProjeto(id, { ativo: true });
+        }
+    }
+}
+
+function validarPeriodos(dados) {
+    if (dados.periodoInscricaoInicio && dados.periodoInscricaoFim) {
+        if (dados.periodoInscricaoInicio > dados.periodoInscricaoFim) {
+            throw new Error("A data de início da inscrição não pode ser depois da data de fim");
+        }
+    }
+
+    if (dados.periodoExecucaoInicio && dados.periodoExecucaoFim) {
+        if (dados.periodoExecucaoInicio > dados.periodoExecucaoFim) {
+            throw new Error("A data de início da execução não pode ser depois da data de fim");
         }
     }
 }

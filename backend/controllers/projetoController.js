@@ -2,11 +2,11 @@ export default (projetoService) => {
     return {
         async criarProjeto(req, res) {
             try {
-                const projeto = await projetoService.criarProjeto(req.body);
+                const projeto = await projetoService.criarProjeto(req.body, req.usuario.id);
                 const dados = projeto.toJSON();
                 res.status(201).json(dados);
             } catch (erro) {
-                res.status(400).json({erro : erro.message});
+                res.status(400).json({ erro: erro.message });
             }
         },
 
@@ -16,7 +16,7 @@ export default (projetoService) => {
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
@@ -26,7 +26,7 @@ export default (projetoService) => {
                 const dados = projetos.map((p) => p.toJSON());
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
@@ -36,38 +36,46 @@ export default (projetoService) => {
                 const dados = projetos.map((p) => p.toJSON());
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
         async atualizarProjeto(req, res) {
             try {
-                const projeto = await projetoService.atualizarProjeto(req.params.id, req.body);
+                const projeto = await projetoService.atualizarProjeto(
+                    req.params.id,
+                    req.body,
+                    req.usuario.id,
+                    req.usuario.isAdmin
+                );
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                if (erro.message === "Projeto de extensão não encontrado") {
+                    return res.status(404).json({ erro: erro.message });
+                }
+                res.status(403).json({ erro: erro.message });
             }
         },
 
         async desativarProjeto(req, res) {
             try {
-                const projeto = await projetoService.desativarProjeto(req.params.id);
+                const projeto = await projetoService.desativarProjeto(req.params.id, req.usuario.id, req.usuario.isAdmin);
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                res.status(403).json({ erro: erro.message });
             }
         },
 
         async ativarProjeto(req, res) {
             try {
-                const projeto = await projetoService.ativarProjeto(req.params.id);
+                const projeto = await projetoService.ativarProjeto(req.params.id, req.usuario.id, req.usuario.isAdmin);
                 const dados = projeto.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro : erro.message});
+                res.status(403).json({ erro: erro.message });
             }
-        }    
+        }
     }
 }

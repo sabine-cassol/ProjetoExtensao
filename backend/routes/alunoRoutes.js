@@ -1,6 +1,8 @@
 import express from "express";
-import {Aluno} from "../models/index.js";
+import { Aluno, Inscricao_projeto, Projeto_extensao } from "../models/index.js";
 import alunoRepository from "../repositories/alunoRepository.js";
+import projetoRepository from "../repositories/projetoRepository.js";
+import inscricaoProjetoRepository from "../repositories/inscricaoProjetoRepository.js";
 import alunoService from "../services/alunoService.js";
 import alunoController from "../controllers/alunoController.js";
 import autenticar from "../middlewares/autenticar.js";
@@ -9,7 +11,9 @@ import autorizar from "../middlewares/autorizar.js";
 const router = express.Router();
 
 const repository = alunoRepository(Aluno);
-const service = alunoService(repository);
+const repositoryProjeto = projetoRepository(Projeto_extensao);
+const repositoryInscricao = inscricaoProjetoRepository(Inscricao_projeto, repositoryProjeto);
+const service = alunoService(repository, repositoryInscricao);
 const controller = alunoController(service);
 
 router.post("/", (req, res) => controller.cadastrarAluno(req, res));

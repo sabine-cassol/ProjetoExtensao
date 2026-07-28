@@ -4,14 +4,14 @@ export default (professorService) => {
         async cadastrarProfessor(req, res) {
             try {
                 const professor = await professorService.cadastrarProfessor(req.body);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(201).json(dados);
             } catch (erro) {
                 res.status(400).json({ erro: erro.message });
             }
         },
 
-        async login(req, res) { 
+        async login(req, res) {
             try {
                 const { email, senha } = req.body;
                 const { professor, token } = await professorService.verificarLogin(email, senha);
@@ -19,29 +19,29 @@ export default (professorService) => {
 
                 res.cookie("token", token, {
                     httpOnly: true,
-                    secure: true,
+                    secure: false,
                     sameSite: "lax",
-                    maxAge: 8 * 60 * 60 * 1000 //8 horas em milissegundos
+                    maxAge: 8 * 60 * 60 * 1000
                 });
 
-                res.status(200).json({ tipo: "professor", professor: dados});
+                res.status(200).json({ tipo: "professor", professor: dados });
             } catch (erro) {
-                res.status(401).json({ erro: erro.message});
+                res.status(401).json({ erro: erro.message });
             }
         },
 
         async logout(req, res) {
             res.clearCookie("token");
-            res.status(200).json({ mensagem: "Logout realizado"});
+            res.status(200).json({ mensagem: "Logout realizado" });
         },
 
         async buscarPerfil(req, res) {
             try {
                 const professor = await professorService.buscarPorId(req.usuario.id);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
@@ -49,52 +49,60 @@ export default (professorService) => {
             try {
                 const professores = await professorService.listarTodos();
                 const dados = professores.map((p) => {
-                    const { senha, ...professor} = p.toJSON();
+                    const { senha, ...professor } = p.toJSON();
                     return professor;
                 });
                 res.status(200).json(dados);
-            }catch (erro) {
-                res.status(404).json({erro: erro.message});
+            } catch (erro) {
+                res.status(404).json({ erro: erro.message });
             }
         },
 
         async buscarPorId(req, res) {
             try {
                 const professor = await professorService.buscarPorId(req.params.id);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
-        async atualizar(req, res) { 
+        async atualizar(req, res) {
             try {
                 const professor = await professorService.atualizar(req.usuario.id, req.body);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(400).json({ erro: erro.message})
+                res.status(400).json({ erro: erro.message })
             }
         },
 
         async desativarProfessorPorId(req, res) {
             try {
                 const professor = await professorService.desativarProfessor(req.params.id);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: erro.message});
+                res.status(404).json({ erro: erro.message });
             }
         },
 
         async ativarProfessorPorId(req, res) {
             try {
                 const professor = await professorService.ativarProfessor(req.params.id);
-                const { senha, ...dados} = professor.toJSON();
+                const { senha, ...dados } = professor.toJSON();
                 res.status(200).json(dados);
             } catch (erro) {
-                res.status(404).json({erro: erro.message});
+                res.status(404).json({ erro: erro.message });
+            }
+        },
+        async promoverAdmin(req, res) {
+            try {
+                const professor = await professorService.promoverAdmin(req.params.id, req.usuario.isAdmin);
+                res.status(200).json(professor.toJSON());
+            } catch (erro) {
+                res.status(403).json({ erro: erro.message });
             }
         }
     }

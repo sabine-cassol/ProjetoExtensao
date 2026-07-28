@@ -1,4 +1,4 @@
-import { sequelize  } from "../config/dataBase.js";
+import { sequelize } from "../config/dataBase.js";
 import { Model, DataTypes } from "sequelize";
 
 export default (sequelize) => {
@@ -12,11 +12,28 @@ export default (sequelize) => {
         descricao: {
             type: DataTypes.STRING
         },
-        dataHoraInicio: {
-            type: DataTypes.DATE
+        data: {
+            type: DataTypes.DATEONLY
         },
-        dataHoraFim: {
-            type: DataTypes.DATE
+        cargaHoraria: {
+            type: DataTypes.FLOAT
+        },
+        exigeLocalizacao: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        },
+        latitude: {
+            type: DataTypes.DECIMAL(10, 8),
+            allowNull: true
+        },
+        longitude: {
+            type: DataTypes.DECIMAL(11, 8),
+            allowNull: true
+        },
+        raioMetros: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            defaultValue: 100 // tolerância padrão de 100 metros
         },
         projetoId: {
             type: DataTypes.INTEGER,

@@ -43,6 +43,31 @@ export default (presencaService) => {
             } catch (erro) {
                 res.status(400).json({erro : erro.message});
             }
+        },
+        async listarPorProfessor(req, res) {
+            try {
+                const presencas = await presencaService.listarPorProfessor(req.usuario.id);
+                const dados = presencas.map((p) => p.toJSON());
+                res.status(200).json(dados);
+            } catch (erro) {
+                res.status(400).json({erro : erro.message});
+            }
+        },
+        async aprovarPresenca(req, res) {
+            try {
+                const presenca = await presencaService.aprovarPresenca(req.params.id, req.usuario.id,req.usuario.isAdmin);
+                res.status(200).json(presenca.toJSON());
+            } catch (erro) {
+                res.status(403).json({erro : erro.message});
+            }
+        },
+        async recusarPresenca(req, res) {
+            try {
+                const presenca = await presencaService.recusarPresenca(req.params.id, req.usuario.id,req.usuario.isAdmin);
+                res.status(200).json(presenca.toJSON());
+            } catch (erro) {
+                res.status(403).json({erro : erro.message});
+            }
         }
     }
 }

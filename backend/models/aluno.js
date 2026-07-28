@@ -53,8 +53,13 @@ export default (sequelize) => {
         sequelize,
         modelName: "Alunos",
         hooks: {
-            beforeCreate: async (Aluno)  => {
-                Aluno.senha = await bcrypt.hash(Aluno.senha, 10);
+            beforeCreate: async (aluno)  => {
+                aluno.senha = await bcrypt.hash(aluno.senha, 10);
+            },
+            beforeUpdate: async (aluno) => {
+                if (aluno.changed('senha')) {
+                    aluno.senha = await bcrypt.hash(aluno.senha, 10);
+                }
             }
         }
     });
